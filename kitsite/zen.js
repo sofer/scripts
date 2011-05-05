@@ -7,7 +7,8 @@ var ZEN = {
   port: 80,
   cookie: false,
   base64auth: 'ZGFubnlAa2l0c2l0ZS5jb20vdG9rZW46V1pDS0FUdmZyVXhpWWt4RFFNQ0VNS2NzTVZWd3dBVndNcWh4R2VMMw==',
-
+  path: 'json/',
+  
   baseOptions: function(id,page) {
     var opt = {};
     opt.host = this.host;
@@ -50,7 +51,7 @@ var ZEN = {
       opt.path = '/rules/'+id+'.json?page='+page;
       http.get(opt, function(resp) {
         var content = '';
-        var path = 'json/'+id+'-'+page+'.json';
+        var path = this.path+id+'-'+page+'.json';
         console.log('Got response: ' + resp.statusCode + ' for ' + id + ', page '+ page);
         resp.on('data', function (chunk) {
           content += chunk;
@@ -73,7 +74,7 @@ var ZEN = {
     reports = {
       '449562': 50
     }
-    for (report in reports) {
+    for (var report in reports) {
       var pages = reports[report];
       for (var i=1;i<=pages;i++) {
         this.get(report,i);
@@ -81,12 +82,43 @@ var ZEN = {
     }
   },
   
-  process: function() {
+  importFromZendesk: function() {
     this.setCookie(this.allReports);
+  },
+  
+  processResults: function(results) {
+    console.log(results['449562-1.json']);
+    for (var result in results) {
+      //var resultArray = result;
+      //console.log(result);
+    }
+  },
+  
+  convert: function() {
+    var that = this;
+    fs.readdir(this.path, function (err, files) {
+      var count = files.length;
+      var results = {};
+      files.forEach(function (filename) {
+        var filepath = that.path+filename;
+        console.log(filepath);
+        fs.readFile(filepath, function (data) {
+          console.log(data);
+          results[filename] = data;
+          count--;
+          if (count <= 0) {
+            that.processResults(results);
+          }
+        });          
+      });
+    });
   }
   
 }
 
-ZEN.process();
+//ZEN.importFromZendesk();
+
+ZEN.convert();
+
 
 
