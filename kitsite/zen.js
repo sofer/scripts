@@ -1,3 +1,8 @@
+// a node.js script for fetching data from zendesk
+// ZEN.importFromZendesk() is working nicely
+// currently trying to get ZEN.convert() working
+// 31-05-11
+
 http = require('http');
 fs = require('fs');
 
@@ -86,11 +91,15 @@ var ZEN = {
     this.setCookie(this.allReports);
   },
   
-  processResults: function(results) {
-    console.log(results['449562-1.json']);
-    for (var result in results) {
-      //var resultArray = result;
-      //console.log(result);
+  processResults: function(pages) {
+    console.log(pages);
+
+    for (var page in pages) {
+      var tickets = pages[page];
+      //console.log(tickets);
+      for (var ticket in tickets) {
+        //console.log(ticket);
+      }
     }
   },
   
@@ -98,16 +107,17 @@ var ZEN = {
     var that = this;
     fs.readdir(this.path, function (err, files) {
       var count = files.length;
-      var results = {};
+      var pages = {};
       files.forEach(function (filename) {
         var filepath = that.path+filename;
-        console.log(filepath);
-        fs.readFile(filepath, function (data) {
+        fs.readFile(filepath, function (err, data) {
+          if (err) throw err;
+          
           console.log(data);
-          results[filename] = data;
+          pages[filename] = data;
           count--;
           if (count <= 0) {
-            that.processResults(results);
+            //that.processResults(pages);
           }
         });          
       });
