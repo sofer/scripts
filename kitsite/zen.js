@@ -12,7 +12,16 @@ var ZEN = {
   port: 80,
   cookie: false,
   base64auth: 'ZGFubnlAa2l0c2l0ZS5jb20vdG9rZW46V1pDS0FUdmZyVXhpWWt4RFFNQ0VNS2NzTVZWd3dBVndNcWh4R2VMMw==',
-  path: 'json/',
+  //source: 'test/',
+  source: 'json/',
+  target: 'out/',
+  fields: { id: 'nice_id', 
+            requestedBy: 'req_name', 
+            solvedDate: 'solved_at', 
+            description: 'subject', 
+            client: 'organization_id', 
+            billableDays:'field_177410',
+            billTo: 'field_147056' },
   
   baseOptions: function(id,page) {
     var opt = {};
@@ -56,7 +65,7 @@ var ZEN = {
       opt.path = '/rules/'+id+'.json?page='+page;
       http.get(opt, function(resp) {
         var content = '';
-        var path = this.path+id+'-'+page+'.json';
+        var path = this.source+id+'-'+page+'.json';
         console.log('Got response: ' + resp.statusCode + ' for ' + id + ', page '+ page);
         resp.on('data', function (chunk) {
           content += chunk;
@@ -92,32 +101,55 @@ var ZEN = {
   },
   
   processResults: function(pages) {
-    console.log(pages);
-
+    var summary = [];
+    var csv = '';
     for (var page in pages) {
-      var tickets = pages[page];
-      //console.log(tickets);
+      console.log('Processing '+page);
+      var tickets = JSON.parse(pages[page]);
       for (var ticket in tickets) {
-        //console.log(ticket);
+        //console.log(tickets[ticket]);
+        var entry = {};
+        for (var field in this.fields) {
+          var val = tickets[ticket][this.fields[field]];
+          entry[field] = val;
+          switch(field) {
+            case 'description':
+              csv = csv + '"'+val+'",';
+              break;
+            case 'client':
+              if (val === 40584) {
+                csv = csv + 'London 2012,';
+              } else {
+                csv = csv + 'other,';
+              }
+              break;          
+            default:
+              csv = csv + tickets[ticket][this.fields[field]]+',';
+          }
+        }
+        summary.push(entry);
+        csv = csv+"\n";
       }
     }
+    var target = this.target+'out.csv';
+    fs.writeFileSync(target, csv);
+    //console.log(summary);
+    console.log('done');
   },
   
   convert: function() {
     var that = this;
-    fs.readdir(this.path, function (err, files) {
+    fs.readdir(this.source, function (err, files) {
       var count = files.length;
       var pages = {};
       files.forEach(function (filename) {
-        var filepath = that.path+filename;
-        fs.readFile(filepath, function (err, data) {
+        var filepath = that.source+filename;
+        fs.readFile(filepath, 'utf8', function (err, data) {
           if (err) throw err;
-          
-          console.log(data);
           pages[filename] = data;
           count--;
           if (count <= 0) {
-            //that.processResults(pages);
+            that.processResults(pages);
           }
         });          
       });
