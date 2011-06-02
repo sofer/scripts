@@ -114,7 +114,11 @@ var ZEN = {
           entry[field] = val;
           switch(field) {
             case 'description':
-              csv = csv + '"'+val+'",';
+              val = val.replace(/"/g, '""');
+              csv = csv + '"' + val + '",';
+              break;
+            case 'solvedDate':
+              csv = csv + val.slice(0,10) + ',';
               break;
             case 'client':
               if (val === 40584) {
