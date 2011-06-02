@@ -21,7 +21,7 @@ var ZEN = {
             description: 'subject', 
             client: 'organization_id', 
             billableDays:'field_177410',
-            billTo: 'field_147056' },
+            billing: 'field_147056' },
   
   baseOptions: function(id,page) {
     var opt = {};
@@ -60,12 +60,13 @@ var ZEN = {
   get: function(id,page) {
     console.log('trying for ' + id + ', page '+ page);
     if (this.cookie) {
+      var that = this;
       var opt = this.baseOptions(id,page);
       opt.headers = { cookie : this.cookie };
       opt.path = '/rules/'+id+'.json?page='+page;
       http.get(opt, function(resp) {
         var content = '';
-        var path = this.source+id+'-'+page+'.json';
+        var path = that.source+id+'-'+page+'.json';
         console.log('Got response: ' + resp.statusCode + ' for ' + id + ', page '+ page);
         resp.on('data', function (chunk) {
           content += chunk;
@@ -102,37 +103,57 @@ var ZEN = {
   
   processResults: function(pages) {
     var summary = [];
-    var csv = '';
+    var csv = "date,id,requested by,description,client,capped,retainer,ODA,CTS,TFL,Festival,Bill separately,other\n";
     for (var page in pages) {
       console.log('Processing '+page);
       var tickets = JSON.parse(pages[page]);
       for (var ticket in tickets) {
-        //console.log(tickets[ticket]);
-        var entry = {};
-        for (var field in this.fields) {
-          var val = tickets[ticket][this.fields[field]];
-          entry[field] = val;
-          switch(field) {
-            case 'description':
-              val = val.replace(/"/g, '""');
-              csv = csv + '"' + val + '",';
-              break;
-            case 'solvedDate':
-              csv = csv + val.slice(0,10) + ',';
-              break;
-            case 'client':
-              if (val === 40584) {
-                csv = csv + 'London 2012,';
-              } else {
-                csv = csv + 'other,';
+        var line = '';
+        line += tickets[ticket][this.fields.solvedDate].slice(0,10)+',';
+        line += tickets[ticket][this.fields.id]+',';
+        line += tickets[ticket][this.fields.requestedBy]+',';
+        line += '"'+tickets[ticket][this.fields.description].replace(/"/g, '""')+'",';
+        if (tickets[ticket][this.fields.client] === 40584) {
+          line += 'London 2012,';
+          var billing = tickets[ticket][this.fields.billing]; 
+          if (billing === 'capped') {
+            line += 1+',,,,,,';
+          } else {
+            var days = tickets[ticket][this.fields.billableDays];
+            if (days !== null && days > 0) {
+              switch(billing) {
+                case 'billable':
+                line += ','+days+',,,,,,';
+                break;
+                case 'bill_to_oda':
+                line += ',,'+days+',,,,,';
+                break;
+                case 'bill_to_its':
+                line += ',,,'+days+',,,,';
+                break;
+                case 'bill_to_cts':
+                line += ',,,'+days+',,,,';
+                break;
+                case 'bill_to_tfl':
+                line += ',,,,'+days+',,,';
+                break;
+                case 'bill_to_festival':
+                line += ',,,,,'+days+',,';
+                break;
+                case 'bill_separately':
+                line += ',,,,,,'+days+',';
+                break;
+                default:
+                line += ',,,,,,'+days;
               }
-              break;          
-            default:
-              csv = csv + tickets[ticket][this.fields[field]]+',';
+            } else {
+              line += ',,,,,,,';
+            }
           }
+        } else {
+          line += 'other,,,,,,';
         }
-        summary.push(entry);
-        csv = csv+"\n";
+        csv += line + "\n";
       }
     }
     var target = this.target+'out.csv';
@@ -162,9 +183,11 @@ var ZEN = {
   
 }
 
+// DO the whole lot
 //ZEN.importFromZendesk();
-
 ZEN.convert();
 
+// do just the latest
+// ZEN.update
 
 
