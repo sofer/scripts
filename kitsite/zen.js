@@ -184,7 +184,7 @@ var ZEN = {
 }
 
 // DO the whole lot
-//ZEN.importFromZendesk();
+ZEN.importFromZendesk();
 ZEN.convert();
 
 // do just the latest
