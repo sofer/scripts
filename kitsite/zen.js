@@ -12,8 +12,7 @@ var ZEN = {
   port: 80,
   cookie: false,
   base64auth: 'ZGFubnlAa2l0c2l0ZS5jb20vdG9rZW46V1pDS0FUdmZyVXhpWWt4RFFNQ0VNS2NzTVZWd3dBVndNcWh4R2VMMw==',
-  //source: 'test/',
-  source: 'json/',
+  source: 'json/' + new Date().getTime(),
   target: 'out/',
   fields: { id: 'nice_id', 
             requestedBy: 'req_name', 
@@ -31,7 +30,7 @@ var ZEN = {
     return opt
   },
   
-  setCookie: function(func) {
+  fetch: function(pages) {  
     var that = this;
     var opt = this.baseOptions();
     opt.headers = { 'Authorization' : this.base64auth };
@@ -40,8 +39,7 @@ var ZEN = {
         if (resp.statusCode == '302') { // or 200?
           that.cookie = resp.headers['set-cookie'];
           console.log("Got cookie");
-          //func(); // cannot get this to work
-          that.allReports();
+          that.importFromZendesk(pages);
         } else {
           console.log("Operation failed with response code: "+resp.statusCode)
         }
@@ -66,7 +64,7 @@ var ZEN = {
       opt.path = '/rules/'+id+'.json?page='+page;
       http.get(opt, function(resp) {
         var content = '';
-        var path = that.source+id+'-'+page+'.json';
+        var path = that.source+'/'+id+'-'+page+'.json';
         console.log('Got response: ' + resp.statusCode + ' for ' + id + ', page '+ page);
         resp.on('data', function (chunk) {
           content += chunk;
@@ -85,10 +83,11 @@ var ZEN = {
     }
   },
   
-  allReports: function() {
+  importFromZendesk: function(pages) {
     reports = {
-      '449562': 50
+      '449562': pages
     }
+    fs.mkdirSync(this.source, 0755);
     for (var report in reports) {
       var pages = reports[report];
       for (var i=1;i<=pages;i++) {
@@ -97,8 +96,13 @@ var ZEN = {
     }
   },
   
-  importFromZendesk: function() {
-    this.setCookie(this.allReports);
+  all: function() {
+    this.fetch(50);
+  },
+
+  update: function() {
+    this.fetch(1);
+    this.convert();
   },
   
   processResults: function(pages) {
@@ -156,14 +160,18 @@ var ZEN = {
         csv += line + "\n";
       }
     }
-    var target = this.target+'out.csv';
+    var target = this.target+this.timestamp+'.csv';
     fs.writeFileSync(target, csv);
-    //console.log(summary);
-    console.log('done');
+    console.log('Written '+target);
+  },
+  
+  test: function() {
+    console.log(this.timestamp);
   },
   
   convert: function() {
     var that = this;
+    console.log(this.source);
     fs.readdir(this.source, function (err, files) {
       var count = files.length;
       var pages = {};
@@ -183,11 +191,12 @@ var ZEN = {
   
 }
 
-// DO the whole lot
-ZEN.importFromZendesk();
-ZEN.convert();
+//ZEN.test();
 
+// DO the whole lot
+//ZEN.all();
 // do just the latest
-// ZEN.update
+ZEN.update()
+
 
 
