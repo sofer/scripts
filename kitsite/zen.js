@@ -135,7 +135,10 @@ var ZEN = {
                 case 'bill_to_its':
                 line += ',,,'+days+',,,,';
                 break;
-                case 'bill_to_cts':
+                case 'bill_to_cts': // no longer in use
+                line += ',,,'+days+',,,,';
+                break;
+                case 'bill_to_tsd':
                 line += ',,,'+days+',,,,';
                 break;
                 case 'bill_to_tfl':
