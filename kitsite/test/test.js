@@ -8,8 +8,17 @@ var thing = {
 
 var TEST = {
 
-  source: 'things/',
   timestamp: new Date().getTime(),
+  source: 'things/'+this.timestamp,
+  one: 'one ',
+  two: 'two ',
+  three: "three ",
+  
+  do: function() {
+    console.log("timestamp: "+ this.timestamp);
+    console.log("source: "+ this.source);
+    console.log("one, two three: "+ this.one + this.two+this.three + this.timestamp);
+  },
   
   say: function(word) {
     console.log(word);
@@ -35,5 +44,5 @@ var TEST = {
 
 //TEST.read('hi');
 
-TEST.read(TEST.say, 'oy');
+TEST.do();
 
