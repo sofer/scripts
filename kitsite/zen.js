@@ -121,39 +121,42 @@ var ZEN = {
         line += '"'+tickets[ticket][this.fields.description].replace(/"/g, '""')+'",';
         if (tickets[ticket][this.fields.client] === 40584) {
           line += 'London 2012,';
-        } else {
-          line += 'other,';
-        }
-        var billing = tickets[ticket][this.fields.billing]; 
-        if (billing === 'capped') {
-          line += 1+',,,,,,';
-        } else {
-          var days = tickets[ticket][this.fields.billableDays];
-          if (days !== null && days > 0) {
-            switch(billing) {
-              case 'billable':
-              line += ','+days+',,,,,,';
-              break;
-              case 'bill_to_oda':
-              line += ',,'+days+',,,,,';
-              break;
-              case 'bill_to_its':
-              line += ',,,'+days+',,,,';
-              break;
-              case 'bill_to_tsd':
-              line += ',,,'+days+',,,,';
-              break;
-              case 'bill_to_tfl':
-              line += ',,,,'+days+',,,';
-              break;
-              case 'bill_to_festival':
-              line += ',,,,,'+days+',,';
-              break;
-              case 'bill_separately':
-              line += ',,,,,,'+days+',';
-              break;
-              default:
-              line += ',,,,,,'+days;
+          var billing = tickets[ticket][this.fields.billing]; 
+          if (billing === 'capped') {
+            line += '1,,,,,,';
+          } else {
+            var days = tickets[ticket][this.fields.billableDays];
+            if (days !== null && days > 0) {
+              switch(billing) {
+                case 'billable':
+                line += ','+days+',,,,,,';
+                break;
+                case 'bill_to_oda':
+                line += ',,'+days+',,,,,';
+                break;
+                case 'bill_to_its':
+                line += ',,,'+days+',,,,';
+                break;
+                case 'bill_to_cts': // no longer in use
+                line += ',,,'+days+',,,,';
+                break;
+                case 'bill_to_tsd':
+                line += ',,,'+days+',,,,';
+                break;
+                case 'bill_to_tfl':
+                line += ',,,,'+days+',,,';
+                break;
+                case 'bill_to_festival':
+                line += ',,,,,'+days+',,';
+                break;
+                case 'bill_separately':
+                line += ',,,,,,'+days+',';
+                break;
+                default:
+                line += ',,,,,,'+days;
+              }
+            } else {
+              line += ',,,,,,,';
             }
           } else {
             line += ',,,,,,,';
@@ -197,7 +200,7 @@ var ZEN = {
 // DO the whole lot
 //ZEN.all();
 // do just the latest
-ZEN.update(5)
+ZEN.update(100)
 
 
 
