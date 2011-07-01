@@ -134,7 +134,7 @@ var ZEN = {
                 case 'bill_to_oda':
                 line += ',,'+days+',,,,,';
                 break;
-                case 'bill_to_its':
+                case 'bill_to_its': // no longer in use
                 line += ',,,'+days+',,,,';
                 break;
                 case 'bill_to_cts': // no longer in use
@@ -155,11 +155,7 @@ var ZEN = {
                 default:
                 line += ',,,,,,'+days;
               }
-            } else {
-              line += ',,,,,,,';
             }
-          } else {
-            line += ',,,,,,,';
           }
         }
         csv += line + "\n";
@@ -200,7 +196,7 @@ var ZEN = {
 // DO the whole lot
 //ZEN.all();
 // do just the latest
-ZEN.update(100)
+ZEN.update(5);
 
 
 
