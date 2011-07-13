@@ -16,12 +16,14 @@ var ZEN = {
   source: 'json/',
   target: 'out/',
   pagesProcessed: 0,
-  pages: 0,
+  pages: 1,
   pagesToGo: 0,
   report: '449562',
   fields: { id: 'nice_id', 
             requestedBy: 'req_name', 
+            status: 'status_id', 
             solvedDate: 'solved_at', 
+            updatedDate: 'updated_at', 
             description: 'subject', 
             client: 'organization_id', 
             billableDays:'field_177410',
@@ -102,21 +104,41 @@ var ZEN = {
     }
   },
   
-  update: function(pages) {
+  update: function(report,pages) {
+    this.report = report;
     this.pages = pages;
     this.fetch();
   },
   
   processResults: function(pages) {
     var summary = [];
-    var csv = "date,id,requested by,description,client,capped,retainer,ODA,TSD,TFL,Festival,Bill separately,other\n";
+    var csv = "date,id,status,requested by,description,client,capped,retainer,ODA,TSD,TFL,Festival,Bill separately,other\n";
     for (var page in pages) {
       console.log('Processing '+page);
       var tickets = JSON.parse(pages[page]);
       for (var ticket in tickets) {
         var line = '';
-        line += tickets[ticket][this.fields.solvedDate].slice(0,10)+',';
+        var status = tickets[ticket][this.fields.status];
+        switch(status) {
+          case 0:
+          status ='new';
+          break;
+          case 1:
+          status ='open';
+          break;
+          case 2:
+          status ='pending';
+          break;
+          default:
+          status ='solved';
+        }
+        if (tickets[ticket][this.fields.solvedDate]) {
+          line += tickets[ticket][this.fields.solvedDate].slice(0,10)+',';
+        } else {
+          line += tickets[ticket][this.fields.updatedDate].slice(0,10)+',';
+        }
         line += tickets[ticket][this.fields.id]+',';
+        line += status+',';
         line += tickets[ticket][this.fields.requestedBy]+',';
         line += '"'+tickets[ticket][this.fields.description].replace(/"/g, '""')+'",';
         if (tickets[ticket][this.fields.client] === 40584) {
@@ -196,7 +218,10 @@ var ZEN = {
 // DO the whole lot
 //ZEN.all();
 // do just the latest
-ZEN.update(5);
+var pages = 5;
+var report = '449562'; // closed tickets
+report = '23031103'; // 2012 open tickets
+ZEN.update(report,pages);
 
 
 
