@@ -1,0 +1,376 @@
+date,id,status,requested by,description,client,capped,retainer,ODA,TSD,TFL,Festival,Bill separately,other
+2011/07/14,4563,new,ITS Operations,"IP restrictions on the CMS",London 2012,,Marked as high.
+2011/07/14,4556,new,ITS Operations,"2 Factor Authentication proposal",London 2012,,Budget: up to 20k
+Delivery: by end of August
+2011/07/14,4570,open,Andy Watkins,"Generation of Video XML Google sitemap",London 2012,,Create a Google Video sitemap
+2011/07/14,4568,open,Andy Watkins,"Generation of General XML Google sitemap (not incl news/video/photos - these have separate tickets)",London 2012,,General sitemap, a couple things we need to deal with, which make it tricker than just looking though all the page son the site and outputting an XML file.
+
+a) Excluding pages that are in the CMS but aren't normally navigable to. As you say everything that does not have 'hide from navigation' should appear, but it's not quite as simple as we do have pages that are excluded by section for example signup pages and test directories.
+
+Probably the best thing here is for us to create the site map and then have a run though it and see if we can spot any pages that shouldn't be in it.
+
+b) Splitting the files out into multiple files to get round the Google limit of 5000 pages, not an issue per sea but need to do a few queries to work out who to split the site up , probably best if we separate out the sections with large amounts of content, ie. news, images, suppliers and then leave another file with just standard 'content' pages.
+
+Will run some counts of the top sections to work out where to split.
+
+c) Updates, once again not an issue per sea. but we've been discussing internally how best to handle this in the CMS as generating a site map for the whole site each day (or more frequently) is fairly processor heavy.
+
+We can start with a new sitemap generated at say 2am each night.
+
+d) "Virtual hub pages" this is a very interesting one, especially as we're about to relaunch the News section using this format/method. By "Virtual hub pages" I mean hub pages (ie. "Culture News") that don't actually exist in he CMS but are instead created 'on the fly' via a url such as "london2012.com/news?tag=culture" or london2012.com/photos?tag=culture". Currently Google will find these pages via it's crawler, so there is no issue. But once we switch to using a sitemap there seems to be consensus (via a bit of googling) that results from crawling can drop once you are actively serving a site map (I expect Larry Page n isn't even sure and that half of this stuff is old wives tales / speculation).
+
+I think Danny/Kieran have already proposed some work/costs as an extension to the SEO work (copying Danny/Kieran in on this response) to store these urls in the CMS, so that you could link to /news/culture in the CMS but that would actually be mapped to /news?tag=culture. If we did this then we'd have a list of all those 'psudo hub pages' and could export them in the sitemap.
+
+In the immediate term, I assume we'll just have to live without them and hope Google doesn't start to drop the hub pages for given topics (ie. Culture News). In the medium term, if we haven't completed the work above, I guess we could hardcode a sitemap of urls for the key 'pseudo hub pages'.
+2011/07/11,4529,open,Liz Goulding,"Getty: problem with feed",London 2012,,Email sent to Getty. Awaiting feedback.
+2011/07/11,4528,open,Morag Reavley,"Registration workflow, blog commenting and switch to e-dialog",London 2012,,Yes, you can do this ahead of switch to eDialog.
+2011/07/14,4519,open,Duncan Elder,"Add travel.london2012.com (or actually *.london2012) to external url exclusion list",London 2012,,Thanks
+
+Let me know if and when you can make this low level change
+
+Thanks
+
+Duncan
+
+
+2011/07/07,4514,open,Morag Reavley,"",London 2012,,Due date set to July 25.
+2011/07/06,4494,open,Morag Reavley,"FW: Kitsite Problem",London 2012,,Thank you!
+
+
+2011/07/05,4490,open,Morag Reavley,"Photo index / hub page (automate)",London 2012,,Update Photo index page to be automatic in the same way as the Video index
+http://postcms.zendesk.com/tickets/3190
+2011/06/27,4431,open,Morag Reavley,"FW: Your London 2012 password",London 2012,,Also - when you update this email can you check the second part.
+
+It seems to relate to the www.london2012.com registration, rather than the CMS registration? See below:
+
+"For security reasons, this link will stop working once you have reset your password. After that, you can log in here:
+https://www.london2012.com/settings/login.php."
+
+
+
+2011/06/15,4234,open,ITS Operations,"CMS: investigate enhanced security options",London 2012,,"investigate how difficult it would be to implement a suit of password controls including complexity, length, age etc, or alternatively, 2 factor authentication, to protect privileged (publisher) access to the site?"
+
+(in other words, ways to make off-site use of the CMS more secure)
+
+See #4210.
+2011/07/11,4210,open,ITS Operations,"Requested changes to CMS",London 2012,,One day's investigation has been completed. Response attached. A further 6 days' work is required, making 7 days in total.
+2011/05/31,4070,open,Liz Goulding,"FW: London 2012 mail server removing important emails",London 2012,,Are there any other addresses that we know have gotten ‘lost’ before? Would like to add it to the list if so!
+
+
+2011/06/29,4017,open,Deborah Elstein,"sending a page to translation",London 2012,,Don’t think so
+
+
+2011/06/29,3997,open,Morag Reavley,"RE: London 2012 Translations",London 2012,,Another one from Patrick. Should we merge these tickets?
+2011/06/29,3989,open,Tom Price Stephens,"Possible map grab for YL?",London 2012,,Marked as high.
+2011/05/16,3986,open,Morag Reavley,"FW: Translation update",London 2012,,Hello
+
+I can’t see the rest of the files in the site yet e.g. http://www.london2012.com/fr/visiting/getting-to-the-games/ seems only to have two pages in it and it should have lots...
+
+Morag
+
+From: Patrick Gardiner (Applied Language) [mailto:patrick.gardiner@appliedlanguage.com]
+Sent: 16 May 2011 10:02
+To: Morag Reavley
+Subject: Re: Translation update
+
+Hi Morag,
+
+I can confirm I uploaded the remaining 50 files on Saturday - I will check the status of the upload now and re-upload if necessary.
+
+Kind regards,
+
+Patrick Gardiner
+Service Delivery Manager
+patrick.gardiner@appliedlanguage.com
+Skype ID: patrick.gardiner1
+Tel: +44 (0)844 888 7241
+
+Applied Language Solutions
+High quality language solutions delivered on time...with a smile!
+
+www.appliedlanguage.comhttp://www.appliedlanguage.com/
+Tel (UK): +44 (0)845 367 7000
+Tel (US): +1 (800) 579-5010
+
+Riverside Court, Huddersfield Road, Delph, Oldham, OL3 5FZ. UK
+Registered in the UK 5122429
+
+Pride in everything we do | Respect everyone like a friend
+[cid:~WRD000.jpg]Think of the environment; please don't print this e-mail unless you really need to.
+
+[cid:~WRD000.jpg][cid:~WRD000.jpg][cid:~WRD000.jpg]
+
+
+On 16 May 2011 09:45, Morag Reavley <Morag.Reavley@london2012.com> wrote:
+Hi Patrick
+
+Can you confirm if all the outstanding files have now been completed?
+
+I can’t see them in the site yet.
+
+Thanks
+
+Morag
+
+From: Patrick Gardiner (Applied Language) [mailto:patrick.gardiner@appliedlanguage.com]
+Sent: 04 May 2011 13:08
+To: Morag Reavley
+Subject: Re: Translation update
+
+Hi Morag,
+
+The translator has advised me that it may take up until the 14th to translate all the files - however we would continue to deliver them as and when ready as we have been doing so far, so that the vast majority of the files would be uploaded prior to that date.
+
+Apologies for this delay, and if this new timescale isn't acceptable please let me know.
+
+Kind regards,
+
+Patrick Gardiner
+Service Delivery Manager
+patrick.gardiner@appliedlanguage.com
+Skype ID: patrick.gardiner1
+Tel: +44 (0)844 888 7241
+
+Applied Language Solutions
+High quality language solutions delivered on time...with a smile!
+
+www.appliedlanguage.comhttp://www.appliedlanguage.com/
+Tel (UK): +44 (0)845 367 7000
+Tel (US): +1 (800) 579-5010
+
+Riverside Court, Huddersfield Road, Delph, Oldham, OL3 5FZ. UK
+Registered in the UK 5122429
+
+Pride in everything we do | Respect everyone like a friend
+
+[cid:~WRD000.jpg]Think of the environment; please don't print this e-mail unless you really need to.
+
+[cid:~WRD000.jpg][cid:~WRD000.jpg][cid:~WRD000.jpg]
+
+On 3 May 2011 17:38, Patrick Gardiner (Applied Language) <patrick.gardiner@appliedlanguage.com> wrote:
+apologies Morag - I didn't attach the schedule - here it is.
+
+Kind regards,
+
+Patrick Gardiner
+Service Delivery Manager
+patrick.gardiner@appliedlanguage.com
+Skype ID: patrick.gardiner1
+Tel: +44 (0)844 888 7241
+
+Applied Language Solutions
+High quality language solutions delivered on time...with a smile!
+
+www.appliedlanguage.comhttp://www.appliedlanguage.com/
+Tel (UK): +44 (0)845 367 7000
+Tel (US): +1 (800) 579-5010
+
+Riverside Court, Huddersfield Road, Delph, Oldham, OL3 5FZ. UK
+Registered in the UK 5122429
+
+Pride in everything we do | Respect everyone like a friend
+
+[cid:~WRD000.jpg]Think of the environment; please don't print this e-mail unless you really need to.
+
+[cid:~WRD000.jpg][cid:~WRD000.jpg][cid:~WRD000.jpg]
+
+On 3 May 2011 17:01, Patrick Gardiner (Applied Language) <patrick.gardiner@appliedlanguage.com> wrote:
+Hi Morag,
+
+Apologies for the delayed reply.  I'm afraid you're right - we were on time up until last week but have fallen behind due to the Bank holidays - many apologies that these weren't taken into account in the initial schedule.  I am just about to upload the latest batch of files, which will mean that all files highlighted in orange on the attached list are uploaded - I am asking the translator now about a schedule for the rest of the files and will update you as soon as I can.
+
+Again, many apologies for this and I will do my utmost to ensure that the remaining files are uploaded asap - if necessary I will split the files between two linguists, but I will keep you informed if this happens.
+
+Kind regards,
+
+Patrick Gardiner
+Service Delivery Manager
+patrick.gardiner@appliedlanguage.com
+Skype ID: patrick.gardiner1
+Tel: +44 (0)844 888 7241
+
+Applied Language Solutions
+High quality language solutions delivered on time...with a smile!
+
+www.appliedlanguage.comhttp://www.appliedlanguage.com/
+Tel (UK): +44 (0)845 367 7000
+Tel (US): +1 (800) 579-5010
+
+Riverside Court, Huddersfield Road, Delph, Oldham, OL3 5FZ. UK
+Registered in the UK 5122429
+
+Pride in everything we do | Respect everyone like a friend
+
+[cid:~WRD000.jpg]Think of the environment; please don't print this e-mail unless you really need to.
+
+[cid:~WRD000.jpg][cid:~WRD000.jpg][cid:~WRD000.jpg]
+
+On 3 May 2011 15:36, Morag Reavley <Morag.Reavley@london2012.com> wrote:
+Hi Patrick
+
+Can you advise on the status of translations? According to your schedule we should have had all the translations back now – but I don’t think this is the case?
+
+Thanks
+
+Morag
+
+Morag Reavley
+New Media Manager
+London Organising Committee of the Olympic Games and Paralympic Games
+1 Churchill Place
+Canary Wharf
+London
+Direct dial: 020 32012 160
+Reception: 020 32012 000
+
+
+________________________________
+The London Organising Committee of the Olympic Games and Paralympic Games Limited
+A company registered in England and Wales with its registered office at One Churchill Place, Canary Wharf, London E14 5LN and registered number 05267819
+
+This E-mail is confidential. If you are not the addressee you may not copy, forward, disclose or use any part of it. If you have received this message in error, please delete it and all copies from your system and notify the sender immediately by return E-mail.
+
+Nothing in this message or its attachments is intended to create legal relations between us unless there is an express statement creating such relations or this message contains an authorised purchase order.
+
+Internet communications cannot be guaranteed to be timely secure, error or virus-free. The sender does not accept liability for any errors or omissions.
+
+http://www.london2012.com
+
+________________________________
+2011/07/11,3854,open,Fiona McLaren,"News section redesign",London 2012,,- left navigation based on tags using the themes tax ( to be changed to a different one at some point )
+- include using rhino
+- only show the ones the are used
+
+
+2011/04/28,3821,open,Kathryn Gilbert,"error message",London 2012,,The folder http://londonprepares.kitsite.com/kit/folder/basketball/competitors cannot be renamed and gives the following error:
+
+integrity constraint (KADMIN.FLNK.CLNT,SECT->SECT) violated - child record found at "KADMIN.K$SECTION", line 210 at "KADMIN.K$SECTION", line 240 at line 1
+
+Meanwhile, the folder http://londonprepares.kitsite.com/kit/folder/test/renamed can be renamed at will.
+
+Any ideas?
+2011/07/13,3820,open,Morag Reavley,"Paralympic competition schedule",London 2012,,Hi guys - I think Jamie is picking this up.
+Just to flag that as this will be launching in August we probably need to raise the priority of this now to get working on it,
+
+Thanks,
+
+Tom
+2011/06/29,3661,open,Liz Goulding,"re-opening case sensitive URLs",London 2012,,My view is that we don’t need to look at existing short URLs (although it would be nice if we could tell if they had the case-insensitive attribute), but we should enable the mod_speling thing, which Mr SEO has funnily enough just asked for this last week. His specific comments as follows:
+
+“I typically deploy the following two rules on every web project that I work on:
+1. 301 all requests with no subdomain specified to the www. equivalent of the URL (e.g. a request for london2012.com should 301 to www.london2012.com and a request for london2012.com/sports should 301 to www.london2012.com).
+2. 301 all requests with uppercase characters to their lower case equivalent. (e.g. a request for www.london2012.com/Sports would redirect to www.london2012.com/sports) - before implementing this ensure that canonical URL can only be specified with lower case characters.
+Simple Apache rules exist to implement this logic. Once the rules are in place a request for london2012.com/Sports would redirect to www.london2012.com/sports.”
+
+Kieran, can you comment on doability?
+
+
+2011/06/29,3498,open,Morag Reavley,"Mobile site bugs",London 2012,,Yikes, that is embarrassing!
+
+I will remedy the ‘About’ issue if you can review Photos.
+
+Also – when you go out of the mobile site into the website e.g. by clicking a link, there is still no way to get back into the mobile site – did we not discuss having a ‘Mobile’ link in the nav of the website?
+
+
+2011/04/08,3481,open,Liz Goulding,"FW: Exporting problem",London 2012,,Hiya, Here is there update on this:
+
+Some of the exporting issues are resolved ie I can now see the names – but now other fields are not appearing. And some correspond to last year eg. the column header refers to ‘challenge’ but this year we are not having a challenge as such. And now when you export the data we do not seem to have a postal address (which is where we would send the promotional kits.)
+
+Anyway, I think what would be the most useful thing is for me to detail exactly what all the fields are on the registration form – as these are what we need. I had planned to cross check these fields with the column headers on the exported excel document but I didn’t have time today and I’m not in the office tomorrow.
+
+Anyway, listed below are the fields that we ask for when they register and these should correspond to the data which we export in terms of column headers.
+
+Thankyou!
+
+Name of the event
+About the event
+We will be celebrating by.... (Liz- this replaces the challenge field from last year)
+Type of event
+First day
+Last day
+Time
+Ticket Info
+Organisation
+Venue name
+Venue address
+Venue postcode
+Wheelchair access
+Event website
+Event description
+
+Internal use
+Organisation type
+Nation or region
+County or London borough
+Main contact – first name
+Main contact – second name
+Email
+Telephone
+Event contact (if different) first name
+Surname
+Email (if different)
+Telephone (if different)
+Postal correspondence address
+Please tell us how your event is funded
+
+
+
+2011/03/31,3397,open,Justin Setterfield,"Make the module-sports-where component follow the meta data order",London 2012,,This came out of this ticket
+http://postcms.zendesk.com/tickets/3374
+
+See component on RHS here
+http://new2012.kitsite.com/kit/preview/games/olympic-sports/basketball.php 
+
+Currently uses a Finder to find the path of each venue but the Finder order obv. doesn't follow the order in the meta-data as it's a kit:find need to look at re-assigning order post the kit:find.
+
+
+2011/06/24,3394,open,Morag Reavley,"Young Leaders website 2",London 2012,,mhhh I need somekind of ie6 (!)
+2011/07/11,3182,open,Morag Reavley,"Tag cloud for BSL ticketing videos",London 2012,,Hello
+
+is it possible to update on this please?
+
+Thanks!
+2011/03/16,3120,open,Michael Thorne,"Problems uploading photos to Blog pages",London 2012,,Hi,
+
+Ok this seems to have worked – thanks very much for your help
+
+
+2011/03/15,3097,open,Morag Reavley,"French labels",London 2012,,Hello
+
+Am going to publish a French page tonight - the Tickets page. Can I check that the top nav won't republish - as it looks so odd?
+
+[cid:image001.png@01CBE28A.5E37CAB0]
+
+Morag Reavley
+New Media Manager
+London Organising Committee of the Olympic Games and Paralympic Games
+1 Churchill Place
+Canary Wharf
+London
+Direct dial: 020 32012 160
+Reception: 020 32012 000
+2011/03/10,3039,open,Michael Thorne,"Unique Constraint error message",London 2012,,Hi,
+
+I got this error message when I try to publish an update for the Video page on the website - please can you help me out with this?
+
+Thanks,
+
+Michael
+
+
+
+[cid:image001.png@01CBDE7D.7A4FCEC0]
+
+Michael Thorne
+Content Coordinator
+Editorial Services department
+Direct line:  +44 (0)20 3 2012 046
+
+London Organising Committee of the Olympic Games and Paralympic Games Ltd
+One Churchill Place
+Canary Wharf
+London E14 5LN
+
+Switchboard: +44 (0)20 3 2012 000
+Fax: +44 (0)20 7719 1308
+london2012.comhttp://www.london2012.com/
