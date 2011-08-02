@@ -223,9 +223,9 @@ var ZEN = {
 // DO the whole lot
 //ZEN.all();
 // do just the latest
-var pages = 1;
+var pages = 5;
 var report = '449562'; // closed tickets
-report = '23031103'; // 2012 open tickets
+//report = '23031103'; // 2012 open tickets
 ZEN.update(report,pages);
 
 
