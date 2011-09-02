@@ -134,6 +134,11 @@ var ZEN = {
           default:
           status ='solved';
         }
+        if (status === 'solved') {
+          line += tickets[ticket][this.fields.solvedDate].slice(0,10)+',';
+        } else {
+          line += tickets[ticket][this.fields.updatedDate].slice(0,10)+',';
+        }
         line += tickets[ticket][this.fields.id]+',';
         line += status+',';
         line += tickets[ticket][this.fields.requestedBy]+',';
@@ -141,7 +146,6 @@ var ZEN = {
         if (tickets[ticket][this.fields.client] === 40584) {
           line += 'London 2012,';
           if (status === 'solved') {
-            line += tickets[ticket][this.fields.solvedDate].slice(0,10)+',';
             var billing = tickets[ticket][this.fields.billing]; 
             if (billing === 'capped') {
               line += '1,,,,,,';
@@ -179,7 +183,6 @@ var ZEN = {
               }
             }
           } else {
-            line += tickets[ticket][this.fields.updatedDate].slice(0,10)+',';
             var comments = tickets[ticket][this.fields.comments]; 
             var lastComment = comments[comments.length-1].value.substr(0,200);
             line += '"'+lastComment+'"';
@@ -222,10 +225,11 @@ var ZEN = {
 
 // DO the whole lot
 //ZEN.all();
-// do just the latest
+
+// Monthly updates
 var pages = 5;
 var report = '449562'; // closed tickets
-//report = '23031103'; // 2012 open tickets
+//report = '23031103'; // 2012 open tickets-but don't expect the titles to match up
 ZEN.update(report,pages);
 
 
