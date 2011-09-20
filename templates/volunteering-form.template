@@ -95,7 +95,9 @@
         }
         
         $community->addValidation('addr_eligiblityacknowledgement', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 1";'));
+        $community->addValidation('addr_eligiblityacknowledgement', create_function('$value', 'if ($value == "N") return "You must answer \'yes\' to the Primary Team Leader Terms and conditions question 1";'));
         $community->addValidation('addr_over18', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 2";'));
+        $community->addValidation('addr_over18', create_function('$value', 'if ($value == "N") return "You must answer \'yes\' to the Primary Team Leader Terms and conditions question 2";'));
         $community->addValidation('addr_crbcheck', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 3";'));
         $community->addValidation('addr_lastcrbcheck', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 4";'));
         $community->addValidation('addr_safeguarding', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 5";'));
@@ -254,7 +256,7 @@
                                 
             <fieldset id="fs_organisationData">
                 
-                    <legend><span>About your Organisation/school/college/club</span></legend>            
+                    <legend><span>About your organisation/school/college/club</span></legend>            
 
                     <input type="hidden" id="role" name="role" value="<?php echo Utils::escape($_REQUEST['role']); ?>" />
                     <input type="hidden" id="stafftype" name="stafftype"  />
@@ -508,7 +510,7 @@
                     </div>     
                 
                     <div class="row widelabel">
-                        <label for="per_childrenadults" class="required">Are you permitted to work with children and/or vulnerable adults? 'You should only answer 'no' to this question if you have been barred from working with children or vulnerable adults'?</label>
+                        <label for="per_childrenadults" class="required">Are you permitted to work with children and/or vulnerable adults? You should only answer 'no' to this question if you have been barred from working with children or vulnerable adults</label>
                         <select id="per_childrenadults" name="per_childrenadults">
                             <option>-</option>
                             <option value="Y">yes</option>
@@ -959,7 +961,7 @@
                     </div>
 
                     <div class="row widelabel">
-                         <label for="addr_over18" class="required">You must answer 'yes' to this question to be eligible to volunteer at London 2012. Do you confirm that you will be 18 years old or over on 1 January 2012? You must answer 'yes' to this question to be eligible to volunteer at London 2012.</label>
+                         <label for="addr_over18" class="required">Do you confirm that you will be 18 years old or over on 1 January 2012? You must answer 'yes' to this question to be eligible to volunteer at London 2012.</label>
                          <select id="addr_over18" name="addr_over18">
                               <option>-</option>
                               <option value="Y">yes</option>
