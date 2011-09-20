@@ -16,16 +16,20 @@ var ZEN = {
   source: 'json/',
   target: 'out/',
   pagesProcessed: 0,
-  pages: 0,
+  pages: 1,
   pagesToGo: 0,
   report: '449562',
-  fields: { id: 'nice_id', 
-            requestedBy: 'req_name', 
-            solvedDate: 'solved_at', 
-            description: 'subject', 
-            client: 'organization_id', 
-            billableDays:'field_177410',
-            billing: 'field_147056' },
+  fields: { id: 'nice_id'
+            , requestedBy: 'req_name'
+            , status: 'status_id'
+            , solvedDate: 'solved_at'
+            , updatedDate: 'updated_at' 
+            , description: 'subject'
+            , client: 'organization_id'
+            , billableDays:'field_177410'
+            , billing: 'field_147056' 
+            , comments: 'comments' 
+            },
   
   baseOptions: function(id,page) {
     var opt = {};
@@ -102,60 +106,86 @@ var ZEN = {
     }
   },
   
-  update: function(pages) {
+  update: function(report,pages) {
+    this.report = report;
     this.pages = pages;
     this.fetch();
   },
   
   processResults: function(pages) {
     var summary = [];
-    var csv = "date,id,requested by,description,client,capped,retainer,ODA,TSD,TFL,Festival,Bill separately,other\n";
+    var csv = "date,id,status,requested by,description,client,capped,retainer,ODA,TSD,TFL,Festival,Bill separately,other\n";
     for (var page in pages) {
       console.log('Processing '+page);
       var tickets = JSON.parse(pages[page]);
       for (var ticket in tickets) {
         var line = '';
-        line += tickets[ticket][this.fields.solvedDate].slice(0,10)+',';
+        var status = tickets[ticket][this.fields.status];
+        switch(status) {
+          case 0:
+          status ='new';
+          break;
+          case 1:
+          status ='open';
+          break;
+          case 2:
+          status ='pending';
+          break;
+          default:
+          status ='solved';
+        }
+        if (status === 'solved') {
+          line += tickets[ticket][this.fields.solvedDate].slice(0,10)+',';
+        } else {
+          line += tickets[ticket][this.fields.updatedDate].slice(0,10)+',';
+        }
         line += tickets[ticket][this.fields.id]+',';
+        line += status+',';
         line += tickets[ticket][this.fields.requestedBy]+',';
         line += '"'+tickets[ticket][this.fields.description].replace(/"/g, '""')+'",';
         if (tickets[ticket][this.fields.client] === 40584) {
           line += 'London 2012,';
-          var billing = tickets[ticket][this.fields.billing]; 
-          if (billing === 'capped') {
-            line += '1,,,,,,';
-          } else {
-            var days = tickets[ticket][this.fields.billableDays];
-            if (days !== null && days > 0) {
-              switch(billing) {
-                case 'billable':
-                line += ','+days+',,,,,,';
-                break;
-                case 'bill_to_oda':
-                line += ',,'+days+',,,,,';
-                break;
-                case 'bill_to_its': // no longer in use
-                line += ',,,'+days+',,,,';
-                break;
-                case 'bill_to_cts': // no longer in use
-                line += ',,,'+days+',,,,';
-                break;
-                case 'bill_to_tsd':
-                line += ',,,'+days+',,,,';
-                break;
-                case 'bill_to_tfl':
-                line += ',,,,'+days+',,,';
-                break;
-                case 'bill_to_festival':
-                line += ',,,,,'+days+',,';
-                break;
-                case 'bill_separately':
-                line += ',,,,,,'+days+',';
-                break;
-                default:
-                line += ',,,,,,'+days;
+          if (status === 'solved') {
+            var billing = tickets[ticket][this.fields.billing]; 
+            if (billing === 'capped') {
+              line += '1,,,,,,';
+            } else {
+              var days = tickets[ticket][this.fields.billableDays];
+              if (days !== null && days > 0) {
+                switch(billing) {
+                  case 'billable':
+                  line += ','+days+',,,,,,';
+                  break;
+                  case 'bill_to_oda':
+                  line += ',,'+days+',,,,,';
+                  break;
+                  case 'bill_to_its': // no longer in use
+                  line += ',,,'+days+',,,,';
+                  break;
+                  case 'bill_to_cts': // no longer in use
+                  line += ',,,'+days+',,,,';
+                  break;
+                  case 'bill_to_tsd':
+                  line += ',,,'+days+',,,,';
+                  break;
+                  case 'bill_to_tfl':
+                  line += ',,,,'+days+',,,';
+                  break;
+                  case 'bill_to_festival':
+                  line += ',,,,,'+days+',,';
+                  break;
+                  case 'bill_separately':
+                  line += ',,,,,,'+days+',';
+                  break;
+                  default:
+                  line += ',,,,,,'+days;
+                }
               }
             }
+          } else {
+            var comments = tickets[ticket][this.fields.comments]; 
+            var lastComment = comments[comments.length-1].value.substr(0,200);
+            line += '"'+lastComment+'"';
           }
         }
         csv += line + "\n";
@@ -195,8 +225,12 @@ var ZEN = {
 
 // DO the whole lot
 //ZEN.all();
-// do just the latest
-ZEN.update(5);
+
+// Monthly updates
+var pages = 5;
+var report = '449562'; // closed tickets
+//report = '23031103'; // 2012 open tickets-but don't expect the titles to match up
+ZEN.update(report,pages);
 
 
 
