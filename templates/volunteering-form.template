@@ -98,7 +98,7 @@
         $community->addValidation('addr_eligiblityacknowledgement', create_function('$value', 'if ($value == "N") return "You must answer \'yes\' to the Primary Team Leader Terms and conditions question 1";'));
         $community->addValidation('addr_over18', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 2";'));
         $community->addValidation('addr_over18', create_function('$value', 'if ($value == "N") return "You must answer \'yes\' to the Primary Team Leader Terms and conditions question 2";'));
-        $community->addValidation('addr_responsible', create_function('$value', 'if ($value == "N") return "You must answer \'yes\' to the Primary Team Leader Terms and conditions question 3";'));
+        $community->addValidation('addr_responsible', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 3";'));
         $community->addValidation('addr_crbcheck', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 4";'));
         $community->addValidation('addr_lastcrbcheck', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 5";'));
         $community->addValidation('addr_safeguarding', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 6";'));
@@ -337,7 +337,7 @@
                         <select id="per_nationality" name="per_nationality" class="wide">                            
                             <optgroup>   
                                 <option>Please select...</option>
-                                <option value="GBR">United Kingdom of Great Britain and Northern Ireland</option>
+                                <option value="GBR">UNITED KINGDOM</option>
                             </optgroup>    
                             <optgroup>
                             <?php
@@ -354,7 +354,7 @@
                         <select id="per_country_born" name="per_country_born" class="wide">                            
                             <optgroup>    
                                 <option>Please select...</option>
-                                <option value="GBR">United Kingdom of Great Britain and Northern Ireland</option>
+                                <option value="GBR">UNITED KINGDOM</option>
                             </optgroup>    
                             <optgroup>                                    
                                 <?php
@@ -483,7 +483,7 @@
                         <select id="per_issuingcountry" name="per_issuingcountry" class="wide">                            
                             <optgroup>   
                                 <option>Please select...</option>
-                                <option value="GBR">United Kingdom of Great Britain and Northern Ireland</option>
+                                <option value="GBR">UNITED KINGDOM</option>
                             </optgroup>    
                             <optgroup>
                             <?php
@@ -573,7 +573,7 @@
                         <select id="addr_currentcountry" name="addr_currentcountry" class="wide">                            
                             <optgroup>    
                                 <option>Please select...</option>
-                                <option value="GBR">United Kingdom of Great Britain and Northern Ireland</option>
+                                <option value="GBR">UNITED KINGDOM</option>
                             </optgroup>    
                             <optgroup>
                             <?php
@@ -743,7 +743,7 @@
                          <select id="addr_previouscountry" name="addr_previouscountry" class="wide">
                             <optgroup>
                                 <option>Please select...</option>
-                                <option value="GBR">United Kingdom of Great Britain and Northern Ireland</option>
+                                <option value="GBR">UNITED KINGDOM</option>
                             </optgroup>    
                             <optgroup>
                              <?php
@@ -1337,3 +1337,4 @@
         ?>
     </div>
 </div>
+
