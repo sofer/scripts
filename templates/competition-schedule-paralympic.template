@@ -1,0 +1,294 @@
+<content:extends template="Master" />
+
+<content:group id="post-init">
+<?php
+    
+    include_once("php/functions.php");
+    
+    $perPage = 20;    
+    
+    $param = Array();
+    $param['sport'] = $_GET['sport'];
+    $param['venue'] = $_GET['venue'];
+    $param['date'] = $_GET['date'];
+    $param['freetext'] = $_GET['q'];
+    
+    $q = '<query>';
+    $q .= '<term-query field="template" value="ParaCompetitionSession" required="true" />';
+
+    function doubleHtmlEscape($x) {
+        return htmlspecialchars(htmlspecialchars($x, ENT_COMPAT, 'utf-8'), ENT_COMPAT, 'utf-8');
+        # return htmlspecialchars(htmlspecialchars($x, ENT_QUOTES, 'utf-8'), ENT_QUOTES, 'utf-8');
+    }
+    
+    # Query fields
+    if (isset($param['freetext']) && $param['freetext'] != '') {
+        $q  .= '<parsed-query field="freetext" exact-match-boost="2.0"  required="true" boost="1.5" prohibited="false" value="' .  htmlspecialchars($param['freetext'], ENT_QUOTES, 'utf-8') . '"  use-query-parser="smart" match-all-terms="false" />';
+    }        
+    if (isset($param['date']) && $param['date'] != '') {
+        $q  .= '<term-query field="date" value="' .  htmlspecialchars($param['date'], ENT_QUOTES, 'utf-8') . '"  required="true" use-query-parser="true" match-all-terms="false" />';
+    }
+    if (isset($param['sport']) && $param['sport'] != '') {
+        $q  .= '<term-query field="sportShortName" value="' .  htmlspecialchars($param['sport'], ENT_QUOTES, 'utf-8') . '"  required="true" use-query-parser="true" match-all-terms="false" />';
+    }
+    if (isset($param['venue']) && $param['venue'] != '') {
+        $q  .= '<term-query field="venueShortName" value="' .  doubleHtmlEscape($param['venue']) . '" required="true"  match-all-terms="false" />';
+    }    
+
+    # Sort type
+    $q .= '<sort field="date" />';
+    $q .= '<sort field="startTime" />';
+    
+    $q .= '</query>';
+    
+    $offset = $_GET['start'] ? $_GET['start'] : 1;
+    $resultslist = $luckit->search($q, array('offset' => $offset, 'limit' => $perPage));
+    
+?>
+</content:group> <!-- // end post init -->
+
+<content:group id="extra-meta-fields" />
+
+<content:group id="extra-head-tags">
+    <style>
+        .compSchedulePage .hidden { display: none; }
+        .compSchedulePage #compForm label { color: #555555; float: left; font-size: 1.2em; padding-top: 3px; width: 138px; }
+        
+        .compSchedulePage #compForm { clear: both; }
+        .compSchedulePage #compForm .formRow { width: 100%; clear both; margin-bottom: 5px; }
+        .compSchedulePage #compForm .formRow select { width: 200px; }
+        .compSchedulePage #totalResults { clear: both; float: left; font-size: 1.2em; margin-top: 15px; overflow: hidden; width: 100%; }
+        .compSchedulePage .data a.dateLink, a.timelink { clear: both; width: 100%; float: left; }
+        .compSchedulePage #searchBtn { float: left; margin-left: 15px; position: relative; top: -3px; }
+        
+        #formRowWrap { float: left; }
+        
+        .compSchedulePage table.data th { border-bottom: 4px solid #0099FF; }
+        .compSchedulePage table.data td.noBorder { background: #F2F2F2; margin-top: 0; border-top: 1px solid white; }
+        .compSchedulePage table.data td .medal { left: 2px; position: relative; top: 7px; }
+        .compSchedulePage .pdf { background: url('images/icons/pdficon-small.gif') no-repeat top left; padding-left: 21px; }
+        .compSchedulePage .stats { color: #aaa; text-align: right; }
+        .compSchedulePage .stats span { color: #666; }
+        
+        .compSchedulePage tr th a { color: #666 !important; }
+        .compSchedulePage tr th { border-bottom: 0px !important; background: #E0E0E0; border-right: 1px solid white; border-top: medium none; padding: 7px 0 4px 10px; text-align: left; }
+        .compSchedulePage tr td { padding-left: 10px; padding-right: 10px; border-top: 1px solid #CCCCCC; background: none repeat scroll 0 0 #F2F2F2; border-right: 1px solid white; }
+
+        .compSchedulePage .firstCell { width: 120px; }       
+        .compSchedulePage .topCell { height: auto; }
+        
+        #resetButton { margin-left: 15px; }
+    </style>
+    
+    <?js
+        function appDir(path) {
+            pageSection = page.section.extractPath(0,0);
+            return pageSection + '/' + path
+        }
+    ?>     
+    
+    <script type="text/javascript" src="{appDir('select.js')}"></script>    
+    
+</content:group>   
+
+<div id="PageContent" class="compSchedulePage">
+
+    <new2012:paralympic-schedule-javascript/>
+    
+    <content:text id="strapline" schema="plain" class="strap-line" />
+    <content:text id="summary" schema="styled" height="100" />
+    
+    <!--<?php echo(htmlspecialchars($q)); ?>-->
+    
+    <form id="compForm" action="{page.path}" method="get">
+        
+        <div id="formRowWrap">
+        
+            <div class="formRow">
+                <label for="sports-search"><?js=Lang.getLabel("Event/Ceremony")?></label>
+                <select name="sport" id="sports-search">
+                    <option value="">Any</option>
+                      <?js     
+                       var sports = new Finder([
+                       {type: "ParaCompetitionSession"},
+                       {groupBy: "fragment:sportShortName"},
+                       {orderBy: "fragment:sportShortName"},
+                       {max:-1}
+                       ]).find();
+                       out.php('$sportOptions = array()');    
+                       for each (var sport in sports) {
+                         if (sport.value=='null') continue;
+                         if (kit.mode!='publish') {
+                          out.write('<option>' + sport.value + '</option>', false);
+                         } else {
+                           out.php('array_push($sportOptions, "' + sport.value + '"); ');
+                         }
+                       }  
+                      ?>  
+                     <?php
+                         $selected = $param['sport'];
+                         foreach ($sportOptions as $value) {
+                              $selattr = ($value==$selected) ? 'selected="selected"' : '';
+                              echo '<option ' .  $selattr . ' value="' . $value . '">' . $value . '</option>';     
+                         }   
+                     ?>
+                </select>
+            </div>
+            
+            <div class="formRow">
+                <label for="venues-search"><?js=Lang.getLabel("or Venue")?></label>
+                <select name="venue" id="venues-search">
+                    <option value="">Any</option>
+                    <?js     
+                         var venues = new Finder([
+                            {type: "ParaCompetitionSession"},
+                            {groupBy: "fragment:venueShortName"},
+                            {orderBy: "fragment:venueShortName"},
+                            {max:-1}
+                         ]).find();
+                         out.php('$venueOptions = array()');    
+                         for each (var venue in venues) {
+                            if (venue.value=='null') continue;
+                            if (kit.mode!='publish') {
+                                out.write('<option>' + venue.value + '</option>', false);
+                            } else {
+                                out.php('array_push($venueOptions, "' + venue.value + '"); ');
+                            }
+                         }  
+                    ?>   
+                    <?php
+                         $selected = $param['venue'];
+                         foreach ($venueOptions as $value) {
+                              $selattr = ($value==$selected) ? 'selected="selected"' : '';
+                              echo '<option ' .  $selattr . ' value="' . $value . '">' . $value . '</option>';     
+                         }   
+                    ?>
+                </select>
+            </div>
+    
+            <div class="formRow">
+                <label for="date-search"><?js=Lang.getLabel("or Date")?></label>
+                <select name="date" id="date-search">
+                    <option value="">Any</option>
+                      <?js     
+                        var dates = new Finder([
+                            {type: "ParaCompetitionSession"},
+                            {groupBy: "fragment:date"},
+                            {orderBy: "fragment:date"},
+                            {max:-1}
+                        ]).find();
+                        out.php('$dateOptions = array()');                         
+                        for each (var date in dates) {
+                            if (date.value.length>8) {
+                                if (kit.mode!='publish') {
+                                    out.write('<option>' + Date.format(date.value, "dd MMMM yyyy") + '</option>', false);  
+                                } else {
+                                     var phpDateArrayString = 'array("' +  Date.format(date.value, "yyyyMMdd") + '","' + Date.format(date.value,  "dd MMMM yyyy") + '")';
+                                    out.php('array_push($dateOptions, ' + phpDateArrayString + '); ');
+                                }
+                            }
+                        }  
+                     ?>
+                     <?php
+                         $selected = $param['date'];
+                         foreach ($dateOptions as $value) {
+                              $selattr = ($value[0]==$selected) ? 'selected="selected"' : '';
+                               echo '<option ' .  $selattr . ' value="'  . $value[0] . '">' . $value[1] . '</option>';     
+                         }   
+                     ?>
+                </select>
+            </div>
+        </div>
+        
+        <input type="image" name="{Lang.getLabel('Search')}" src="images/buttons/searchbtn.png" id="searchBtn" />    
+        <div id="resetButtonHolder"></div>
+        
+    </form>    
+
+    <div id="totalResults">
+    <p>
+    <?php
+        $numResults = $resultslist->totalResults;
+        if ($numResults > 0) {                 
+            $startIndex = $resultslist->startIndex;
+            $endIndex   = $resultslist->startIndex + count($resultslist->hits) - 1;
+            $info = "Showing " . $startIndex." - " . $endIndex . " of " . $numResults . " sessions";
+        } else {
+            $info = "We did not find any sessions that meet your criteria. Please change your search criteria and try again.";
+        }
+        echo $info;  
+    ?>
+    </p>
+    </div>
+    
+    <table class="data">
+    
+        <tr>
+            <th id="datetime" class="firstCell"><?js=Lang.getLabel("Date / time")?></th>
+            <th id="sport"><?js=Lang.getLabel("Sport")?></th>
+            <th id="venue"><?js=Lang.getLabel("Venue")?></th>
+        </tr>
+        
+        <?php foreach ($resultslist->hits as $i => $hit) {
+        
+            $class = ($i == 0) ? 'first' : '';
+            
+            $code = $hit->getText('code');
+            $sport = html_entity_decode($hit->getText('sportDisplayName'));
+            if (!$sport) {$sport = html_entity_decode($hit->getText('sportShortName'));}
+            $venue = html_entity_decode($hit->getText('venueDisplayName'));
+            $sportPage = html_entity_decode($hit->getText('sportPage'));
+            $venuePage = html_entity_decode($hit->getText('venuePage'));
+            $medals = $hit->getText('medals');
+            $date = date('j F', Utils::parseKitsiteDate($hit->fields['date'][0]));
+            $startTime = $hit->getText('startTime');
+            $endTime = $hit->getText('endTime');
+            $details = html_entity_decode($hit->getText('details'));
+            $sportMarkup = ($sportPage) ? '<a href="' . $sportPage . '">' . $sport . '</a>' : $sport;
+            $venueMarkup = ($venuePage) ? '<a href="' . $venuePage . '">' . $venue . '</a>' : $venue;            
+        ?>
+
+            <tr class="<?php echo $class ?>">
+                <td rowspan="2" class="firstCell">
+                    <?php echo ($date); ?>
+                    <br/>
+                    <?php echo ($startTime); ?><?php if ($endTime!='') { echo (' - ' . $endTime); } ?>
+                    <br/>
+                     <?php if ($medals=='true') { ?><img  src="images/medals/medal2.png" alt="Medal event" title="Medal event"  class="medal" /><?php } ?>
+                </td>
+                <td class="topCell"><?php if ($sportMarkup!=null) echo ($sportMarkup); ?></td>
+                <td class="topCell"><?php echo ($venueMarkup); ?></td>
+            </tr>
+        
+            <tr>
+                <td colspan="2" class="noBorder">
+                    <?php echo ($details); ?>
+                    <?php if (isStagingServer()) { ?>
+                        <br/>
+                        <?php echo ('<a href="https://new2012.kitsite.com/kit/edit/paracompetitionsessions/' . $hit->getText('itemName') . '">Edit Session</a>'); ?>
+                    <?php } ?>
+                </td>
+            </tr>
+            <xsl:comment><?php echo ($code); ?></xsl:comment>
+         
+        <?php } ?>           
+        
+    </table>    
+
+    <?php
+      $numResults = $resultslist->totalResults;
+  if ($numResults > $perPage) {
+   ?>
+   <div class="events-pagination">
+    <div>
+     <div class="eventpagi_right">
+      <?php $resultslist->writeNavigationLinks(5); ?>
+     </div>
+    </div>
+   </div>        
+   <?php
+   }
+   ?>  
+
+</div>
+

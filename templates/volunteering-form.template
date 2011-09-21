@@ -98,12 +98,13 @@
         $community->addValidation('addr_eligiblityacknowledgement', create_function('$value', 'if ($value == "N") return "You must answer \'yes\' to the Primary Team Leader Terms and conditions question 1";'));
         $community->addValidation('addr_over18', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 2";'));
         $community->addValidation('addr_over18', create_function('$value', 'if ($value == "N") return "You must answer \'yes\' to the Primary Team Leader Terms and conditions question 2";'));
-        $community->addValidation('addr_crbcheck', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 3";'));
-        $community->addValidation('addr_lastcrbcheck', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 4";'));
-        $community->addValidation('addr_safeguarding', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 5";'));
-        $community->addValidation('addr_alreadyapplied', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 6";'));
-        $community->addValidation('addr_passondetails', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 7";'));
-        $community->addValidation('addr_reserve1_over18', create_function('$value', 'if ($value == "-") return "Please select if the secondary team leader is over 18";'));
+        $community->addValidation('addr_responsible', create_function('$value', 'if ($value == "N") return "You must answer \'yes\' to the Primary Team Leader Terms and conditions question 3";'));
+        $community->addValidation('addr_crbcheck', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 4";'));
+        $community->addValidation('addr_lastcrbcheck', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 5";'));
+        $community->addValidation('addr_safeguarding', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 6";'));
+        $community->addValidation('addr_alreadyapplied', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 7";'));
+        $community->addValidation('addr_passondetails', create_function('$value', 'if ($value == "-") return "Please answer the Primary Team Leader Terms and conditions question 8";'));
+        $community->addValidation('addr_reserve1_over18', create_function('$value', 'if ($value != "Y") return "Please confirm that the secondary team leader is over 18";'));
         // $community->addValidation('addr_reserve2_over18', create_function('$value', 'if ($value == "Please select...") return "Please select your _____";'));
         // $community->addValidation('addr_reserve3_over18', create_function('$value', 'if ($value == "Please select...") return "Please select your _____";'));
         $community->addValidation('tc_english', create_function('$value', 'if ($value == "-") return "Please answer the YGM Team Terms and conditions question 1";'));
@@ -193,31 +194,31 @@
     <link type="text/css" rel="stylesheet" href="{freshCache('css/newforms.css')}" />
     <script type="text/javascript" src="{freshCache('js/jsform.js')}"></script>
     <script type="text/javascript" src="{freshCache('js/jquery.textareacounter.plugin.js')}"></script>
-<style type="text/css">
-
-.print-wrapper {
-  border-bottom: 1px solid;
-  overflow: hidden;
-}
+    <style type="text/css">
     
-.print-wrapper .print-label {
-  float: left;
-  width: 200px;
-  word-wrap: break-word;
-  font-weight: bold;
-}
-
-.print-wrapper .sep {
-  float: left;
-  width: 10px;
-}
-
-.print-wrapper .print-value {
-  margin-left: 210px;
-  padding-left: 10px;
-}
-
-</style>
+    .print-wrapper {
+      border-bottom: 1px solid;
+      overflow: hidden;
+    }
+        
+    .print-wrapper .print-label {
+      float: left;
+      width: 200px;
+      word-wrap: break-word;
+      font-weight: bold;
+    }
+    
+    .print-wrapper .sep {
+      float: left;
+      width: 10px;
+    }
+    
+    .print-wrapper .print-value {
+      margin-left: 210px;
+      padding-left: 10px;
+    }
+    
+    </style>
 </content:group>   
 
 <div id="PageContent">
@@ -970,7 +971,16 @@
                     </div>
 
                     <div class="row widelabel">
-                         <label for="addr_crbcheck" class="required">Do you confirm that the primary team leader(s) named in this application will be responsible at all times for the care and wellbeing of Young Games Makers (including during events), and will also ensure that the team gets safely to and from training, uniform and accreditation collection and volunteer shifts?</label>
+                         <label for="addr_responsible" class="required">Do you confirm that the primary team leader(s) named in this application will be responsible at all times for the care and wellbeing of Young Games Makers (including during events), and will also ensure that the team gets safely to and from training, uniform and accreditation collection and volunteer shifts?</label>
+                         <select id="addr_responsible" name="addr_responsible">
+                              <option>-</option>
+                              <option value="Y">yes</option>
+                              <option value="N">no</option>
+                         </select>
+                    </div>
+
+                    <div class="row widelabel">
+                         <label for="addr_crbcheck" class="required">Do you understand that if you are selected to be a Young Games Maker team leader, you will be required to undergo and satisfy an enhanced CRB check, and your role will be subject to this check? </label>
                          <select id="addr_crbcheck" name="addr_crbcheck">
                               <option>-</option>
                               <option value="Y">yes</option>
@@ -1028,7 +1038,7 @@
                     </div>                    
 
                     <div class="row widelabel">
-                         <label for="addr_reserve1_over18" class="required">Do you confirm that the secondary team leader named above is aged 18 years old or over at the time of this application? You must answer 'yes' to this question to be eligible to volunteer at London 2012.</label>
+                         <label for="addr_reserve1_over18" class="required">Do you confirm that the secondary team leader named above is aged 18 years old or over on 1 January 2012? You must answer 'yes' to this question to be eligible to volunteer at London 2012.</label>
                          <select id="addr_reserve1_over18" name="addr_reserve1_over18">
                               <option>-</option>
                               <option value="Y">yes</option>
@@ -1054,7 +1064,7 @@
                     </div>                    
 
                     <div class="row widelabel">
-                         <label for="addr_reserve2_over18">Do you confirm that the primary team leader named above is aged 18 years old or over at the time of this application? You must answer 'yes' to this question to be eligible to volunteer at London 2012.</label>
+                         <label for="addr_reserve2_over18">Do you confirm that the primary team leader named above is aged 18 years old or over on 1 January 2012? You must answer 'yes' to this question to be eligible to volunteer at London 2012.</label>
                          <select id="addr_reserve2_over18" name="addr_reserve2_over18">
                               <option>-</option>
                               <option value="Y">yes</option>
@@ -1076,7 +1086,7 @@
                     </div>                    
 
                     <div class="row widelabel">
-                         <label for="addr_reserve3_over18">Do you confirm that the secondary team leader named above is aged 18 years old or over at the time of this application? You must answer 'yes' to this question to be eligible to volunteer at London 2012.</label>
+                         <label for="addr_reserve3_over18">Do you confirm that the secondary team leader named above is aged 18 years old or over on 1 January 2012? You must answer 'yes' to this question to be eligible to volunteer at London 2012.</label>
                          <select id="addr_reserve3_over18" name="addr_reserve3_over18">
                               <option>-</option>
                               <option value="Y">yes</option>
@@ -1326,6 +1336,4 @@
            # var_dump($community->errors);
         ?>
     </div>
-</div>                    
-
-​
+</div>
