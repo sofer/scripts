@@ -1,0 +1,130 @@
+<xsl:if test="$mode='publish' or $mode='preview'">
+  <form>
+    <input id="printthispagebutton" type="button" value="Print this page" onClick="window.print(); return false;"/>
+  </form>
+</xsl:if>
+<br style="clear: both;"/>
+<br/>
+<?php
+
+# fieldname => label
+$printlayout = array(
+  "org_name" => "Team name",
+  "org_address" => "Address",
+  "org_town" => "Town",
+  "org_postcode" => "Postcode",
+  "org_localauthority" => "Local authority",
+  "additionalteams" => "Can provide additional teams?",
+  "per_firstname" => "First name",
+  "per_lastname" => "Last name",
+  "per_gender" => "Gender",
+  "per_dob" => "Date of birth",
+  "per_nationality" => "Nationality",
+  "per_country_born" => "Which country were you born in?",
+  "per_city_born" => "Which town/city were you born in?",
+  "per_documenttype" => "Document provided to confirm your identity",
+  "per_documentnumber" => "Document number",
+  "per_documentvaliduntil_day" => "Document valid until (day)",
+  "per_documentvaliduntil_month" => "Document valid until (month)",
+  "per_documentvaliduntil_year" => "Document valid until (year)",
+  "per_issuingcountry" => "Issuing country",
+  "per_unspentcriminalconvictions" => "Unspent criminal convictions?",
+  "per_childrenadults" => "Are you permitted to work with children and/or vulnerable adults?",
+  "per_securitycheck" => "Agree to screening, security vetting, right to volunteer and background checks?",
+  
+  "addr_currentpostcode" => "Postcode/Zip code",
+  "addr_currentaddress1" => "Address line 1",
+  "addr_currentaddress2" => "Address line 2",
+  "addr_currentaddress3" => "Address line 3",
+  "addr_currenttown" => "Town",
+  "addr_currentcounty" => "County/State",
+  "addr_currentcountry" => "Country",
+  "addr_currentsince_month" => "At current address since (month)",
+  "addr_currentsince_year" => "At current address since (year)",
+  "addr_previouspostcode" => "Postcode/Zip code",
+  "addr_previousaddress1" => "Address line 1",
+  "addr_previousaddress2" => "Address line 2",
+  "addr_previousaddress3" => "Address line 3",
+  "addr_previoustown" => "Town",
+  "addr_previouscounty" => "County/State",
+  "addr_previouscountry" => "Country",
+  "addr_email" => "Your email address",
+  "addr_conphonetype1" => "Phone 1 type",
+  "addr_conphoneprimary1" => "Primary?",
+  "addr_conphonenum1" => "Telephone number 1",
+  "addr_conphonetype2" => "Phone 2 type",
+  "addr_conphoneprimary2" => "Primary?",
+  "addr_conphonenum2" => "Telephone number 2",
+  "addr_sms" => "SMS ok?",
+  "addr_emercentactname1" => "Emergency contact name",
+  "addr_emertelephonenumber1" => "Telephone number",
+  "addr_relationship1" => "Relationship to you",
+  "addr_disabled" => "Disabled/long-term health condition?",
+  "addr_ethnicity" => "Ethnicity",
+  "addr_sexualorientation" => "Sexual orientation",
+  "addr_belief" => "Belief",
+  "addr_medicalconditions" => "Medical conditions?",
+  "addr_medicalconditiondetails" => "Details",
+  
+  "addr_eligiblityacknowledgement" => "Confirm eligibility",
+  "addr_over18" => "Confirm over 18",
+  "addr_crbcheck" => "*CRB check ok?",
+  "addr_lastcrbcheck" => "Recent CRB check",
+  "addr_safeguarding" => "Safeguarding training?",
+  "addr_alreadyapplied" => "Already applied to be a Games Maker?",
+  "addr_passondetails" => "Ok to pass on details",
+  
+  "addr_reserve1_firstname" => "Secondary First Name",
+  "addr_reserve1_lastname" => "Secondary Last Name",
+  "addr_reserve1_over18" => "Secondary is Over 18",
+  "addr_reserve2_firstname" => "Other 1 First Name",
+  "addr_reserve2_lastname" => "Other 1 Last Name",
+  "addr_reserve2_over18" => "Other 1 is Over 18 ",
+  "addr_reserve3_firstname" => "Other 2 First Name",
+  "addr_reserve3_lastname" => "Other 2 Last Name ",
+  "addr_reserve3_over18" => "Other 2 is Over 18",
+  "team_question1" => $customQuestions[$role]['q1'],
+  "team_question2" => $customQuestions[$role]['q2'],
+  "team_leadingexperience" => "Team leading experience",
+  "team_volunteervalues" => "Volunteer experience",
+  "team_diversity" => "Team diversity",
+  "team_inspireyoungppl" => "Commitment to inspiring young people",
+  "team_prevactivities" => "Previous volunteering activities",
+  "team_howtoselect" => "How will you select your Young Games Maker team?",
+  "team_whychoseen" => "Why should your organisation be chosen?",
+  "team_medicalconditions" => "Team medical conditions",
+  
+  "tc_english" => "Can your team speak and read English?",
+  "tc_eligible" => "Is your team will be eligible to volunteer within the UK?",
+  "tc_understandchecks" => "Do you consent to relevant security checks?",
+  "tc_understandpolicies" => "Do you consent to LOCOG policies?",
+  "tc_attend" => "Can your team attend training, etc.?",
+  "tc_participate" => "Can you participate in the test event?",
+  "tc_accommodation" => "Have you thought about accommodation?",
+  "tc_numbers" => "Will you meet the team leaders / Young Games Makers requirements?",
+  "tc_parental" => "Will you obtain parental consent, where applicable?",
+  "tc_permission" => "Will you obtain school/college approval for absence?",
+  /*"tc_wellbeing" => "The primary team leader will be responsible at all times for the care and wellbeing of Young Games Makers?",*/
+  "tc_readandunderstood" => "Do you agree to how this information will be used?",
+  "tc_heardfrom" => "Where did you hear about this opportunity?"
+);
+
+foreach ($printlayout as $field => $label) {
+  $value = $_REQUEST[$field];
+  if (!$value) {$value = "-";}
+?>
+<div class="print-wrapper">
+  <div class="print-label">
+    <?php echo Utils::escape($label); ?>
+  </div>
+        <div class="sep">:</div>
+  <div class="print-value">
+    <?php echo Utils::escape($value); ?>
+  </div>
+</div>
+<?php
+}
+?>
+
+
+  
