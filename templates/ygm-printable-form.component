@@ -126,5 +126,3 @@ foreach ($printlayout as $field => $label) {
 }
 ?>
 
-
-  
