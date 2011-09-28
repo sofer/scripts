@@ -263,7 +263,7 @@
                     <input type="hidden" id="stafftype" name="stafftype"  />
                 
                     <div class="row">
-                        <label for="org_name" class="required">Choose a team name</label>
+                        <label for="org_name" class="required">Name</label>
                         <input type="text" id="org_name" name="org_name" maxlength="50" />
                     </div>
        
@@ -1337,4 +1337,3 @@
         ?>
     </div>
 </div>
-

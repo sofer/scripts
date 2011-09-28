@@ -1,0 +1,108 @@
+<content:extends template="MasterVolunteering" />
+
+<content:group id="extra-meta-fields">
+    <content:boolean name="manual-community-init" />
+    <content:boolean name="tennisVersion" />
+</content:group>
+ 
+<content:group id="post-init">
+    <xsl:if test="$mode='publish'">
+        <?php    
+            if($_SERVER['REQUEST_METHOD'] ==  'POST') {
+            
+                $error = null;
+                $selection = Utils::escape($_REQUEST['role']);
+            
+                if ($selection == 'Please select...') {
+                    $error = "Please select a role.";
+                }
+            
+                if (!$error) {
+                    header("Location: http://".$_SERVER['HTTP_HOST']."/get-involved/volunteer/young-games-makers/apply-now/application.php?role=".$selection);
+                }
+            }    
+        
+        ?>
+    </xsl:if>    
+</content:group>    
+    
+<content:group id="extra-head-tags">
+    
+    <link type="text/css" rel="stylesheet" href="css/newforms.css" />
+    <style type="text/css">
+        label { clear: right; color: #666666; float: left; font-weight: bold; margin-bottom: 10px; margin-right: 10px; width: 100%; }
+        #role { clear: both; float: left; }
+        #submit-button { float: left; clear: both; margin-top: 10px; }
+        .errorMSGs { color: red; }
+    </style>    
+</content:group>   
+
+<div id="PageContent">
+    
+    <h1 id="pageHeadline"><content:text id="headline" /></h1>
+    <content:text id="Intro" schema="styled" />
+            
+    <form action="http://<?php echo $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; ?>" method="post">
+        
+        <label for="role">Please select the role you are applying for: </label>
+        
+        <xsl:if test="$mode='publish'">    
+            <?php if ($error) { ?>
+                <p class="errorMSGs"><?php echo $error ?></p>
+            <?php } ?>    
+        </xsl:if>          
+        
+        <select id="role" name="role">
+                
+            <option>Please select...</option>
+            
+            <xsl:if test="//tennisVersion">
+            <?php
+                echo $community->seededSelectOption("role", "Tennis/Olympics/Wimbledon", "Tennis/Olympics/Wimbledon");                        
+                echo $community->seededSelectOption("role", "Tennis/Paralympics/Eton Manor", "Tennis/Paralympics/Eton Manor");                                            
+            ?>
+            </xsl:if>    
+            
+            <xsl:if test="not(//tennisVersion)">
+            <?php
+                echo $community->seededSelectOption("role", "taekwondo/olympics/excel", "Taekwondo/Olympics/Excel");
+                echo $community->seededSelectOption("role", "swimming/olympics/olympic%20park", "Swimming/Olympics/Olympic Park");
+                echo $community->seededSelectOption("role", "swimming/paralympics/olympic%20park", "Swimming/Paralympics/Olympic Park");
+                echo $community->seededSelectOption("role", "athletics/olympics/olympic%20park", "Athletics/Olympics/Olympic Park");
+                echo $community->seededSelectOption("role", "athletics/paralympics/olympic%20park", "Athletics/Paralympics/Olympic Park");
+                echo $community->seededSelectOption("role", "volleyball/olympics/excel", "Volleyball/Olympics/Excel");
+                echo $community->seededSelectOption("role", "sitting%20volleyball/paralympics/excel", "Sitting Volleyball/Paralympics/Excel");
+                echo $community->seededSelectOption("role", "beach%20volleyball/olympics/horse%20guards%20parade", "Beach Volleyball/Olympics/Horse Guards Parade");
+                echo $community->seededSelectOption("role", "5%20a%20side%20football/paralympics/olympic%20park", "5 a side Football/Paralympics/Olympic Park");
+                echo $community->seededSelectOption("role", "7%20a%20side%20football/paralympics/olympic%20park", "7 a side Football/Paralympics/Olympic Park");
+                echo $community->seededSelectOption("role", "technology/olympics/aquatics%20centre", "Technology/Olympics/Aquatics Centre");
+                echo $community->seededSelectOption("role", "technology/olympics/city%20of%20coventry%20stadium", "Technology/Olympics/City of Coventry Stadium");
+                echo $community->seededSelectOption("role", "technology/olympics/earls%20court", "Technology/Olympics/Earls Court");
+                echo $community->seededSelectOption("role", "technology/olympics/hadleigh%20farm,%20essex", "Technology/Olympics/Hadleigh Farm, Essex");
+                echo $community->seededSelectOption("role", "technology/olympics/hampden%20park", "Technology/Olympics/Hampden Park");
+                echo $community->seededSelectOption("role", "technology/olympics/lee%20valley", "Technology/Olympics/Lee Valley");
+                echo $community->seededSelectOption("role", "technology/olympics/millennium%20stadium", "Technology/Olympics/Millennium Stadium");
+                echo $community->seededSelectOption("role", "technology/olympics/old%20trafford", "Technology/Olympics/Old Trafford");
+                echo $community->seededSelectOption("role", "technology/olympics/royal%20artillery%20barracks", "Technology/Olympics/Royal Artillery Barracks");
+                echo $community->seededSelectOption("role", "technology/olympics/st%20james%27%20park", "Technology/Olympics/St James' Park");
+                echo $community->seededSelectOption("role", "technology/olympics/water%20polo%20arena", "Technology/Olympics/Water Polo Arena");
+                echo $community->seededSelectOption("role", "technology/olympics/wembley%20stadium", "Technology/Olympics/Wembley Stadium");
+                echo $community->seededSelectOption("role", "technology/olympics/weymouth%20%26%20portland", "Technology/Olympics/Weymouth & Portland");
+                echo $community->seededSelectOption("role", "technology/olympics/wimbledon", "Technology/Olympics/Wimbledon");
+                echo $community->seededSelectOption("role", "technology/paralympics/aquatics%20centre", "Technology/Paralympics/Aquatics Centre");
+                echo $community->seededSelectOption("role", "technology/paralympics/eton%20dorney", "Technology/Paralympics/Eton Dorney");
+                echo $community->seededSelectOption("role", "technology/paralympics/weymouth%20%26%20portland", "Technology/Paralympics/Weymouth & Portland");                
+            ?>                
+            </xsl:if>     
+            
+        </select>
+        
+        <input type="submit" id="submit-button" value="Apply now" />
+        
+    </form>
+    
+</div>
+
+<div id="sidebar-right-2012">   
+    <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
+</div>  
