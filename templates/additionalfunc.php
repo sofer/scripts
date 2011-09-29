@@ -156,6 +156,10 @@ $customQuestions = array(
         "q1" => "Can you give me an example of where as a team/individuals within a team you have had to follow an established set of processes to perform a job/role/task?    ",
         "q2" => "Can you give another example of where you as a team/individuals within a team have had to work in a time pressured environment with a tight deadline?"
     ),
+  "technology/paralympics/excel" => array(
+      "q1" => "Can you give me an example of where as a team/individuals within a team you have had to follow an established set of processes to perform a job/role/task?    ",
+      "q2" => "Can you give another example of where you as a team/individuals within a team have had to work in a time pressured environment with a tight deadline?"
+  ),
     "technology/paralympics/weymouth &amp; portland" => array(
         "q1" => "Can you give me an example of where as a team/individuals within a team you have had to follow an established set of processes to perform a job/role/task?    ",
         "q2" => "Can you give another example of where you as a team/individuals within a team have had to work in a time pressured environment with a tight deadline?"

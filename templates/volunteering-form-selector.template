@@ -91,6 +91,7 @@
                 echo $community->seededSelectOption("role", "technology/olympics/wimbledon", "Technology/Olympics/Wimbledon");
                 echo $community->seededSelectOption("role", "technology/paralympics/aquatics%20centre", "Technology/Paralympics/Aquatics Centre");
                 echo $community->seededSelectOption("role", "technology/paralympics/eton%20dorney", "Technology/Paralympics/Eton Dorney");
+                echo $community->seededSelectOption("role", "technology/paralympics/excel", "Technology/Paralympics/Excel");
                 echo $community->seededSelectOption("role", "technology/paralympics/weymouth%20%26%20portland", "Technology/Paralympics/Weymouth & Portland");                
             ?>                
             </xsl:if>     
@@ -106,3 +107,4 @@
 <div id="sidebar-right-2012">   
     <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
 </div>  
+
