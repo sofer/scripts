@@ -1,0 +1,77 @@
+<webapp name="PostCMS">
+
+    <webtab name="home" label="Home" >
+        <screen name="home" label="Your dashboard" url="/kit/home/" help="/kit/support/entries/60609" />
+        <screen name="inbox" label="Your inbox" url="/kit/inbox/" help="/kit/support/entries/60617" />
+        <screen name="favourites" label="Your favourites" url="/kit/favourites/" help="/kit/support/entries/60614" />
+        <screen name="profile" label="Your profile" url="/kit/profile/" help="/kit/support/profile/ignored" />
+    </webtab>
+    
+    <webtab name="pages" label="Pages" capability="browse content">
+        <screen name="recent" label="Recent pages" url="/kit/pages/recent/" help="/kit/support/entries/60612" />
+        <screen name="folders" label="Folders" url="/kit/pages/folders/" help="/kit/support/entries/60612" />
+        <screen name="news" label="News stories" url="/kit/folder/news" help="/kit/support/news/ignored" /> <!-- apparently picking up the "recent" help screen -->
+        <screen name="openbypath" label="Open page..." command="openbypath" divider="true" />
+        <screen name="newpage" label="New page..." command="page" />
+    </webtab>
+    
+    <webtab name="files" label="Files" capability="browse content" >
+        <screen name="photopages" label="Photo pages" url="/kit/data/Photo%20pages" help="/kit/support/entries/52490" />
+        <screen name="pictures" label="Pictures" url="/kit/files/pictures/" help="/kit/support/entries/116189" divider="true"/>
+        <screen name="photo-uploads" label="Photo uploads" url="/kit/files/pictures/images/user%20uploads/awaiting%20approval?approve" help="/kit/support/photo-uploads/ignored" />
+        <screen name="videos" label="Video" url="/kit/files/video/" divider="true"/>
+        <screen name="other" label="Other files" url="/kit/files/other/" help="/kit/support/entries/other/ignored"/>
+        <screen name="archive" label="Archived files" url="/kit/files/archive/" help="/kit/support/entries/116191" />
+    </webtab>
+
+    <webtab name="data" label="Data" capability="browse content" >
+        <screen name="suppliers" label="Suppliers" url="/kit/data/suppliers" help="/kit/support/entries/52692" />
+        <screen name="groupregistrants" commands='[
+            {"name":  "ygm-export", "type": "button",  "iconText": "ygm", "tip": "Export in  YGM format",     "url": "/kit/api/custom/ygm-export.csv"},
+            {"name":  "ygm-print",  "type": "context", "iconText": "pr",  "tip": "View in  printable format", "url": "/kit/api/custom/ygm-registrant?path=$path"}
+        ]' filters='[
+            {"name":"Shortlisted", "value": "fragment:shortlisted-true"}
+        ]' label="Group registrants" url="/kit/data/groupregistrants?fields=org_name%20role%20shortlisted&amp;screen=/data/groupregistrants" />        <screen name="publications" label="Publications" url="/kit/data/publications" />
+        <screen name="futureopps" label="Future Opportunities" url="/kit/data/futureOpps" />
+        <screen name="sessions" label="Sessions" url="/kit/data/competitionsessions" help="/kit/support/sessions/ignored" />
+        <screen name="psessions" label="Paralympic sessions" url="/kit/data/paracompetitionsessions" help="/kit/support/sessions/ignored" />
+        <screen name="events" label="Events" url="/kit/data/events" help="/kit/support/events/ignored" />
+        <screen name="openweekend" label="Open Weekend" url="/kit/data/events?mode=ow" />
+        <screen name="ticketagents" label="Ticket agents" url="/kit/data/ticketagents" />
+        <screen name="photo-comments" label="Photo comments" url="/kit/comments/photo%20page" help="/kit/support/photo-comments/ignored" divider="true" />
+        <screen name="event-comments" label="Event comments" url="/kit/comments/event" help="/kit/support/event-comments/ignored" />
+    </webtab>
+    
+    <webtab name="blog" label="Blog">
+        <screen name="blog-post" label="Write a post..." url="/kit/blog/write" help="/kit/support/entries/114611" />
+        <screen name="blog-draft" label="Drafts" url="/kit/blog/drafts" />
+        <screen name="blog" label="Posts" url="/kit/blog/posts"  />
+        <screen name="blog-comments" label="Comments" url="/kit/comments/blog" />
+        <screen name="blog-contributors" label="Authors" url="/kit/blog/authors" />
+        <screen name="yl-blogposts" label="Young Leaders Blog" url="/kit/data/Young%20leaders%20blog%20posts" divider="true" />   
+    </webtab>
+        
+    <webtab name="subscribers" label="Subscribers" capability="manage users">
+        <screen name="summary" label="Summary" url="/kit/subscribers" help="/kit/support/entries/114615" />
+        <screen name="recent" label="All subscribers" url="/kit/subscribers/recent" />
+        <screen name="reports" label="Reports" url="/kit/subscribers/reports" />       
+    </webtab>
+
+    <webtab name="analytics" label="Analytics" capability="manage users">
+        <screen name="visits" label="Unique visits" url="/kit/analytics/visits" help="/kit/support/entries/114685" />
+        <screen name="views" label="Page views" url="/kit/analytics/views" help="/kit/support/entries/114685" />
+        <screen name="popular" label="Most popular" url="/kit/analytics/popular" help="/kit/support/entries/114685" />
+        <screen name="sources" label="Traffic sources" url="/kit/analytics/sources" help="/kit/support/entries/114685" />
+    </webtab>
+    
+    <webtab name="admin" label="Admin" url="/kit/admin" capability="manage users">
+        <screen name="users" label="User accounts" url="/kit/admin/users/" capability="manage users" help="/kit/support/entries/114616" />
+        <screen name="tags" label="Tag management" url="/kit/admin/tags/" help="/kit/support/entries/52713" />
+        <screen name="language" label="Language bundles" url="/kit/admin/languages/" help="/kit/support/entries/114695" />
+        <screen name="publication" label="Publication queue" url="/kit/admin/publication/" help="/kit/support/publication/ignored" />
+        <screen name="translation" label="Translation queue" url="/kit/admin/translation/" help="/kit/support/entries/52709" />
+        <screen name="shorturls" label="Short URLs" url="/kit/admin/shorturls/" />
+        <screen name="seopaths" label="SEO paths" url="/kit/admin/seopaths/" help="/kit/support/entries/514286" />
+    </webtab>
+    
+</webapp>
