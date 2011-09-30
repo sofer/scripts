@@ -31,7 +31,7 @@
             {"name":  "ygm-print",  "type": "context", "iconText": "pr",  "tip": "View in  printable format", "url": "/kit/api/custom/ygm-registrant?path=$path"}
         ]' filters='[
             {"name":"Shortlisted", "value": "fragment:shortlisted-true"}
-        ]' label="Group registrants" url="/kit/data/groupregistrants?fields=org_name%20role%20shortlisted&amp;screen=/data/groupregistrants" />        <screen name="publications" label="Publications" url="/kit/data/publications" />
+        ]' label="Group registrants" url="/kit/data/groupregistrants?fields=date%20org_name%20role%20shortlisted&amp;screen=/data/groupregistrants" />        <screen name="publications" label="Publications" url="/kit/data/publications" />
         <screen name="futureopps" label="Future Opportunities" url="/kit/data/futureOpps" />
         <screen name="sessions" label="Sessions" url="/kit/data/competitionsessions" help="/kit/support/sessions/ignored" />
         <screen name="psessions" label="Paralympic sessions" url="/kit/data/paracompetitionsessions" help="/kit/support/sessions/ignored" />
