@@ -99,15 +99,26 @@
 
 <div id="Content" class="mascotPage">
     
+  <?js
+    // allow carousel images to be editable
+    var mainPromoWrapId = "mainPromoWrap";
+    var mycarouselId = "mycarousel";
+    if (kit.mode == 'edit') {
+      mainPromoWrapId = "mainPromoWrap-edit";
+      mycarouselId = "mycarousel-edit";
+    }
+  ?>
     <div id="main-content">
-        <div id="mainPromoWrap">
+        <div id="{mainPromoWrapId}">
             <div id="overlay">    
             </div>
             <div id="underlay">
-                <ul id="mycarousel" class="jcarousel-skin-tango">
-                    <!--li><a href="http://www.mylondon2012.com/mascots/news-feed/b31bf6-win-huge-prizes-for-spotting-us-in-london/"><img src="images/mascots/mascot3.png" alt="" width="990" height="493" /></a></li-->
+                <ul id="{mycarouselId}" class="jcarousel-skin-tango">
+                    <!--li><a href="http://www.mylondon2012.com/mascots/news-feed/b31bf6-win-huge-prizes-for-spotting-us-in-london/"><img src="images/mascots/mascot3.png" alt="" width="990" height="493" /></a></li
                     <li><a href="http://www.mylondon2012.com/mascots/"><img src="images/mascots/mascot1.jpg" alt="" width="990" height="493" /></a></li>
-                    <li><a href="http://mascot-games.london2012.com/"><img src="images/mascots/mascot2.jpg" alt="" width="990" height="493" /></a></li>
+                    <li><a href="http://mascot-games.london2012.com/"><img src="images/mascots/mascot2.jpg" alt="" width="990" height="493" /></a></li>-->
+                    <li><content:picture id="carouselpicture1" width="990" height="493" /></li>
+                    <li><content:picture id="carouselpicture2" width="990" height="493" /></li>
                 </ul>               
             </div>
             <img src="images/mascots/pinkpole.png" id="overlayBottom" alt="pole" />
