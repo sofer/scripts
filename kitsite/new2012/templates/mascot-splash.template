@@ -1,0 +1,175 @@
+<content:extends  template="MasterMinimal" />
+
+<content:group  id="extra-head-tags">
+    <style type="text/css">
+        div#Content.mascotPage { margin-left: 0px; position: relative; }
+        .mascotPage #mainPromoWrap { width: 990px; height: 574px; overflow: hidden; }
+        .mascotPage #underlay { position: relative; top: -153px; z-index: 1; left: 1px; }
+        .mascotPage #overlay { position: relative; z-index: 2; background: url('images/mascots/mascotwrapnonie.png') no-repeat; width: 990px; height: 235px; overflow: hidden; }
+        
+        /* temp fix */
+        #overlay { top: -1px; }
+        
+        #overlayBottom { position: relative; top: -163px; z-index: 150; }
+        
+        .mascotPage #promo-content { margin: 20px; width: 990px; float: left; }
+        .mascotPage #promo-content .promoBox { width: 180px; overflow: hidden; float: left; margin-right: 12px;}
+        .mascotPage #promo-content .promoBox .content { margin-top: 5px; }
+        
+        .mascotPage .hr { background: url("images/mascots/polegreen.png") no-repeat scroll 0 0 transparent; border: 0 none; clear: both; float: left; height: 20px; margin-left: 22px; width: 100%; }
+        
+        .mascotPage #mascotPromos { width: 950px; float: left; clear: both; margin: 20px; }
+        .mascotPage #mascotPromos #wenlock,
+        .mascotPage #mascotPromos #mandeville { background: #f8f8f8; width: 340px; padding: 9px 16px; height: 120px; }
+        .mascotPage #mascotPromos #wenlock { float: left; }
+        .mascotPage #mascotPromos #mandeville { float: right; }
+        .mascotPage #mascotPromos #enter { float: left; height: 137px; margin: 0 10px; width: 186px; }
+        .mascotPage #mascotPromos #enter a { position: relative; top: 25px; width: 183px; background: url('images/mascots/enter.png') no-repeat; display: block; text-indent: -7777px; width: 183px; height: 80px; }           
+        .mascotPage #mascotPromos .left,
+        .mascotPage #mascotPromos .right { float: left; }        
+        .mascotPage #mascotPromos h2 { height: 30px; margin-left: 5px; margin-top: 15px; text-indent: -7777px;  }      
+        .mascotPage #mascotPromos #wenlock h2 { background: url("images/mascots/hlwenlock.gif") no-repeat scroll 0 0 transparent; width: 120px; }
+        .mascotPage #mascotPromos #mandeville h2 { background: url("images/mascots/hlmandeville.gif") no-repeat scroll 0 0 transparent; width: 153px;  }       
+        .mascotPage #mascotPromos p { margin-left: 5px;  margin-right: 10px; }
+        .mascotPage #mascotPromos .socialIcons { margin-right: 10px; }
+    </style>
+    
+    <style>
+        .jcarousel-skin-tango .jcarousel-container{}
+        .jcarousel-skin-tango .jcarousel-container-horizontal{width:990px;padding:0px;}
+        .jcarousel-skin-tango .jcarousel-clip-horizontal{width:990px;height:492px;z-index;200;}
+        .jcarousel-skin-tango .jcarousel-item{width:990px;height:492px;}
+        .jcarousel-skin-tango .jcarousel-item-horizontal{margin-left:0;margin-right:10px;}
+        .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-item-horizontal{margin-left:10px;margin-right:0;}
+        .jcarousel-skin-tango .jcarousel-item-placeholder{background:#fff;color:#000;}
+        .jcarousel-skin-tango .jcarousel-next-horizontal{position:absolute;top:43px;right:5px;width:32px;height:70px;cursor:pointer;background:#f7fafa url('images/mascots/arrowright.gif') no-repeat 10px 25px;z-index:200;}
+        .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-next-horizontal{left:5px;right:auto;background-image:url(prev-horizontal.png);}
+        .jcarousel-skin-tango .jcarousel-next-horizontal:hover{}
+        .jcarousel-skin-tango .jcarousel-next-horizontal:active{}
+        .jcarousel-skin-tango .jcarousel-next-disabled-horizontal,
+        .jcarousel-skin-tango .jcarousel-next-disabled-horizontal:hover,
+        .jcarousel-skin-tango .jcarousel-next-disabled-horizontal:active{cursor:default;}
+        .jcarousel-prev-disabled{opacity:0.5;}
+        .jcarousel-skin-tango .jcarousel-prev-horizontal{position:absolute;top:43px;left:5px;width:32px;height:70px;cursor:pointer;background:#f7fafa url('images/mascots/scrollleft.gif') no-repeat 10px 25px;z-index:200;}
+        .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-prev-horizontal{left:auto;right:5px;}
+        .jcarousel-skin-tango .jcarousel-prev-horizontal:hover{}
+        .jcarousel-skin-tango .jcarousel-prev-horizontal:active{background-position:-64px 0;}
+        .jcarousel-skin-tango .jcarousel-prev-disabled-horizontal,
+        .jcarousel-skin-tango .jcarousel-prev-disabled-horizontal:hover,
+        .jcarousel-skin-tango .jcarousel-prev-disabled-horizontal:active{cursor:default;}
+        .jcarousel-next-horizontal,
+        .jcarousel-prev-horizontal{top:300px !important;z-index:200 !important;}        
+    </style>       
+    
+    <xsl:text disable-output-escaping="yes">
+        <![CDATA[
+            <!--[if IE 6]>
+                <style type="text/css">                    
+                    #overlay { background: url('images/mascots/mascotwrap.gif') no-repeat !important; }
+                </style>
+            <![endif]-->     
+        ]]>
+    </xsl:text>          
+    
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/jquery.jcarousel.min.js"></script>    
+    <script type="text/javascript" src="js/jquery.easing.compatibility.js"></script>   
+   
+    <script type="text/javascript">
+
+        function mycarousel_initCallback(carousel) {
+            // Disable autoscrolling if the user clicks the prev or next button.
+            carousel.buttonNext.bind('click', function() { carousel.startAuto(0); });
+            carousel.buttonPrev.bind('click', function() { carousel.startAuto(0); });
+        };
+        
+        jQuery(document).ready(function() {
+            jQuery('#mycarousel').jcarousel({
+                auto: 5,
+                scroll: 1,
+                wrap: 'last',
+                initCallback: mycarousel_initCallback
+            });
+        });
+        
+    </script>
+    
+    
+</content:group>
+
+<div id="Content" class="mascotPage">
+    
+    <div id="main-content">
+        <div id="mainPromoWrap">
+            <div id="overlay">    
+            </div>
+            <div id="underlay">
+                <ul id="mycarousel" class="jcarousel-skin-tango">
+                    <!--li><a href="http://www.mylondon2012.com/mascots/news-feed/b31bf6-win-huge-prizes-for-spotting-us-in-london/"><img src="images/mascots/mascot3.png" alt="" width="990" height="493" /></a></li-->
+                    <li><a href="http://www.mylondon2012.com/mascots/"><img src="images/mascots/mascot1.jpg" alt="" width="990" height="493" /></a></li>
+                    <li><a href="http://mascot-games.london2012.com/"><img src="images/mascots/mascot2.jpg" alt="" width="990" height="493" /></a></li>
+                </ul>               
+            </div>
+            <img src="images/mascots/pinkpole.png" id="overlayBottom" alt="pole" />
+        </div>
+    </div>  
+
+    <div id="promo-content">
+        <div class="promoBox">
+            <content:picture id="promoImage1" width="182" height="100" resize="crop" />
+            <div class="content"><p><content:text schema="styled" id="promoText1" /></p></div>
+        </div>    
+        <div class="promoBox">
+            <content:picture id="promoImage2" width="182" height="100" resize="crop" />
+            <div class="content"><p><content:text schema="styled" id="promoText2" /></p></div>
+        </div>
+        <div class="promoBox">
+            <content:picture id="promoImage3" width="182" height="100" resize="crop" />
+            <div class="content"><p><content:text schema="styled" id="promoText3" /></p></div>
+        </div>    
+        <div class="promoBox">
+            <content:picture id="promoImage4" width="182" height="100" resize="crop" />
+            <div class="content"><p><content:text schema="styled" id="promoText4" /></p></div>
+        </div>  
+        <div class="promoBox">
+            <content:picture id="promoImage5" width="182" height="100" resize="crop" />
+            <div class="content"><p><content:text schema="styled" id="promoText5" /></p></div>
+        </div>        
+    </div>
+    
+    <!-- <div class="hr"></div> -->    
+    
+    <div id="mascotPromos">
+        <div id="wenlock">
+            <div class="left">
+                <img src="images/mascots/wenlocksmall.png" alt="Wenlock" />
+            </div>
+            <div class="right">
+                <h2>Wenlock</h2>
+                <p>Follow Wenlock on:</p>
+                <p>
+                    <a target="_blank" href="http://www.twitter.com/iamwenlock" class="socialIcons"><img src="images/mascots/twittericon.gif" alt="Wenlock on twitter" /></a>
+                    <a target="_blank" href="http://www.facebook.com/iamwenlock" class="socialIcons"><img src="images/mascots/facebook.gif" alt="Wenlock on facebook" /></a>
+                </p>
+            </div>
+        </div>
+        
+        <div id="enter"><a href="http://www.mylondon2012.com/mascots">Enter the 2012 Mascots Site</a></div>
+        
+        <div id="mandeville">
+            <div class="left">
+                <img src="images/mascots/mandevillesmall.png" alt="Mandeville" />
+            </div>
+            <div class="right">
+                <h2>Mandevill</h2>
+                <p>Follow Mandeville on:</p>
+                <p>
+                    <a target="_blank" href="http://www.twitter.com/iammandeville" class="socialIcons"><img src="images/mascots/twittericon.gif" alt="Mandeville on twitter" /></a>
+                    <a target="_blank" href="http://www.facebook.com/iammandeville" class="socialIcons"><img src="images/mascots/facebook.gif" alt="Mandeville on facebook" /></a>
+                </p>
+            </div>
+        </div>
+    </div>
+        
+</div>
+
