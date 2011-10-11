@@ -70,7 +70,7 @@
                 echo $community->seededSelectOption("role", "swimming/paralympics/olympic%20park", "Swimming/Paralympics/Olympic Park");
                 echo $community->seededSelectOption("role", "athletics/olympics/olympic%20park", "Athletics/Olympics/Olympic Park");
                 echo $community->seededSelectOption("role", "athletics/paralympics/olympic%20park", "Athletics/Paralympics/Olympic Park");
-                echo $community->seededSelectOption("role", "volleyball/olympics/excel", "Volleyball/Olympics/Excel");
+                echo $community->seededSelectOption("role", "volleyball/olympics/earls%20court", "Volleyball/Olympics/Earls Court");
                 echo $community->seededSelectOption("role", "sitting%20volleyball/paralympics/excel", "Sitting Volleyball/Paralympics/Excel");
                 echo $community->seededSelectOption("role", "beach%20volleyball/olympics/horse%20guards%20parade", "Beach Volleyball/Olympics/Horse Guards Parade");
                 echo $community->seededSelectOption("role", "5%20a%20side%20football/paralympics/olympic%20park", "5 a side Football/Paralympics/Olympic Park");
@@ -106,5 +106,4 @@
 
 <div id="sidebar-right-2012">   
     <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
-</div>  
-
+</div>
