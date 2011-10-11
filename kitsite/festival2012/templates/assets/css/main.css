@@ -284,7 +284,7 @@ margin: 5px 2px 0;
 .search-events input.from-date, .search-events input.to-date {
 clear: none;
 float: left;
-width: 38%;
+/*width: 38%;*/
 }
 
 .search-events input.to-date {
@@ -365,6 +365,34 @@ border-right: 0;
 
 .search-events input.date-input {
 background: #f2efef url('../images/icons/datepicker.png') no-repeat right;
+}
+
+.search-events #from-date-wrap {
+float: left;
+width: 47%;
+margin: 0 1% 10px 2%;
+}
+
+.search-events #to-date-wrap {
+float: left;
+width: 47%;
+margin: 0 2% 10px 1%;
+}
+
+.search-events #from-date-wrap label, .search-events #to-date-wrap label {
+color: white;
+font-weight: bold;
+clear: left;
+float: left;
+font-size: 1.090909090909091em;
+line-height: 2;
+}
+
+.search-events #from-date-wrap input, .search-events #to-date-wrap input {
+clear: left;
+float: left;
+width: 96%;
+margin: 0;
 }
 
 /* Recent Events ------------------------------------------------------------ */
@@ -607,6 +635,10 @@ font-weight: bold;
 }
 
 /* Mobile Navigation -------------------------------------------------------- */
+
+#mobile-nav {
+border-top: 4px solid #777;
+}
 
 #mobile-nav ul, ul.events-grid {
 margin: 0;
@@ -1022,6 +1054,10 @@ display: inline;
 border-right: 1px solid #fff;
 padding-right: 10px;
 margin-right: 10px;
+}
+
+.mobile-desktop ul li.last {
+border-right: 0;
 }
 
 .mobile-desktop ul a {

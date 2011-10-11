@@ -96,16 +96,19 @@
 					</select>
 					<label for="keyword-artist-venue" class="hide-content">Type your keyword, artist or venue</label>
 					<input type="text" value="Keyword, Artist, Venue" id="keyword-artist-venue" class="events-text-input keyword-input" />
-					<h2>Where</h2>
+					<h2>Where:</h2>
 					<label for="town-postcode" class="hide-content">Type a town or postcode</label>
 					<input type="text" value="Town or Postcode" id="town-postcode" class="events-text-input town-postcode-input" />
 					<a class="proximity" href="#">What's going on near me</a>
 					<h2>When:</h2>
-					<label for="from-date" class="hide-content">Add a start date</label>
-					<input type="text" value="From Date" id="from-date" class="date-input events-text-input from-date" />
-					<p class="mobile-dateto">To</p>
-					<label for="to-date" class="hide-content">Add an end date</label>
-					<input type="text" value="To Date" id="to-date" class="date-input events-text-input to-date" />
+					<div id="from-date-wrap">
+						<label for="from-date">Add a start date</label>
+						<input type="number" value="dd/mm/yy" id="from-date" class="date-input events-text-input from-date" />
+					</div>
+					<div id="to-date-wrap">
+						<label for="to-date">Add an end date</label>
+						<input type="number" value="dd/mm/yy" id="to-date" class="date-input events-text-input to-date" />
+					</div>
 					<input class="eventSearchSubmit" type="submit" value="Find Events" name="event-search-submit" />
 				</form>
 			</div>

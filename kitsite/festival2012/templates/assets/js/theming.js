@@ -23,6 +23,7 @@ function runEverything() {
 	recentEventsShowHide();
 	showHideSearchLabels();
 	contentShowHide();
+	removeLastBorder();
 	$('div.serps ul.events-list li').last().addClass('end-event-list');
 	$('#search-events-form input').click(function(){
 		$(this).val("");
@@ -43,7 +44,7 @@ function setUpCounter(){
 
 // Date picker is really this easy, styling is via datePicker.css
 function setDatePicker(){
-	$('input.date-input').datepicker({ dateFormat: 'dd mm yy' });
+	$('input.date-input').datepicker({ dateFormat: 'dd/mm/yy' });
 }
 
 // Recent Events show and hide
@@ -53,7 +54,7 @@ function recentEventsShowHide(){
 	$('ul.recent-events-carousel li:nth-child(2)').removeClass('hide-event');
 	$('ul.recent-events-carousel li:nth-child(3)').removeClass('hide-event');
 	$('ul.recent-events-carousel li.hide-event').hide();
-	$('div.recent-events').append('<a href="#" id="show-recents">Show All Events</a>');
+	$('div.recent-events').append('<a href="#" id="show-recents">Show all</a>');
 	$('div.recent-events a#show-recents').click(function(){
 		$('ul.recent-events-carousel li.hide-event').show();
 		$(this).css('display', 'none');
@@ -80,20 +81,20 @@ function showHideSearchLabels() {
 	     $(this).val('Town or Postcode');
 	 });
 	$("form.search-events-form input#from-date").focus(function(){
-	     if ( $(this).val() == "From Date")
+	     if ( $(this).val() == "dd/mm/yy")
 	    $(this).val('');
 	 });
 	 $("form.search-events-form input#from-date").blur(function(){
 	     if ( $(this).val() == "")
-	     $(this).val('From Date');
+	     $(this).val('dd/mm/yy');
 	 });
 	$("form.search-events-form input#to-date").focus(function(){
-	     if ( $(this).val() == "To Date")
+	     if ( $(this).val() == "dd/mm/yy")
 	    $(this).val('');
 	 });
 	 $("form.search-events-form input#to-date").blur(function(){
 	     if ( $(this).val() == "")
-	     $(this).val('To Date');
+	     $(this).val('dd/mm/yy');
 	 });	
 }
 
@@ -142,4 +143,8 @@ function contentShowHide(){
     $('h4.toggle').each(add_link);
     $('h4.toggle').click(toggle);
     $('h4.toggle a').mouseup(remove_focus);
+};
+
+function removeLastBorder() {
+	$('div.mobile-desktop ul li').last().addClass('last');
 };
