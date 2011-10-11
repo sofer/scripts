@@ -1,0 +1,450 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="format-detection" content="telephone=no" />
+<title>Title goes here</title>
+<!-- Not needed in mobile
+<link rel="stylesheet" type="text/css" href="assets/css/style.css" media="screen, projection" />
+<link rel="stylesheet" type="text/css" href="assets/css/print.css" media="print" />
+-->
+<link rel="stylesheet" href="assets/css/main.css" type="text/css" />
+<link rel="stylesheet" href="assets/css/retina.css" type="text/css" />
+<link rel="shortcut icon" href="assets/images/icon/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="shortcut icon" href="assets/images/icon/favicon.gif" type="image/gif" />
+<link rel="shortcut icon" href="assets/images/icon/favicon.png" type="image/png" />
+<link rel="apple-touch-icon" href="assets/images/icon/iphonetouch.jpg"/>
+<link rel="stylesheet" href="assets/css/datePicker.css" type="text/css" media="screen" title="no title" />
+<script src="assets/js/jquery-1.6.2.min.js" type="text/javascript"></script>
+</head>
+<body><script type="text/javascript">$("body").addClass("JS-enabled");</script>
+	<!-- Not needed in mobile
+	<div class="section functionalHeader">
+		<div class="wrapper">
+			<a href="#" class="leaderboard"><img src="assets/images/placeholders/ad-leaderboard.jpg" width="728" height="90" alt="Ad Leaderboard" /></a>
+			<div class="page-options">
+				<ul id="page-option-list">
+					<li><a href="#festival-top">Skip to content</a></li>
+					<li><a href="#">Login / Sign up</a></li>
+					<li><a href="#" id="askaquestion">Ask a question</a></li>
+					<li><a href="#">Français</a></li>
+					<li><a href="#">Read this page aloud</a></li>
+				</ul>
+				<ul id="font-size-list">
+					<li><a class="font-css-swap font-small" href="?font=normal" title="Switch to Normal text"><span class="hide-content">Normal text</span>[A]</a></li>
+					<li><a class="font-css-swap font-medium" href="?font=larger" title="Switch to Larger text"><span class="hide-content">Larger text</span>[A]</a></li>
+					<li><a class="font-css-swap font-large" href="?font=largest" title="Switch to Largest text"><span class="hide-content">Largest text</span>[A]</a></li>
+				</ul>
+				<ul id="accessibility-styles-list">
+					<li id="normal-style"><a class="main-css-swap" href="?stylesheet=normal" title="Switch to Normal Style Sheet"><span class="normal-style"><span class="hide-content">Normal Style Sheet</span>A</span></a></li>
+					<li id="dyslexia-style"><a class="main-css-swap" href="?stylesheet=dyslexia" title="Switch to Dyslexia Style Sheet"><span class="dyslexic-style"><span class="hide-content">Dyslexic Style Sheet</span>A</span></a></li>
+					<li id="high-visibility-style"><a class="main-css-swap" href="?stylesheet=highvis" title="Switch to High Visibility Style Sheet"><span class="high-vis-style"><span class="hide-content">High Visibility Style Sheet</span>A</span></a></li>
+				</ul>
+			</div>
+			<form class="drop-down-form" name="drop-down-form" action="#" method="post" id="site-selector-form">
+				<label for="drop-down" class="hide-content">Select link:</label>
+				<select id="drop-down" class="drop-down" name="drop-down">
+					<option value="#">London 2012 sites</option>
+					<option value="http://www.london2012.com/">Official London 2012 website</option>
+					<option value="http://shop.london2012.com/on/demandware.store/Sites-ldn-Site/default/Default-Start?cm_mmc=LOCOG-_-website-_-navigation-_-homepage">Shop</option>
+					<option value="http://www.tickets.london2012.com/">Tickets</option>
+					<option value="http://getset.london2012.com/">Get Set</option>
+					<option value="http://www.mylondon2012.com/mascots/">Mascots</option>
+				</select>
+				<input class="dropDownSubmit" type="image" alt="Drop down submit button" name="drop-down-submit" src="assets/images/pf/header-submit.gif" />
+			</form>
+		</div>
+	</div>
+	-->
+	<div class="section nav-sect">
+		<div class="wrapper navbar">
+			<div class="branding">London 2012 Festival</div>
+			<p class="strapline">21 June - 9 September 2012</p>
+		<!-- Not needed in mobile
+			<ul class="mainnav">
+				<li><a id="nav-home" class="selected" href="#" title="Home">Home</a> /</li>
+				<li><a id="nav-events" href="#" title="Events &amp; Tickets">Events &amp; Tickets</a> /</li>
+				<li><a id="nav-gallery" href="#" title="Backstage">Backstage</a> /</li>
+				<li><a id="nav-about" href="#" title="About">About</a></li>
+			</ul>
+		-->
+		</div>
+	</div>
+<!-- Not needed in mobile	
+	<div class="section ev-search">
+		<div class="wrapper">
+			<div class="search-events">
+				<form class="search-events-form" name="search-events-form" action="#" method="post" id="search-events-form">
+					<label for="event-drop-down" class="hide-content">Choose event type</label>
+					<select class="drop-down" id="event-drop-down" name="event-types">
+						<option value="1">All Event Types</option>
+						<option value="2">Art</option>
+						<option value="3">Outdoor &amp; Carnival</option>
+						<option value="4">Comedy</option>
+						<option value="5">Dance</option>
+						<option value="6">Film</option>
+						<option value="7">Museum &amp; Heritage</option>
+						<option value="8">Books</option>
+						<option value="9">Music</option>
+						<option value="10">Theatre &amp; Performance</option>
+						<option value="11">Fashion</option>
+						<option value="12">Kids &amp; Family</option>
+						<option value="13">Food</option>
+					</select>
+					<label for="keyword-artist-venue" class="hide-content">Type your keyword, artist or venue</label>
+					<input type="text" value="Keyword, Artist, Venue" id="keyword-artist-venue" class="events-text-input keyword-input" />
+					<label for="town-postcode" class="hide-content">Type a town or postcode</label>
+					<input type="text" value="Town or Postcode" id="town-postcode" class="events-text-input town-postcode-input" />
+					<label for="from-date" class="hide-content">Add a start date</label>
+					<input type="text" value="From Date" id="from-date" class="date-input events-text-input from-date" />
+					<label for="to-date" class="hide-content">Add an end date</label>
+					<input type="text" value="To Date" id="to-date" class="date-input events-text-input to-date" />
+					<input class="eventSearchSubmit" type="submit" value="Find Events" name="event-search-submit" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<div class="wrapper sharing">
+			<ul class="social-menu">
+				<li id="social-tw"><a href="http://twitter.com/#!/@london2012fest" title="Follow us on Twitter">Follow</a> <span>@London2012Fest</span></li>
+				<li id="social-fb"><iframe src="http://www.facebook.com/plugins/like.php?app_id=231218366899017&amp;href=http%3A%2F%2Fwww.facebook.com%2Flondon2012torchrelay&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=arial&amp;height=21" title="Join us on facebook" style="border:none; overflow:hidden; width:90px; height:21px;"><a href="http://www.facebook.com/london2012torchrelay">Facebook</a></iframe></li>
+			</ul>
+			<ul class="update-link">
+				<li><a href="#" title="Get email updates">Get email updates</a></li>
+			</ul>
+		</div>
+	</div>
+-->
+	<div class="section event-types">
+		<div class="wrapper">
+			<h1 class="event-types-h2">Event Types</h1>
+			<ul class="events-grid">
+				<li class="events-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event1.jpg" width="290" height="218" alt="Event1" /></a>
+					<div class="item-text">
+						<h2><a href="#">Art</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event2.jpg" width="290" height="218" alt="Event2" /></a>
+					<div class="item-text">
+						<h2><a href="#">Outdoor &amp; Carnival</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item last-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event3.jpg" width="290" height="218" alt="Event3" /></a>
+					<div class="item-text">
+						<h2><a href="#">Comedy</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event4.jpg" width="290" height="218" alt="Event4" /></a>
+					<div class="item-text">
+						<h2><a href="#">Dance</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event5.jpg" width="290" height="218" alt="Event5" /></a>
+					<div class="item-text">
+						<h2><a href="#">Film</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item last-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event6.jpg" width="290" height="218" alt="Event6" /></a>
+					<div class="item-text">
+						<h2><a href="#">Museum &amp; Heritage</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event7.jpg" width="290" height="218" alt="Event7" /></a>
+					<div class="item-text">
+						<h2><a href="#">Books</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event8.jpg" width="290" height="218" alt="Event8" /></a>
+					<div class="item-text">
+						<h2><a href="#">Music</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item last-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event9.jpg" width="290" height="218" alt="Event9" /></a>
+					<div class="item-text">
+						<h2><a href="#">Theatre &amp; Performance</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event10.jpg" width="290" height="218" alt="Event10" /></a>
+					<div class="item-text">
+						<h2><a href="#">Fashion</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event11.jpg" width="290" height="218" alt="Event11" /></a>
+					<div class="item-text">
+						<h2><a href="#">Kids &amp; Family</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+				<li class="events-item last-item">
+					<a class="events-grid-img" href="#"><img src="assets/images/placeholders/event12.jpg" width="290" height="218" alt="Event12" /></a>
+					<div class="item-text">
+						<h2><a href="#">Food</a></h2>
+						<p>At vero eos et accusamus et iusto odio digni ssimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos.</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="recent-events" class="section">
+		<div class="wrapper recent-events">
+			<h2>Events you have recently looked at (12)</h2>
+			<ul class="recent-events-carousel jcarousel-skin-locog">
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent1.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent2.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent3.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent4.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent5.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent6.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent1.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent2.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent3.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent4.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent5.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+				<li>
+					<a class="recent-events-item" href="#">
+						<img src="assets/images/placeholders/recent6.jpg" width="146" height="110" alt="Recent1" />
+						<span class="event-details">Event titles appears on rollover (could take several lines)</span>
+					</a>
+					<a class="remove" href="#">
+						Remove
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="section sponsorsLogos">
+		<div id="sponsors-row" class="wrapper">
+			<div id="prem-partners">
+				<h2>Premier Partners of the London 2012 Festival</h2>
+				<ul>
+					<li id="bp"><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+					<li id="bt"><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+				</ul>
+			</div>
+			<div id="prin-funders">
+				<h2>Principal Funders of the London 2012 Festival</h2>
+				<ul>
+					<li id="ace"><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+					<li id="ol"><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+					<li id="lt"><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+				</ul>
+			</div>
+			<div id="uk-funders">
+				<h2>UK Funders</h2>
+				<ul>
+					<li><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+					<li><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+					<li><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+					<li><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+					<li><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+					<li><a href="#"><img src="assets/images/placeholders/sponsor.gif" width="87" height="65" alt="Sponsor" /></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- Not needed in mobile
+		<div id="footer-2012" class="section">
+			<div id="footer-toprow-2012" class="section">
+				<div class="wrapper">
+					<ul id="footer-2012-main-link-bar">
+						<li id="footer-share"><a href="#">Share this page</a></li>
+						<li id="footer-print"><a href="JavaScript:window.print();">Think before you print</a></li>
+						<li id="footer-sign-up-wrap"><a href="#">Sign up to our e-newsletters</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="footer-inner-2012" class="section">
+			<div class="wrapper">
+				<div class="footer-column-2012 first-col">
+					<h2>Other London 2012 sites</h2>
+					<ul class="wide">
+						<li><a href="http://www.london2012.com">Official London 2012 website</a></li>
+						<li><a href="http://www.tickets.london2012.com/">Tickets</a></li>
+						<li><a href="http://shop.london2012.com/">Shop</a></li>
+					</ul>
+					<ul>
+						<li><a href="http://getset.london2012.com/en/home">Get Set</a></li>
+						<li><a href="http://www.london2012.com/young-leaders/">Young Leaders</a></li>
+						<li><a href="http://www.london2012.com/get-involved/education/international-inspiration/">International Inspiration</a></li>
+						<li><a href="http://www.mylondon2012.com/mascots/">Mascots</a></li>
+					</ul>
+				</div>
+				<div class="footer-column-2012">
+					<h2>Quick links</h2>
+					<ul class="wide">
+						<li><a href="http://www.london2012.com/about-us/">About us</a></li>
+						<li><a href="http://www.london2012.com/press/">Media centre</a></li>
+						<li><a href="http://www.london2012.com/jobs">Jobs</a></li>
+						<li><a href="http://www.london2012.com/contact-us.php">Contact us</a></li>
+					</ul>
+					<ul>
+						<li><a href="http://www.london2012.com/business-network">Business Network</a></li>
+						<li><a href="http://www.london2012.com/get-involved/link-to-us/index.php">Link to us</a></li>
+						<li><a href="http://www.london2012.com/about-us/publications">Publications</a></li>
+						<li><a href="http://www.london2012.com/about-us/our-brand/retail-information">Retail</a></li>
+					</ul>
+				</div>
+				<div class="footer-column-2012">
+					<h2>Using this site</h2>
+					<ul class="wide">
+						<li><a href="http://www.london2012.com/about-this-website/web-accessibility-statement.php">Accessibility statement</a></li>
+						<li><a href="http://www.london2012.com/about-this-website/stay-safe-online.php">Stay safe online</a></li>
+						<li><a href="http://www.london2012.com/about-this-website/ticketing-website-checker.php">Ticketing website checker</a></li>
+						<li><a href="http://www.london2012.com/sitemap.php">Sitemap</a></li>
+						<li><a href="http://www.london2012.com/about-this-website/freedom-of-information.php">Freedom of information</a></li>
+						<li><a href="http://www.london2012.com/about-this-website/using-this-site.php">Using this site</a></li>
+					</ul>
+					<ul>
+						<li><a href="http://www.london2012.com/about-this-website/privacy-policy.php">Privacy policy</a></li>
+						<li><a href="http://www.london2012.com/about-this-website/copyright.php">Copyright</a></li>
+						<li><a href="http://www.london2012.com/about-this-website/terms-of-use.php">Terms of use</a></li>
+					</ul>
+				</div>
+				<div class="footer-2012-text">Official site of the London 2012 Olympic and Paralympic Games </div>
+				<div id="footer-2012-follow-us">
+					<span>Follow us on:</span>
+					<ul id="footer-2012-follow-list">
+						<li><a href="http://twitter.com/london2012">Twitter</a></li>
+						<li><a href="http://www.youtube.com/london2012">YouTube</a></li>
+						<li><a href="http://www.facebook.com/london2012">Facebook</a></li>
+					</ul>
+				</div>
+				<div id="poweredByBT" class="transparent-background">
+					<a href="http://www.btplc.com/"><img src="assets/images/logos/bt-logo-transparent.png" class="transparent" alt="Powered  by BT" width="139" height="48" /></a>
+				</div>
+			</div>
+		</div>
+	-->
+		<div class="section mobile-desktop">
+			<ul>
+				<li>Mobile site</li>
+				<li><a href="#">Desktop site</a></li>
+			</ul>
+		</div>
+	<script src="assets/js/jquery.yaselect.min.js" type="text/javascript"></script>
+	<!-- Not for mobile
+	<script src="assets/js/jquery.jcarousel.min.js" type="text/javascript"></script>
+	<script src="assets/js/supersleight.plugin.js" type="text/javascript"></script>
+	<script type="text/javascript" src="assets/js/jquery.cycle.all.min.js"></script>
+	-->
+	<script src="assets/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+	<!-- Not for mobile
+	<script src="assets/js/global.js" type="text/javascript"></script>
+	-->
+	<script src="assets/js/modernizr-2.0.js" type="text/javascript"></script>
+	<script src="assets/js/theming.js" type="text/javascript"></script>
+	</body>
+	</html>

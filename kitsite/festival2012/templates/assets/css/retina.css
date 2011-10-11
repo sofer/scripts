@@ -1,0 +1,134 @@
+/*
+
+RETINA.CSS 
+
+*/
+	p.strapline {
+	-webkit-background-size: 320px 100px; 
+	}
+	.search-events h3 {
+	-webkit-background-size: 320px 1px;
+	}
+	a.proximity {
+	-webkit-background-size: 26px 26px;
+	}
+	.search-events input.date-input {
+	-webkit-background-size: 23px 18px;
+	}
+	ul.recent-events-carousel li a.remove {
+	-webkit-background-size: 26px 26px;
+	}
+	a#show-recents {
+	-webkit-background-size: 1px 27px;
+	}
+	ul.events-list li div.event-status p {
+	-webkit-background-size: 1px 27px;
+	}
+	div.pagination ul li.pag-prev {
+	-webkit-background-size: 360px 44px;
+	}
+	div.pagination ul li.pag-next {
+	-webkit-background-size: 360px 44px;
+	}
+	div.pagination ul li.pag-position {
+	-webkit-background-size: 1px 44px;
+	}
+	#mobile-nav li, ul.events-grid li {
+	-webkit-background-size: 1px 44px;
+	}
+	#mobile-nav li a, ul.events-grid li a {
+	-webkit-background-size: 19px 19px;
+	}
+	ul.social-sharing li.social-twitter a {
+	-webkit-background-size: 29px 29px;
+	}
+	ul.social-sharing li.social-facebook a {
+	-webkit-background-size: 29px 29px;
+	}
+	ul.social-sharing li.social-mail a {
+	-webkit-background-size: 38px 28px;
+	}
+	a.ticket-link {
+	-webkit-background-size: 1px 27px;
+	}
+	.JS-enabled h2.toggle, .JS-enabled h4.toggle {
+	-webkit-background-size: 35px 44px;
+	}
+	.JS-enabled h2.expanded, .JS-enabled h4.expanded {
+	-webkit-background-size: 35px 44px;
+	}
+	.yaselect-anchor {
+	-webkit-background-size: 1px 25px;
+	}
+	.yaselect-wrap {
+	-webkit-background-size: 33px 30px;
+	}
+	.yaselect-open .yaselect-wrap {
+	-webkit-background-size: 33px 30px;
+	}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	p.strapline {
+	background: url('../images/retina/strapline.png') no-repeat top right;
+	}
+	.search-events h3 {
+	background: #242424 url('../images/retina/search-h3.jpg') repeat-y top right;
+	}
+	a.proximity {
+	background: url('../images/retina/proximity-link.png') no-repeat top right;
+	}
+	.search-events input.date-input {
+	background: #f2efef url('../images/retina/datepicker.png') no-repeat right;
+	}
+	ul.recent-events-carousel li a.remove {
+	background: url('../images/retina/remove.png') no-repeat top right;
+	}
+	a#show-recents {
+	background: #504e4e url('../images/retina/show-all-recents.png') repeat-x 0 0;
+	}
+	ul.events-list li div.event-status p {
+	background: #504e4e url('../images/retina/event-status.png') repeat-x;
+	}
+	div.pagination ul li.pag-prev {
+	background: url('../images/retina/pag-left.png') no-repeat top left;
+	}
+	div.pagination ul li.pag-next {
+	background: url('../images/retina/pag-right.png') no-repeat top right;
+	}
+	div.pagination ul li.pag-position {
+	background: url('../images/retina/pag-bg.png') repeat-x top left;
+	}
+	#mobile-nav li, ul.events-grid li {
+	background: url("../images/retina/list_item.png") repeat-x scroll left top #e3e2e2;
+	}
+	#mobile-nav li a, ul.events-grid li a {
+	background: url("../images/retina/list_item_right.png") no-repeat scroll right center transparent;
+	}
+	ul.social-sharing li.social-twitter a {
+	background: url('../images/retina/twittre.jpg') no-repeat;
+	}
+	ul.social-sharing li.social-facebook a {
+	background: url('../images/retina/facebook.jpg') no-repeat;
+	}
+	ul.social-sharing li.social-mail a {
+	background: url('../images/retina/email.png') no-repeat;
+	}
+	a.ticket-link {
+	background: #504e4e url('../images/retina/event-status.png') repeat-x;
+	}
+	.JS-enabled h2.toggle, .JS-enabled h4.toggle {
+	background: #e3e2e2 url('../images/retina/show-more.jpg') no-repeat 0 0;
+	}
+	.JS-enabled h2.expanded, .JS-enabled h4.expanded {
+	background: #e3e2e2 url('../images/retina/show-less.jpg') no-repeat 0 0;
+	}
+	.yaselect-anchor {
+	background: #d2d2d2 url('../images/retina/event-drop-down.jpg') repeat-x top left;
+	}
+	.yaselect-wrap {
+		background: url('../images/retina/dropdown_close.png') no-repeat top right;
+	}
+	.yaselect-open .yaselect-wrap {
+		background: url('../images/pf/dropdown_open.png') no-repeat top right;
+	}
+}
