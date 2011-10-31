@@ -65,7 +65,6 @@
             
             <xsl:if test="not(//tennisVersion)">
             <?php
-                echo $community->seededSelectOption("role", "taekwondo/olympics/excel", "Taekwondo/Olympics/Excel");
                 echo $community->seededSelectOption("role", "swimming/olympics/olympic%20park", "Swimming/Olympics/Olympic Park");
                 echo $community->seededSelectOption("role", "swimming/paralympics/olympic%20park", "Swimming/Paralympics/Olympic Park");
                 echo $community->seededSelectOption("role", "athletics/olympics/olympic%20park", "Athletics/Olympics/Olympic Park");
@@ -107,3 +106,4 @@
 <div id="sidebar-right-2012">   
     <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
 </div>
+
