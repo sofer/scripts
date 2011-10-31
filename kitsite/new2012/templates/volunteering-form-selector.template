@@ -65,15 +65,16 @@
             
             <xsl:if test="not(//tennisVersion)">
             <?php
-                echo $community->seededSelectOption("role", "swimming/olympics/olympic%20park", "Swimming/Olympics/Olympic Park");
-                echo $community->seededSelectOption("role", "swimming/paralympics/olympic%20park", "Swimming/Paralympics/Olympic Park");
-                echo $community->seededSelectOption("role", "athletics/olympics/olympic%20park", "Athletics/Olympics/Olympic Park");
-                echo $community->seededSelectOption("role", "athletics/paralympics/olympic%20park", "Athletics/Paralympics/Olympic Park");
-                echo $community->seededSelectOption("role", "volleyball/olympics/earls%20court", "Volleyball/Olympics/Earls Court");
-                echo $community->seededSelectOption("role", "sitting%20volleyball/paralympics/excel", "Sitting Volleyball/Paralympics/Excel");
-                echo $community->seededSelectOption("role", "beach%20volleyball/olympics/horse%20guards%20parade", "Beach Volleyball/Olympics/Horse Guards Parade");
-                echo $community->seededSelectOption("role", "5%20a%20side%20football/paralympics/olympic%20park", "5 a side Football/Paralympics/Olympic Park");
-                echo $community->seededSelectOption("role", "7%20a%20side%20football/paralympics/olympic%20park", "7 a side Football/Paralympics/Olympic Park");
+                //echo $community->seededSelectOption("role", "taekwondo/olympics/excel", "Olympics/Excel");
+                //echo $community->seededSelectOption("role", "swimming/olympics/olympic%20park", "Swimming/Olympics/Olympic Park");
+                //echo $community->seededSelectOption("role", "swimming/paralympics/olympic%20park", "Swimming/Paralympics/Olympic Park");
+                //echo $community->seededSelectOption("role", "athletics/olympics/olympic%20park", "Athletics/Olympics/Olympic Park");
+                //echo $community->seededSelectOption("role", "athletics/paralympics/olympic%20park", "Athletics/Paralympics/Olympic Park");
+                //echo $community->seededSelectOption("role", "volleyball/olympics/earls%20court", "Volleyball/Olympics/Earls Court");
+                //echo $community->seededSelectOption("role", "sitting%20volleyball/paralympics/excel", "Sitting Volleyball/Paralympics/Excel");
+                //echo $community->seededSelectOption("role", "beach%20volleyball/olympics/horse%20guards%20parade", "Beach Volleyball/Olympics/Horse Guards Parade");
+                //echo $community->seededSelectOption("role", "5%20a%20side%20football/paralympics/olympic%20park", "5 a side Football/Paralympics/Olympic Park");
+                //echo $community->seededSelectOption("role", "7%20a%20side%20football/paralympics/olympic%20park", "7 a side Football/Paralympics/Olympic Park");
                 echo $community->seededSelectOption("role", "technology/olympics/aquatics%20centre", "Technology/Olympics/Aquatics Centre");
                 echo $community->seededSelectOption("role", "technology/olympics/city%20of%20coventry%20stadium", "Technology/Olympics/City of Coventry Stadium");
                 echo $community->seededSelectOption("role", "technology/olympics/earls%20court", "Technology/Olympics/Earls Court");
