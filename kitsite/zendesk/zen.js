@@ -228,8 +228,8 @@ var ZEN = {
 
 // Monthly updates
 var pages = 5;
-var report = '449562'; // closed tickets
-//report = '23031103'; // 2012 open tickets-but don't expect the titles to match up
+//var report = '449562'; // closed tickets
+report = '23031103'; // 2012 open tickets-but don't expect the titles to match up
 ZEN.update(report,pages);
 
 
