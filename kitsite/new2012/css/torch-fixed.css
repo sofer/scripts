@@ -1,0 +1,1022 @@
+/* from cogapp 18/5/11 */
+.JS-enabled div#relay-route-map ul.city { display: none; }
+body.torch-site .persistent-text div { margin-bottom: 20px; }
+
+/* last minute fixes  17/5/11 */
+body.torch-site .persistent-text a,
+body.torch-site .content a { color: #73663a !important; } /* to stop links going blue! */
+/* end last minute fixes  17/5/11 */
+
+/* fix from cogapp 10/5/2011 */
+p.headingParagraph {
+    font-size:1.2em;
+    margin-bottom:0.8em;
+    line-height:1.2em;
+    font-weight:bold;
+}
+a {
+    outline-color:#78c7eb;
+}
+/* end fix from cogapp 10/5/2011 */
+
+/* torch fixed */
+.torch-site div#Content { width: 970px }
+.torch-site div#page-2012 div#sidebar-right-2012 {
+    margin-right: 27px; /* was and before 27px */
+}
+.torch-site div #wideColumn {
+    float: left;
+    nowhitespace: afterproperty;
+    width: 707px;
+    /* was 730 but breaks the page now */
+}
+
+/* FEATURED CONTENT
+############################################################ */
+.torch-site .torch-content-slides {
+    float: left;
+    width: 730px;
+    min-height: 314px;
+    height: auto !important;
+    height: 314px;
+    position: relative;
+}
+.torch-site .relay-home .torch-content-slides {
+    min-height: 441px;
+    height: auto !important;
+    height: 441px;
+}
+.torch-site .relay-splash .torch-content-slides {
+    min-height: 491px;
+    height: auto !important;
+    height: 491px;
+    padding-bottom: 40px;
+}
+.torch-site .torch-content-slides h1 { margin-bottom: 1em }
+.torch-site .torch-content-slides .persistent-text {
+    float: left;
+    width: 180px;
+    height: auto;
+    margin-top: 30px;
+    z-index: 100;
+    padding-bottom: 30px;
+}
+.torch-site div.relay-splash .torch-content-slides .persistent-text { padding-bottom: 80px }
+.torch-site .relay-home .torch-content-slides .persistent-text {
+    width: 210px; /* margin-top: 89px;*/;
+}
+.torch-site .relay-splash .torch-content-slides .persistent-text {
+    width: 200px; /* margin-top: 139px;*/;
+}
+/* kitsite changed this */
+.torch-site .relay-home .torch-content-slides .persistent-text div.pullout-link a {
+    display: block;
+    width: 190px !important;
+    width: 180px;
+    margin-top: 5px; /* changed by cogapp 11/5/11 */
+    margin-bottom:1em; /* changed by cogapp 11/5/11 */
+    padding: 5px 10px 10px;
+    background: #817240 url('../images/torch/presentation/white-btm-overlay.gif') no-repeat bottom left;
+    color: white !important;
+    font-size: 1.2em;
+}
+.torch-site .relay-home .torch-content-slides .persistent-text a.pullout-link {
+    display: block;
+    /* nowhitespace: afterproperty; removed 11/5/11 */
+    width: 190px !important;
+    width: 180px;
+    margin-top: 5px; /* changed by cogapp 11/5/11 */
+    margin-bottom:1em; /* changed by cogapp 11/5/11 */
+    padding: 5px 10px 10px;
+    /* background: #817240 url('../images/torch/presentation/white-btm-overlay.gif') no-repeat bottom left;*/
+    color: white !important;
+    font-size: 1.2em;
+}
+.torch-site .relay-splash .torch-content-slides a.entry-link {
+    display: block;
+    width: 144px;
+    padding: 8px 5px 15px;
+    background: #817240 url('../images/torch/presentation/white-btm-overlay-splash.gif') no-repeat bottom left;
+    color: white;
+    font-size: 1.3em;
+    line-height: 1.2em;
+    position: absolute;
+    bottom: 36px;
+    right: 60px;
+    text-align: center;
+}
+.torch-site .relay-home .persistent-text h1 {
+    /* position: absolute;*/
+    top: 35px;
+    left: 0;
+    width: 293px;
+    height: 32px;
+    text-indent: -9999em;
+    /* background: transparent url("../images/torch/presentation/torch-home-h1.gif") no-repeat top left; */
+    background: transparent url("../images/torch/presentation/otr-heading.png") no-repeat top left;
+    z-index: 300;
+}
+.torch-site .relay-splash .persistent-text h1 {
+    /* position: absolute;*/
+    top: 35px;
+    left: 0;
+    width: 293px;
+    /* height: 73px; */
+    height: 32px; /* 11/5/11 */
+    text-indent: -9999em;
+    background: transparent url("../images/torch/presentation/otr-heading.png") no-repeat top left;
+    z-index: 300;
+}
+.torch-site .torch-content-slides .content-container {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+}
+.torch-site div#feature-content-container div.content-container {
+    display: none;
+    width: 100%;
+    /* removed, caused flickering in ie */
+    /* bottom: 20px !important; */
+}
+.torch-site div#feature-content-container .content-container .feature-content { float: right }
+.torch-site div#feature-content-container div.current { display: block !important }
+.torch-site div#feature-content-container div#pager {
+    background: none repeat scroll 0 0 #FFFFFF;
+    /* nowhitespace: afterproperty;
+    bottom: 20px !important; */
+    bottom: 10px !important; /* changed by cogapp 11/5/11 */
+    clear: left;
+    display: inline !important;
+    float: left;
+    padding: 0 0 0 0 !important;
+    position: absolute;
+    text-align: center;
+    width: auto;
+    /* was 200 */
+    z-index: 600;
+    left: 0px;
+}
+.torch-site div.relay-splash div#feature-content-container div#pager { bottom: 50px !important }
+.torch-site div#feature-content-container div#pager a {
+    background-color: #212121;
+    color: #FFFFFF;
+    float: left;
+    margin-left: 2px;
+    padding: 1px;
+    text-decoration: none;
+    font-weight: bold;
+    width: 32px;
+}
+.torch-site div#feature-content-container div#pager a.activeSlide { background-color: #cf7e27 }
+.torch-site div#feature-content-container div#pager a.activeSlide:hover { color: #ffec7c }
+.torch-site div#feature-content-container div#pager a:hover { color: #cf7e27 }
+.torch-site div#top-content-2012 div#pager a.activeSlide { background: none repeat scroll 0 0 #cf7e27 }
+.torch-site div#top-content-2012 div#pager a.activeSlide { background-color: #cf7e27 }
+
+/* TORCH HEADER STYLING
+############################################################ */
+.torch-site div#header-2012 a { color: #73663a }
+.torch-site div#header-2012 div#breadcrumb-2012-container {
+    float: left;
+    padding: 5px 0;
+    width: 700px;
+    display: inline;
+}
+/*
+.torch-site div#welsh-english-language-switcher {
+    float: left;
+    padding: 5px 0 5px 20px;
+    width: 250px;
+    background: transparent url('../images/torch/presentation/icon-language-switch.gif') no-repeat 0 8px;
+}
+*/
+.torch-site div#welsh-english-language-switcher {     
+    background: url("../images/para-torch/presentation/icon-language-switch.gif") no-repeat scroll 0 8px transparent;
+    float: right;     
+    padding: 5px 0 5px 20px;     
+    width: 227px;
+}
+
+.torch-site div#header-2012 div#main-header-2012-content {
+    background: #ed9e27 url("../images/torch/presentation/header-bg.png") no-repeat scroll right top !important;
+    float: left;
+    padding-left: 20px;
+    width: 970px;
+}
+
+.torch-site form.drop-down-form .selected { background: #E1E1E1 url('../images/torch/icons/header-drop-down-icon.gif') no-repeat 9.5em 3px }
+.torch-site form.drop-down-form .selected:hover { background: #E1E1E1 url('../images/torch/icons/header-drop-down-icon-over.gif') no-repeat 9.5em 3px }
+.torch-site form.drop-down-form .open { background: #E1E1E1 url('../images/torch/icons/header-arrow-up-icon.gif') no-repeat 9.5em 3px !important }
+.torch-site form.drop-down-form .open:hover { background: #E1E1E1 url('../images/torch/icons/header-arrow-up-icon-over.gif') no-repeat 9.5em 3px !important }
+.torch-site div#section-highlight div { background: #eea731 !important }
+.torch-site div#header-2012 div#header-list-container ul#page-option-list,
+.torch-site div#header-2012 div#header-list-container ul#font-size-list,
+.torch-site div#header-2012 div#header-list-container ul#accessibility-styles-list { background: none repeat scroll 0 0 transparent }
+
+/* NAVIGATION TABS
+############################################################ */
+.torch-site div#header-2012 div#nav-primary-container { background: url("../images/torch/presentation/primary-nav-bg.gif") no-repeat scroll 0 30px transparent }
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li#nav-home,
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li#nav-tickets,
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li#nav-shop {
+    background: url("../images/torch/tabs/nav-small-bg.png") no-repeat scroll left top transparent !important;
+    background: #817240;
+}
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li#nav-get-involved,
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li#nav-making-it-happen {
+    background: url("../images/torch/tabs/nav-extra-large-bg.png") no-repeat scroll left top transparent !important;
+    background: #817240;
+}
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li#nav-games {
+    background: url("../images/torch/tabs/nav-medium-bg.png") no-repeat scroll left top transparent !important;
+    background: #817240;
+}
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li#nav-visiting {
+    background: url("../images/torch/tabs/nav-large-bg.png") no-repeat scroll left top transparent !important;
+    background: #817240;
+}
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li a.header-dropdown { background: url("../images/torch/icons/header-nav-drop-down-icon.gif") no-repeat scroll right center transparent }
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li a.header-dropdown:hover { background: url("../images/torch/icons/header-nav-drop-down-icon-over.gif") no-repeat scroll right center transparent }
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li a.header-closeup { background: url("../images/torch/icons/header-nav-arrow-up-icon.gif") no-repeat scroll right center transparent }
+.torch-site div#header-2012 div#nav-primary-container ul#nav-primary li a.header-closeup:hover { background: url("../images/torch/icons/header-nav-arrow-up-icon-over.gif") no-repeat scroll right center transparent }
+div#header-2012 div.nav-secondary-container ul.header-2012-secondary-navigation li a { color: #73663a }
+body.torch-site div#section-highlight div { width: 152px }
+body.torch-site div#section-highlight div { margin-left: 112px }
+
+/* TORCH LEFT SIDEBAR STYLING
+############################################################ */
+.torch-site div#sidebar-left-2012 {
+    margin-right: 20px !important;
+    margin-top: 35px;
+    overflow: visible !important;
+    width: 220px !important;
+}
+.torch-site div#sidebar-left-2012 img.logo {
+    left: 20px;
+    position: relative;
+    top: 2px;
+}
+.torch-site div#torch-relay-info {
+    background: url("../images/torch/backgrounds/torch-relay-info.gif") no-repeat scroll left top #F6F6F6;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 30px 0 20px 0;
+    padding: 9px 6px 0;
+    text-align: center;
+    width: 208px;
+}
+.torch-site div#torch-relay-info img {
+    margin-right: 4px;
+    position: relative;
+    top: 5px;
+}
+.torch-site div#torch-relay-info p {
+    margin-bottom: 0;
+    padding: 8px 0;
+}
+.torch-site div#sidebar-left-2012 ul li a.selected,
+div#sidebar-left-2012 ul li span.selected { background: url("../images/torch/presentation/selected-nav.gif") no-repeat scroll left 8px transparent !important }
+.torch-site div#sidebar-left-2012 ul li li li a.selected,
+div#sidebar-left-2012 ul li li li span.selected { background: url("../images/torch/presentation/selected-nav.gif") no-repeat scroll left 5px transparent !important }
+.torch-site div#sidebar-left-2012 ul li span { color: #73663a }
+div#sidebar-left-2012 ul li ul li ul li:last-child span { overflow: hidden }
+.torch-site div#sidebar-left-2012 ul#nav-secondary { width: 220px }
+
+/* TORCH RIGHT SIDEBAR STYLING
+############################################################ */
+.torch-site div#page-2012 div#sidebar-right-2012 a { color: #73663a }
+.torch-site div#page-2012 div#sidebar-right-2012 a.link-external-js span {
+    background-image: url("../images/torch/icons/link-external.gif");
+    display: inline-block;
+    height: 11px;
+    margin-right: 3px;
+    overflow: hidden;
+    position: relative;
+    width: 16px;
+}
+.torch-site span.big-text {
+    font-size: 1.3em;
+    line-height: 1.8em;
+}
+.torch-site .border-top { border-top: 1px dotted #ACACAC }
+.torch-site .border-bottom { border-bottom: 1px dotted #ACACAC }
+.torch-site div#page-2012 div#did-you-know,
+div#page-2012 div#where-is-it {
+    border-bottom: 0 !important;
+    width: 220px !important;
+}
+.torch-site div#page-2012 div#sidebar-right-2012 div.box {
+    clear: left;
+    float: left;
+    margin-bottom: 25px;
+}
+.torch-site div#page-2012 div#sidebar-right-2012 div.torch-snippet div.snippet-header,
+.torch-site div#page-2012 div#sidebar-right-2012 div.torch-box h2 {
+    background: #817240 url("../images/torch/tabs/white-rh-panel-overlay.gif") no-repeat left top !important;
+    min-height: 21px;
+    height: auto !important;
+    height: 21px;
+    padding: 13px 10px 2px;
+    color: #ffffff;
+    width: 200px;
+}
+.torch-site div#page-2012 div#sidebar-right-2012 div.snippet div.snippet-header,
+.torch-site div#page-2012 div#sidebar-right-2012 div.torch-box h2 {
+    background: #817240 url("../images/torch/tabs/white-rh-panel-overlay.gif") no-repeat left top !important;
+    min-height: 21px;
+    height: auto !important;
+    height: 21px;
+    padding: 13px 10px 2px;
+    color: #ffffff;
+    width: 200px;
+}
+.torch-site div#page-2012 div#sidebar-right-2012 h2 { font-size: 1.1em }
+.torch-site div#page-2012 div#sidebar-right-2012 div.orange div.snippet-header,
+.torch-site div#page-2012 div#sidebar-right-2012 div.orange h2 { background: #cf7e27 url("../images/torch/tabs/white-rh-panel-overlay-orange.gif") no-repeat left top !important }
+.torch-site div#page-2012 div#sidebar-right-2012 div.box h2 a {
+    color: #fff;
+    display: block;
+}
+.torch-site div#page-2012 div#sidebar-right-2012 div.box div.content {
+    background-color: #E6E6E6;
+    background-image: none;
+}
+.torch-site div#page-2012 div#sidebar-right-2012 div.white-content div.content { background-color: #fff }
+.torch-site div#sidebar-right-2012 div.box p {
+    margin-bottom: 0;
+    padding: 6px 10px;
+    width: 198px;
+}
+.torch-site div#sidebar-right-2012 div.white-content p {
+    margin-bottom: 0;
+    padding: 6px 11px;
+    border-top: 0;
+    border: 1px solid #e6e6e6;
+    width: 196px;
+}
+.torch-site div#sidebar-right-2012 div.white-content ul {
+    margin-bottom: 0;
+    padding: 6px 11px 0;
+    border-top: 0;
+    border: 1px solid #e6e6e6;
+    list-style: none;
+    margin: 0;
+}
+.torch-site div#sidebar-right-2012 div.white-content ul li {
+    padding: 10px 0 0 70px;
+    width: 118px;
+}
+.torch-site div#sidebar-right-2012 div.white-content ul li.bordered {
+    border-bottom: 1px dotted #707070;
+    padding-bottom: 20px;
+}
+.torch-site div#sidebar-right-2012 div.white-content ul li.easy-read {
+    background: transparent url('../images/torch/presentation/icon-easy-read.jpg') no-repeat 0 0;
+    min-height: 50px;
+    height: auto !important;
+    height: 50px;
+}
+.torch-site div#sidebar-right-2012 div.white-content ul li.bsl {
+    background: transparent url('../images/torch/presentation/icon-bsl.jpg') no-repeat 0 10px;
+    min-height: 59px;
+    height: auto !important;
+    height: 59px;
+}
+.torch-site div#page-2012 div.torch-snippet div.navigation {
+    float: right;
+    text-align: center;
+    width: 70px;
+}
+.torch-site div#page-2012 div#sidebar-right-2012 div.torch-snippet div.snippet-header { width: 200px }
+.torch-site div#page-2012 div.torch-snippet div.snippet-header,
+.torch-site div#page-2012 div.torch-snippet h2 { float: left }
+.torch-site div#page-2012 div.torch-snippet div.navigation a,
+.torch-site div#page-2012 div.torch-snippet div.navigation span {
+    line-height: 1em;
+    margin: 2px;
+}
+.torch-site div#page-2012 div.torch-snippet div.navigation { text-align: center }
+.torch-site div#sidebar-right-2012 div.torch-snippet div.navigation .prev {
+    background: url("../images/torch/arrows/prev-white.gif") no-repeat scroll left top transparent !important;
+    float: left;
+    height: 10px;
+    width: 10px;
+}
+.torch-site div#sidebar-right-2012 div.torch-snippet .navigation-totals {
+    float: left;
+    color: white;
+}
+.torch-site div#sidebar-right-2012 div.torch-snippet div.navigation .next {
+    background: url("../images/torch/arrows/next-white.gif") no-repeat scroll left top transparent !important;
+    float: left;
+    height: 10px;
+    width: 10px;
+}
+.torch-site div#page-2012 div.torch-snippet div.navigation a,
+.torch-site div#page-2012 div.torch-snippet div.navigation span {
+    line-height: 1em;
+    margin: 2px;
+}
+.torch-site div#page-2012 div.torch-snippet div.navigation a {
+    position: relative;
+    top: 1px;
+}
+/* cp */
+.torch-site div#page-2012 div.snippet div.navigation {
+    float: right;
+    text-align: center;
+    width: 70px;
+}
+.torch-site div#page-2012 div#sidebar-right-2012 div.snippet div.snippet-header { width: 200px }
+.torch-site div#page-2012 div.snippet div.snippet-header,
+.torch-site div#page-2012 div.snippet h2 { float: left }
+.torch-site div#page-2012 div.snippet div.navigation a,
+.torch-site div#page-2012 div.snippet div.navigation span {
+    line-height: 1em;
+    margin: 2px;
+}
+.torch-site div#page-2012 div.snippet div.navigation { text-align: center }
+.torch-site div#sidebar-right-2012 div.snippet div.navigation .prev {
+    background: url("../images/torch/arrows/prev-white.gif") no-repeat scroll left top transparent !important;
+    float: left;
+    height: 10px;
+    width: 10px;
+}
+.torch-site div#sidebar-right-2012 div.snippet .navigation-totals {
+    float: left;
+    color: white;
+}
+.torch-site div#sidebar-right-2012 div.snippet div.navigation .next {
+    background: url("../images/torch/arrows/next-white.gif") no-repeat scroll left top transparent !important;
+    float: left;
+    height: 10px;
+    width: 10px;
+}
+.torch-site div#page-2012 div.snippet div.navigation a,
+.torch-site div#page-2012 div.snippet div.navigation span {
+    line-height: 1em;
+    margin: 2px;
+}
+.torch-site div#page-2012 div.snippet div.navigation a {
+    position: relative;
+    top: 1px;
+}
+/* -cp */
+.torch-site .expandButton { text-align: left }
+.torch-site div#page-2012 #shop-module .price {
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+.torch-site div#page-2012 #related-images .snippet-header h2 a {
+    background: url("../images/torch/icons/photo-icon.gif") no-repeat scroll 0 1px transparent;
+    padding-left: 20px;
+}
+.torch-site div#page-2012 #related-videos .snippet-header h2 a {
+    background: url("../images/torch/icons/video-icon.gif") no-repeat scroll 0 0 transparent;
+    padding-left: 20px;
+}
+/* TORCH WIDE CONTENT STYLING
+############################################################ */
+.torch-site #WideContent {
+    float: left;
+    position: relative;
+    width: 703px;
+    margin-top: 30px; /* removed, lars 17/05/2011 */
+}
+.torch-site #WideContent.relay-home,
+.torch-site #WideContent.relay-splash { margin-top: 0 }
+.torch-site #wideColumn div.relay-home {
+    margin-top: 0px !important;
+}
+.torch-site #WideContent h1 { margin-bottom: 1em }
+.torch-site div#WideContent div.landing-child {
+    background: url("../images/torch/presentation/wide-landing-child-bg.gif") no-repeat scroll 0 2.3em transparent;
+    padding: 0 3px;
+    margin-top: 20px;
+}
+.torch-site div#WideContent div.landing-child h2 {
+    background: transparent;
+    padding-left: 7px;
+}
+.torch-site div#WideContent div.landing-child .content {
+    padding: 10px; /* was padding: 0 10px;*/;
+}
+div#WideContent div.wide-content-left {
+    clear: left;
+    display: inline;
+    left: -3px;
+    margin-right: 4px;
+}
+div#WideContent div.wide-content-left,
+div#WideContent div.wide-content-right {
+    float: left;
+    margin-bottom: 0.5em;
+    position: relative;
+    width: 342px;
+}
+div#WideContent div.wide-content-right { right: -3px }
+/* TORCH MAIN CONTENT STYLING
+############################################################ */
+body.torch-site h1 { color: #cf7e27 }
+body.torch-site a { color: #73663a }
+.torch-site .image-right-main {
+    float: right !important;
+    margin: 0 0 20px 20px !important;
+}
+.torch-site .torch-content-block {
+    float: left;
+    width: 218px;
+    border: 1px solid #e6e6e6;
+    margin: 0 20px 20px 0;
+}
+.torch-site .torch-content-block p { padding: 6px 10px }
+.torch-site .torch-content-block p.torch-content-block-callout { background: #e6e6e6 }
+.torch-site .torch-content-block p.no-btm-margin { margin-bottom: 0 }
+body.torch-site #MainContent div.landing-child { margin-top: 20px }
+body.torch-site #MainContent div.landing-child h2 {
+    color: #fff;
+    background: #cf7e27;
+    margin-bottom: 1em;
+    padding: 7px 10px;
+}
+body.torch-site div.landing-child h3 { margin-bottom: .5em }
+.torch-site #MainContent div.landing-child h2 a { color: #fff }
+div#MainContent div.main-content-left,
+div#MainContent div.main-content-right {
+    position: relative;
+    padding: 0 2px;
+}
+.torch-site div#Content div.snippet { margin-top: 1em }
+.torch-site div#Content div.torch-snippet { margin-top: 0 }
+.torch-site div#Content div.snippet { margin-top: 0 }
+.torch-site div#Content div.snippet div.slider { min-height: 0 }
+.torch-site div#page-2012 div.snippet div.snippet-header,
+.torch-site div#page-2012 div.snippet h2 {
+    background: #cf7e27;
+    color: #fff;
+}
+.torch-site div#page-2012 div.snippet div.snippet-header a,
+.torch-site div#page-2012 div.snippet h2 a { color: #fff }
+.torch-site div#Content div.snippet div.content {
+    background: url("../images/torch/presentation/snippet-shadow.gif") no-repeat scroll left top transparent;
+    left: -3px;
+    padding: 8px 14px !important;
+    position: relative;
+}
+.torch-site div#page-2012 div.snippet h2 a { color: #fff !important }
+.torch-site div#Content div.torch-snippet div.content {
+    padding: 0 0 !important;
+    left: 0;
+    width: 220px;
+}
+.torch-site div#Content div#did-you-know.torch-snippet div.content { padding: 11px !important }
+/* cp */
+.torch-site div#Content div.snippet div.content {
+    padding: 0 0 !important;
+    left: 0;
+    width: 220px;
+}
+.torch-site div#Content div#did-you-know.snippet div.content { padding: 11px !important }
+/* - cp */
+.torch-site div#page-2012 div.snippet div.content p {
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #707070;
+    margin-bottom: 10px;
+}
+.torch-site div#page-2012 div.torch-snippet div.content p {
+    padding-bottom: 10px;
+    border-bottom: 0 !important;
+    margin-bottom: 10px;
+    width: 200px;
+}
+/* cp */
+.torch-site div#page-2012 div.snippet div.content p {
+    padding-bottom: 10px;
+    border-bottom: 0 !important;
+    margin-bottom: 10px;
+    width: 200px;
+}
+/* - cp */
+.torch-site div#page-2012 div#did-you-know div.content { width: auto }
+.torch-site div#page-2012 div.snippet div.content p.text-right { text-align: right }
+.torch-site div#page-2012 div.snippet div.content p.no-border { border: 0 }
+/* SOCIAL MEDIA FEEDS FACEBOOK & TWITTER
+############################################################ */
+.torch-site #twitterTab,
+.torch-site #facebookTab {
+    background: url("../images/torch/presentation/tabbed-header.png") no-repeat scroll left top transparent;
+    margin-bottom: 20px;
+    margin-right: 0 !important;
+    overflow: hidden;
+    width: 224px;
+}
+.torch-site #twitterTab .tabname,
+.torch-site #facebookTab .tabname {
+    clear: both;
+    color: #73663a;
+    font-size: 1.05em;
+    font-weight: bold;
+    height: 32px;
+    padding: 10px 0 0 10px;
+}
+.torch-site #twitterTab .tabcontent,
+.torch-site #facebookTab .tabcontent {
+    background: url("../images/torch/presentation/tabbed-bg.png") repeat-y scroll left top transparent;
+    clear: both;
+    height: auto;
+    margin-left: -3px;
+    overflow: hidden;
+    padding: 0 10px 0 5px;
+}
+.torch-site #twitterTab .tabcontent p,
+.torch-site #facebookTab .tabcontent p {
+    padding: 0 0 10px;
+    margin: 0 10px 10px;
+    border-bottom: 1px dotted #707070;
+}
+.torch-site #twitterTab div.tabfootinner,
+.torch-site #facebookTab div.tabfootinner {
+    margin: 0 10px 10px;
+    text-align: right;
+}
+.torch-site #facebookTab div.tabfootinner {
+    font-size: 0.8em;
+    padding-top: 2px;
+    padding-left: 24px;
+    background: url('../images/torch/presentation/facebook-logo.png') no-repeat;
+    text-align: left;
+}
+a.connect_widget_like_button { margin-right: 7px }
+.connect_widget .like_button_no_like .piece,
+.connect_widget .like_button_no_like {
+    background-color: #ECEEF5;
+    border-color: #CAD4E7;
+}
+a.connect_widget_like_button {
+    -moz-border-radius: 3px 3px 3px 3px;
+    border: 1px solid #CAD4E7;
+    background-color: #ECEEF5;
+    display: block;
+    float: left;
+    padding: 4px 5px;
+}
+.connect_widget_like_button .liketext { background: url("http://static.ak.fbcdn.net/rsrc.php/v1/zb/r/L6P2fymQtet.png") no-repeat scroll -1px -33px transparent }
+.connect_widget_like_button .liketext {
+    background: url("http://static.ak.fbcdn.net/rsrc.php/v1/zb/r/L6P2fymQtet.png") no-repeat scroll -1px -33px transparent;
+    color: #3B5998;
+    display: block;
+    padding-left: 17px;
+    white-space: nowrap;
+}
+.torch-site #facebookTab .tabcontent div.connections {
+    padding: 0 0 10px;
+    margin: 0 10px 10px;
+    border-bottom: 1px dotted #707070;
+    overflow: hidden;
+}
+.torch-site #facebookTab .tabcontent div.connections_grid {
+    float: left;
+    padding: 0 0 10px 5px;
+    margin: 0 10px 10px;
+    border-bottom: 1px dotted #707070;
+    position: relative;
+}
+.torch-site #facebookTab .tabcontent div.connections_grid .grid_item {
+    float: left;
+    padding: 5px;
+}
+.torch-site #facebookTab .tabcontent div.connections_grid .grid_item .name {
+    text-align: center;
+    font-size: 0.8em;
+}
+/* SUPPORTERS LOGOS
+############################################################ */
+.torch-site .relay-supporters {
+    clear: left;
+    float: left;
+    width: 946px;
+    margin: 0 22px 0 0;
+    height: auto;
+    border-top: 10px solid #eee;
+}
+.torch-site .relay-supporters h2 {
+    border-bottom: 1px dotted #707070;
+    font-size: 1em;
+    padding: 10px;
+}
+.torch-site .relay-supporters ul {
+    float: left;
+    width: 886px;
+    padding: 30px 90px 40px;
+    height: auto;
+    overflow: hidden;
+}
+.torch-site .relay-supporters ul li {
+    float: left;
+    width: auto;
+    height: auto;
+    padding: 0 29px;
+    overflow: hidden;
+    display: inline;
+}
+.torch-site .relay-supporters ul li img { vertical-align: middle }
+/* SCROLLABLE CONTENT
+############################################################ */
+.torch-site #scrollable-content {
+    background-image: none;
+    width: 460px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.torch-site.JS-enabled #scrollable-content { height: 260px }
+.torch-site div#scrollable-content div.scroll-right {
+    background: url("../images/torch/arrows/image-slider-next-arrow.png") no-repeat scroll center center #e18f39 !important;
+    background: url("../images/torch/arrows/image-slider-next-arrow.gif") no-repeat scroll center center #e18f39;
+    height: 260px !important;
+    margin-top: 0;
+}
+.torch-site div#scrollable-content div.scroll-left {
+    background: url("../images/torch/arrows/image-slider-prev-arrow.png") no-repeat scroll center center #e18f39 !important;
+    background: url("../images/torch/arrows/image-slider-prev-arrow.gif") no-repeat scroll center center #e18f39;
+    height: 260px !important;
+    margin-top: 0;
+}
+.torch-site div.scrollable-large div.scroll-left,
+.torch-site div.scrollable-large div.scroll-right { padding: 0 0.35em !important }
+.torch-site .scrollWrapper {
+    margin-top: 0;
+    padding: 0;
+    width: 460px;
+}
+.torch-site div.main-slider-content {
+    margin-right: 0;
+    width: 90px;
+}
+/* FOOTER STYLING
+############################################################ */
+.torch-site div#footer-2012 div.footer-2012-text { color: #cf7e27 }
+/* TOOLTIP STYLING
+############################################################ */
+#s-m-t-tooltip {
+    position: absolute;
+    width: 100px;
+    padding: 10px 5px 5px 20px;
+    background: transparent url("../images/torch/presentation/tooltips-right.png") no-repeat;
+    z-index: 10;
+    display: inline-block; /*important*/
+    text-align: center; /*font*/
+    font-size: 1em;
+    line-height: 16px;
+    color: #fff;
+      filter:0 !important;
+}
+#s-m-t-tooltip.reverse-tooltip {
+    padding: 10px 20px 5px 5px;
+    background: transparent url("../images/torch/presentation/tooltips-left.png") no-repeat;
+}
+/* TORCH MAP
+############################################################ */
+div#relay-route-map {
+    width: 696px;
+    height: auto;
+    border: 0;
+}
+.JS-enabled div#relay-route-map {
+    width: 696px;
+    height: 484px;
+    border: 2px solid #EBEBEB;
+}
+div#relay-route-map ul.city {
+    width: 100%;
+    position: relative;
+}
+div#relay-route-map ul.city li {
+    min-height: 80px;
+    float: left;
+    width: 25%;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #707070;
+    margin-bottom: 10px;
+}
+div#relay-route-map ul.city li a.activate { display: none }
+div#relay-route-map .activate {
+    width: 24px;
+    height: 25px;
+    background: transparent url("../images/torch/map/pin.png") no-repeat center center !important;
+    background: transparent url("../images/torch/map/pin.gif") no-repeat center center;
+    display: block;
+}
+div#relay-route-map .island {
+    background: transparent url("../images/torch/map/pin-island.png") no-repeat center center !important;
+    background: transparent url("../images/torch/map/pin-island.gif") no-repeat center center;
+}
+div#relay-route-map .flat {
+    background: #CF7E27;
+    color: #ffffff;
+}
+div#relay-route-map ul.city li div {
+    float: left;
+    width: 80%;
+}
+.JS-enabled div#relay-route-map-bg {
+    background: transparent url("../images/torch/map/zoom-bg.png") no-repeat center bottom !important;
+    background: transparent url("../images/torch/map/zoom-bg.gif") no-repeat center bottom;
+    height: 60px;
+    width: 700px;
+    margin-top: -60px;
+    position: relative;
+}
+.JS-enabled div.map-popover div {
+    display: none;
+    background: #FFCE40 url('../images/torch/map/pop-over.gif') no-repeat top center;
+    position: absolute;
+    bottom: 20px;
+    left: -48px;
+    width: 113px;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 5px 8px;
+    z-index: 50;
+}
+.JS-enabled div#relay-route-map div.city { margin-bottom: 10px }
+.JS-enabled div#relay-route-map p { margin-bottom: 0 }
+/* changed */
+.JS-enabled div#relay-route-map div p {
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+.JS-enabled div#relay-route-map div p span { font-weight: normal }
+.JS-enabled div.map-popover div a {
+    color: #4C4C4C;
+    font-weight: normal;
+    text-decoration: underline;
+}
+.JS-enabled div.map-popover div a:hover { text-decoration: none }
+.JS-enabled a.zoom-in,
+a.zoom-out,
+span.zoom-level {
+    display: block;
+    outline: none;
+    position: relative;
+    z-index: 9999;
+}
+.JS-enabled a.zoom-in,
+.JS-enabled a.zoom-out {
+    text-indent: -1000em;
+    width: 23px;
+    height: 23px;
+    margin-bottom: 5px;
+}
+.JS-enabled a.zoom-in { margin-right: 18px }
+.JS-enabled a.zoom-out { margin-right: 12px }
+.JS-enabled span.zoom-level {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.2em;
+    width: 6em;
+    display: block;
+    height: 1.7em;
+}
+.JS-enabled a.zoom-out { background: transparent url("../images/torch/map/zoom-1.gif") no-repeat center top }
+.JS-enabled a.zoom-in { background: transparent url("../images/torch/map/zoom-2.gif") no-repeat center top }
+.JS-enabled a.active-out,
+.JS-enabled a.zoom-out:hover { background: transparent url("../images/torch/map/zoom-1.gif") no-repeat center bottom }
+.JS-enabled a.active-in,
+.JS-enabled a.zoom-in:hover { background: transparent url("../images/torch/map/zoom-2.gif") no-repeat center bottom }
+.JS-enabled div.map-popover .align-right { text-align: right }
+span.coords,
+.JS-enabled div.city { display: none }
+.z-index-5000 { z-index: 5000 }
+/* styles for eveing celebration sites */
+body.torch-site #MainContent h2.viewBy { display: inline }
+div#MainContent ul.regionList {
+    float: left;
+    margin-right: 10px;
+}
+div#MainContent ul.regionList,
+div#MainContent ul.regionList ul { padding-left: 0px }
+div#MainContent ul.regionList li {
+    list-style-type: none;
+    padding-left: 0px;
+    background: url();
+    display: block;
+    margin: 0px 10px 10px 0px;
+}
+div#MainContent ul.regionList li ul li { margin: 0px 0px 0px 0px }
+div#MainContent dl.dateList {
+    padding: 0px;
+    margin-bottom: 25px;
+    margin-left: 5px;
+}
+div#MainContent dl.dateList dt {
+    margin-right: 30px;
+    font-weight: normal;
+}
+h2.dateHeader { margin-left: 5px }
+div#MainContent.celebration-sites .filterContainer h2 { display: inline }
+div#MainContent.celebration-sites .filterContainer {
+    color: white;
+    background: #CF7E27;
+    margin-bottom: 1em;
+    padding: 4px 0 4px 8px;
+}
+div#MainContent.celebration-sites ul.tabbed-headers { display: inline }
+div#MainContent.celebration-sites ul.tabbed-headers li a {
+    color: #fff;
+    text-decoration: underline;
+}
+div#MainContent.celebration-sites ul.tabbed-headers li.current a {
+    text-decoration: none;
+    cursor: default;
+}
+div#MainContent.celebration-sites ul.tabbed-headers li span {
+    padding-left: 8px;
+    padding-right: 6px;
+}
+div#MainContent.celebration-sites ul.tabbed-headers li {
+    display: inline;
+    background: url();
+    padding-left: 0px;
+    font-size: 1.2em;
+}
+div.list-content { display: none }
+div.list-content.current { display: block }
+div.list-content { padding-left: 5px }
+
+/* --- kitsite ------------------------------ */
+div#MainContent .regionList {
+    float: left;
+    margin-right: 10px;
+    width: 200px;
+}
+div#MainContent .regionList ul { padding-left: 0px }
+div#MainContent .regionList ul li {
+    list-style-type: none;
+    padding-left: 0px;
+    background: url();
+    display: block;
+    margin: 0px 10px 10px 0px;
+}
+div#MainContent .regionList li ul li { margin: 0px 0px 0px 0px }
+/* --- end kitsite -------------------------- */
+
+/* inline from homepage */
+.fbWrap { width: 210px; overflow: hidden; position: relative; top: -1px; margin-bottom: -10px; margin-left: 2px; }
+.torch-site #facebookTab .tabcontent { margin-left: -2px !important; width: 208px; }
+.torch-site #twitterTab .tabcontent {  margin-left: -7px !important; }
+.h1 { margin-bottom: 20px; }       
+.content-container-cms-edit { clear:both; float: left; width: 600px; background:#EEE;  margin: 10px 0; padding: 10px 0; }        
+/* .feature-content {width: auto; height: 411px; overflow: hidden; } */
+
+/* --- Kitsite ------------------------------ */
+#did-you-know div.content { padding: 11px 11px 11px 11px }
+#feature-content-container .persistent-text {
+    z-index: 300;
+    position: relative;
+    display: block;
+}
+.strap-line {
+    font-size: 1.17em;
+    line-height: 1.15em;
+}
+/* #nav-secondary{font-size:0.8em !important;}
+*/
+#sidebar-left-2012 .border-bottom img { top: 2px !important }
+
+/* Sidebar problem fixes */
+#sidebar-right-2012.relay-route-sidebar { margin-right: 0px !important }
+#sidebar-right-2012.relay-celebrations-sidebar { margin-right: 0px !important }
+#sidebar-right-2012.relay-route-sidebar { margin-right: 0px !important }
+#sidebar-right-2012.relay-home-sidebar { margin-right: 0px !important }
+#sidebar-right-2012.relay-eve-sidebar { margin-right: 0px !important }
+
+/* fix font size on left nav */
+ul#nav-secondary { font-size: 1em }
+ul#nav-secondary li ul * { font-size: 1em; font-weight: bold; }
+
+/* replace shop button with brown equiv */
+a.shopBtn { width: 83px; height: 25px; background: url('../images/buttons/shopnowbrown.jpg') no-repeat; }
+a.shopBtn img { display: none; }
+
+/* left side order change */
+#nav-secondary { margin-top: 25px !important }
+ #torch-relay-info { margin-top: 5px !important; }
+
+/* hide the left side static links */
+ul#consistent-links { display: none;}
+
+/* golden link color */
+#PageContent.relay-content #PageContentInner a { color: #73663A !important; }
+
+/* screenreader field */
+#screenReaderOnly{ position: absolute; line-height: 1px; text-indent: -9999px; width: 1px; }
+
+/* Prettyphoto light box size fix */
+.pp_content_container .pp_details { margin: 0 !important; position: relative; top: 43px; }
+
+
+/* torch map select-outline fix */
+#relay-route-map a:focus { border:2px solid #5b523d; }
+
