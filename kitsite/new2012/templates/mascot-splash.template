@@ -3,7 +3,7 @@
 <content:group  id="extra-head-tags">
     <style type="text/css">
         div#Content.mascotPage { margin-left: 0px; position: relative; }
-        .mascotPage #mainPromoWrap { width: 990px; height: 574px; overflow: hidden; }
+        .mascotPage #mainPromoWrap { width: 990px; height: 625px; overflow: hidden; }
         .mascotPage #underlay { position: relative; top: -153px; z-index: 1; left: 1px; }
         .mascotPage #overlay { position: relative; z-index: 2; background: url('images/mascots/mascotwrapnonie.png') no-repeat; width: 990px; height: 235px; overflow: hidden; }
         
@@ -37,8 +37,8 @@
     <style>
         .jcarousel-skin-tango .jcarousel-container{}
         .jcarousel-skin-tango .jcarousel-container-horizontal{width:990px;padding:0px;}
-        .jcarousel-skin-tango .jcarousel-clip-horizontal{width:990px;height:492px;z-index;200;}
-        .jcarousel-skin-tango .jcarousel-item{width:990px;height:492px;}
+        .jcarousel-skin-tango .jcarousel-clip-horizontal{width:990px;height:542px;z-index;200;}
+        .jcarousel-skin-tango .jcarousel-item{width:990px;height:542px;}
         .jcarousel-skin-tango .jcarousel-item-horizontal{margin-left:0;margin-right:10px;}
         .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-item-horizontal{margin-left:10px;margin-right:0;}
         .jcarousel-skin-tango .jcarousel-item-placeholder{background:#fff;color:#000;}
@@ -165,7 +165,7 @@
             </div>
         </div>
         
-        <div id="enter"><a href="http://www.mylondon2012.com/mascots">Enter the 2012 Mascots Site</a></div>
+        <div id="enter"><a href="http://mascot-games.london2012.com">Enter the 2012 Mascots Site</a></div>
         
         <div id="mandeville">
             <div class="left">
