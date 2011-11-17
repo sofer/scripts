@@ -183,9 +183,10 @@ var ZEN = {
               }
             }
           } else {
-            var comments = tickets[ticket][this.fields.comments]; 
-            var lastComment = comments[comments.length-1].value.substr(0,200);
-            line += '"'+lastComment+'"';
+            // apparent formatting issue with cimporting comments into gdocs
+            //var comments = tickets[ticket][this.fields.comments]; 
+            //var lastComment = comments[comments.length-1].value.substr(0,200);
+            //line += '"'+lastComment+'"';
           }
         }
         csv += line + "\n";
@@ -228,8 +229,8 @@ var ZEN = {
 
 // Monthly updates
 var pages = 5;
-//var report = '449562'; // closed tickets
-report = '23031103'; // 2012 open tickets-but don't expect the titles to match up
+var report = '449562'; // closed tickets
+//report = '23031103'; // 2012 open tickets-but don't expect the titles to match up
 ZEN.update(report,pages);
 
 
