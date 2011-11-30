@@ -1,0 +1,1206 @@
+<content:extends template="Master" />
+
+<content:group id="extra-meta-fields">
+    <content:boolean name="manual-community-init" />
+</content:group>
+
+<content:group id="pre-init">
+    <community:init><![CDATA[
+        
+        // regex for dates
+        $datePattern = '/^[\d]{2}[\/][\d]{2}[\/][\d]{4}$/';
+
+        $errMsgs = array("PBdateOfBirth" => "Invalid date of birth");
+
+        // clear out default date values
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            foreach (array(
+                'FromDate1', 'ToDate1',
+                'FromDate2', 'ToDate2',
+                'FromDate3', 'ToDate3',
+                'FromDate4', 'ToDate4',
+                'FromDate5', 'ToDate5',
+                'FromDate6', 'ToDate6',
+                'FromDate7', 'ToDate7',
+                'FromDate8', 'ToDate8', 'PBdateOfBirth'
+            ) as $f) {
+                if (isset($_POST[$f])) {
+                    if ($_POST[$f]=="dd/mm/yyyy") {
+                        unset($_POST[$f]);
+                    } else if ($_POST[$f]) {
+                        # if not empty, check it's in correct fmt
+                        $community->addValidation($f, create_function('$value', 'global $datePattern, $errMsgs; if (!preg_match($datePattern, $value)) return $errMsgs["' . $f . '"] ? $errMsgs["' . $f . '"] : "Invalid date";'));
+                    }
+                }
+            }
+            for ($i=1;$i<=8;$i++) {
+                $fromField = "FromDate$i"; # E.g. "FromDate2"
+                $toField   = "ToDate$i";   # E.g. "ToDate2"
+                # If there's a ToDate2
+                if (isset($_POST[$toField]) && $_POST[$toField]) {
+                    if (!$_POST[$fromField]) {
+                        # There's a ToDate2 but no FromDate2
+                        $community->validatePresence($fromField, "Date range $i is invalid: The FROM date is missing.");
+                    } else {
+                        # There's a FromDate2 matching this ToDate2
+                        # So check that ToDate2 >= FromDate2
+                        if (!preg_match($datePattern, $_POST[$toField])) {
+                           # We add a validation that will ALWAYS fail.
+                           $community->addValidation($toField, create_function('$value', 'return "Date range ' . $i . ' is invalid: The TO date is invalid.";'));
+                        } else if (!preg_match($datePattern, $_POST[$fromField])) {
+                           # We add a validation that will ALWAYS fail.
+                           $community->addValidation($fromField, create_function('$value', 'return "Date range ' . $i . ' is invalid: The FROM date is invalid.";'));
+                        } else {
+                           $a        = strptime($_POST[$fromField], "%d/%m/%Y");
+                           $fromTime = mktime(0, 0, 0, $a['tm_mon'] + 1, $a['tm_mday'], $a['tm_year'] + 1900);
+                           $a        = strptime($_POST[$toField], "%d/%m/%Y");
+                           $toTime   = mktime(0, 0, 0, $a['tm_mon'] + 1, $a['tm_mday'], $a['tm_year'] + 1900);
+                           if ($fromTime > $toTime) {
+                              # We add a validation that will ALWAYS fail.
+                              $community->addValidation($toField, create_function('$value', 'return "Date range ' . $i . ' is invalid: The TO date is before the FROM date";'));
+                           }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // does user hold a current licence; should we show part b or c of the form
+        $licence = (bool) Utils::escape($_REQUEST['licence']);
+
+        /* validations for common parts of the form */
+        $community->validateEmail('Email', 'Please enter a valid email address');
+        $community->validatePresence('EventZoneID', 'Please select the Event zone for which application is being made');
+        $community->validatePresence('CompanyOrSurname', 'Please enter your company name or surname');
+        $community->validatePresence('Address1', 'Please enter your address');
+        $community->validatePresence('Postcode', 'Please enter your postcode');
+        $community->validatePresence('City', 'Please enter your city');
+        $community->validatePresence('Country', 'Please enter your country');
+        $community->validatePresence('Telephone', 'Please enter your telephone number');
+
+        $community->validatePresence('PBCmapDoc', 'Please select whether you have a map of your trading location');
+               
+               
+        /* validations for part B of the form */
+        if (!$licence) {
+
+            if ($_REQUEST['PAlocogApplied']=='Y') {
+                $community->validatePresence('PAlocogDetails', 'Please give details of advertising');            
+            }
+
+            $community->validatePresence('PBthirdPartyInsuranceDoc', 'Please enter a Proof of Third Party Insurance');
+            
+            $community->validatePresence('PBreceptacle', 'Please enter details of your Receptacle/trading unit');
+            $community->validatePresence('PBreceptacleLength', 'Please enter the length of your Receptacle/trading unit');
+            $community->validatePresence('PBreceptacleHeight', 'Please enter the height of your Receptacle/trading unit');
+            $community->validatePresence('PBreceptacleWidth', 'Please enter the width of your Receptacle/trading unit');
+
+            /* we only need to run this is a value was entered for PBdateOfBirth
+            $community->addValidation('PBdateOfBirth', create_function('$value', 'global $datePattern; if ($value && !preg_match($datePattern, $value)) return "Invalid date of birth";'));
+             */   
+        }
+        
+        
+        /* validations for part C of the form */        
+        if ($licence) {
+            $community->validatePresence('PClegislationLicenseCode', 'Under which legislation is your licence granted');            
+            $community->addValidation('PClegislationLicenseExpiryDate', create_function('$value', 'global $datePattern; if (!preg_match($datePattern, $value)) return "Invalid licence / contract date of expiry";'));  
+        }
+        
+        
+        
+    ]]></community:init>      
+</content:group>    
+ 
+<content:group id="post-init">
+    <?js
+        function freshCache(path) {
+            return path + '?' + Math.floor(Math.random()*1000);  
+        }
+    ?>    
+    
+    <?js    
+        // Taxonomies
+        // --------------------------------------------------------
+
+
+        // ASTR Countries
+        var a =  Asset.get("_system/taxonomy/countries.xml");
+        var countries = [];
+        for each (var term in a.xml.term) {
+             countries.push('"' + term.@value + '"=>"' + term.toString() + '"');
+        }
+        out.php("$countries  = array(" + countries.join(",\n") + ");\n");
+
+        // ASTR Zones
+        var a =  Asset.get("_system/taxonomy/astr-zones.xml");
+        var zones = [];
+        for each (var term in a.xml.term) {
+             zones.push('"' + term.@value + '"=>"' + term.toString() + '"');
+        }
+        out.php("$zones  = array(" + zones.join(",\n") + ");\n");
+
+        // ASTR Authorities
+        var a =  Asset.get("_system/taxonomy/astr-authorities.xml");
+        var authorities = [];
+        for each (var term in a.xml.term) {
+             authorities.push('"' + term.@value + '"=>"' + term.toString() + '"');
+        }
+        out.php("$authorities  = array(" + authorities.join(",\n") + ");\n");
+
+        // ASTR Trading Licences
+        var a =  Asset.get("_system/taxonomy/astr-licences.xml");
+        var licences = [];
+        for each (var term in a.xml.term) {
+             licences.push('"' + term.@value + '"=>"' + term.toString() + '"');
+        }
+        out.php("$licences  = array(" + licences.join(",\n") + ");\n");
+
+        // ASTR Legislation Licences
+        var a =  Asset.get("_system/taxonomy/astr-leglicences.xml");
+        var leglicences = [];
+        for each (var term in a.xml.term) {
+             leglicences.push('"' + term.@value + '"=>"' + term.toString() + '"');
+        }
+        out.php("$leglicences  = array(" + leglicences.join(",\n") + ");\n");
+    
+    ?>      
+
+    <?php  
+ 
+        # ERROR MESSAGE HANDLING
+        $error = null;
+        if ($community->getError()) {
+            $error = $community->getError();
+        } elseif ($community->errors) {
+            $allErrors = array();
+            foreach ($community->errors as $fieldName => $errors) {
+                $allErrors = array_merge($allErrors, $errors);
+            }
+            $error = implode('<br>', $allErrors);
+        }  
+    ?>
+    
+    <?js
+        function freshCache(path) {
+            rnd = Math.floor(Math.random()*1000);
+            return path + '?' + rnd  
+        }
+    ?>     
+</content:group>
+
+<content:group id="extra-head-tags">
+    <link type="text/css" rel="stylesheet" href="{freshCache('css/newforms.css')}" />
+    <link type="text/css" rel="stylesheet" href="{freshCache('css/volunteering.css')}" />
+    <script  type="text/javascript" src="js/volunteering.js"></script>
+    <script type="text/javascript" src="{freshCache('js/jsform.js')}"></script>
+    <script type="text/javascript" src="{freshCache('js/jquery.textareacounter.plugin.js')}"></script>
+    
+    <style type="text/css">
+    
+    .print-wrapper {
+      border-bottom: 1px solid;
+      overflow: hidden;
+    }
+        
+    .print-wrapper .print-label {
+      float: left;
+      width: 200px;
+      word-wrap: break-word;
+      font-weight: bold;
+    }
+    
+    .print-wrapper .sep {
+      float: left;
+      width: 10px;
+    }
+    
+    .print-wrapper .print-value {
+      margin-left: 210px;
+      padding-left: 10px;
+    }
+    
+    </style>
+
+    <style type="text/css">
+        #tooltip { top: -120px; }    /* Needs to stay here */
+    </style>
+
+    <!--- date picker -->
+    <script type="text/javascript" src="js/date.js"></script>
+    <!--[if IE]><script type="text/javascript" src="js/jquery.bgiframe.min.js"></script><![endif]-->
+    <script type="text/javascript" src="js/jquery.datepicker.js"></script>
+    <!--<script type="text/javascript" src="js/jquery.datepickermultimonth.js"></script>-->
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/astadatepicker.css" />    
+    
+    <!-- date picker page specific scripts -->
+    <script type="text/javascript" src="data/zonedates.js"></script>
+    <script type="text/javascript" charset="utf-8">
+                
+        $(function() {
+        
+            var zone
+            var zoneId = $('#EventZoneID').val();
+            if (zoneId) seedDatePicker();
+
+            $('#EventZoneID').change(function(){
+                seedDatePicker()}
+            );
+            
+            function seedDatePicker() {
+                        
+                zoneId = $('#EventZoneID').val();
+                zone = zonedates[zoneId];    
+            
+                $('.date-pick').datePicker({
+                        numMonths: 3,
+                        startDate: zone['firstDate'],
+                        endDate: zone['lastDate'],
+                        clickInput:true,
+                        autoFocusNextInput: true,
+                        createButton:false,
+                        renderCallback:function($td, thisDate, month, year) {
+                            zdates = zone['zdates'];    
+                            if (!zdates[thisDate.asString()]) {
+                                $td.addClass('disabled');
+                            }
+                        }
+                    }).bind('click',function(){    
+                        $(this).dpDisplay();
+                        this.blur();
+                        return false;
+                    }
+                )
+            }
+            
+        });
+    </script>
+
+</content:group>   
+
+<div id="PageContent">
+    
+    <div>
+        <?php if ($community->postSuccessful) { ?>    
+            <xsl:if test="$mode='edit'">
+                <p><strong>Thank-you message:</strong></p>
+            </xsl:if>    
+            <xsl:if test="$mode = 'edit' or $mode = 'publish'">
+                <content:text name="thank-you-message" schema="styled" height="50" />
+
+                <?php
+                    $pattern='/astrapplications\/(\d+)/';
+                    preg_match($pattern, $community->postSuccessful, $matches);
+                    $reference_code = 'W10' . $matches[1];
+                    $email_subject_line = 'ASTR supporting documents for ' . $reference_code . ' : ' . Utils::escape($_REQUEST['CompanyOrSurname']);
+                ?>
+                
+                <p>Thank you for your submission, in order to complete your application please email the following documents and your photographs to <a href="mailto:tradingauthorisations@london2012.com?subject=<?php echo $email_subject_line; ?>">tradingauthorisations@london2012.com</a> quoting the following reference code.</p>
+
+                <h2 style="text-align: center; font-size: 2.5em;"><?php echo $reference_code; ?></h2>
+
+                <div id="astrdoclist">
+                    <ul>
+    
+                    <!-- Common to parts B and C -->
+                    
+                    <?php if ($_REQUEST['PBCmapDoc']=='Y') { ?>
+                        <li>A map of your trading location</li>
+                    <?php } ?>   
+
+                    
+                    <?php
+                        $licencefields = array('PBtradingLicenseCode1', 'PBtradingLicenseCode2', 'PBtradingLicenseCode3', 'PBtradingLicenseCode4');
+                        foreach($licences as $licenceCode => $licenceName) {
+                            foreach($licencefields as $field) {
+                                if ($_REQUEST[$field] == $licenceCode) {
+                                    echo '<li>A copy of your prerequisite licence, consent or permit as detailed below or granted under the legislation detailed below.<br/>' . $licenceName . '</li>';
+                                }
+                            }
+                        }
+                        if ($_REQUEST['PClegislationLicenseCode']) {
+                            echo '<li>A copy of your licence, consent or permit granted under the legislation below.<br/>' . $leglicences[$_REQUEST['PClegislationLicenseCode']] . '</li>';
+                        }
+                    ?>
+                    
+                    <!--PClegislationLicenseCode-->
+                     
+                    <!-- Part B -->
+                    <?php if ($_REQUEST['PBpassportPhotoDoc']=='Y') { ?>
+                         <li>Three full face, Passport – size photographs taken within the last 12 months one of which must be countersigned by a professional person who has known the applicant for a minimum of two years.<br/>*In effect what the countersignature is doing is stating that he/she knows you, that you are who you say you are and that to the best of their knowledge the information you have provided in the form is correct. He/she is acting as a referee for you and because they are professionally qualified they can be identified by the Olympic Delivery Agency or its agents.</li>
+                    <?php } ?>    
+                    <?php if ($_REQUEST['PBcurrentAddressProofDoc']=='Y') { ?>
+                         <li>A copy of proof of current address e.g. utility bill, bank statement, driving licence or council tax bill/book</li>
+                     <?php } ?>
+                     <?php if ($_REQUEST['PBproofIDDoc']=='Y') { ?>
+                         <li>A copy of a valid passport or National Identity Card</li>
+                     <?php } ?>   
+                     <?php if ($_REQUEST['PBheadedPaperDoc']=='Y') { ?>
+                          <li>Company letterhead</li>
+                     <?php } ?>   
+                     <?php if ($_REQUEST['PBthirdPartyInsuranceDoc']=='Y') { ?>
+                          <li>Proof of third party insurance</li>
+                     <?php } ?>     
+                     
+                     <!-- Part C -->
+                     <?php if ($_REQUEST['PClocalAuthorityLicenseDoc']=='Y') { ?>
+                          <li>Local authority licence</li>
+                     <?php } ?>   
+                     <?php if ($_REQUEST['PCroyalParksContractLetterDoc']=='Y') { ?>
+                          <li>Royal Parks Contract Award letter</li>
+                     <?php } ?>
+                     <?php if ($_REQUEST['PCtablesandChairsPermitDoc']=='Y') { ?>
+                          <li>A copy of your current permit for 'tables and chairs' inculding all attched conditions and permissions.</li>
+                     <?php } ?>
+                     <?php if ($_REQUEST['PCPassportDoc']=='Y') { ?>
+                          <li class="help">Three full-face, passport-size photographs taken within the last 12 months. One of which must be counter signed by your current authorisation/licence issuer on the reverse, confirming your identifcation and stating designation and contact details. Photographs will not be accepted if the face is obscured by sunglasses. The wearing of head covering should be avoided unless on religious grounds. We require these photographs to generate an authorisation document which will be destroyed if your application is unsuccessful</li>
+                     <?php } ?>
+                     
+                     </ul>  
+                 </div>
+                                  
+                 <div style="margin-top: 30px" id="astrconfirmation">                 
+                     <h3>Please print and sign this page and email a scanned copy, along with copies of your docments as indicated above to <a href="mailto:tradingauthorisations@london2012.com">tradingauthorisations@london2012.com</a>. Or alternatively print and return a signed copy of this <a href="making-it-happen/advertising-and-trading-regulations/declaration.pdf">PDF</a>. Do not send original documentation, as it will not be returned.</h3>
+                     <h3 style="margin-top: 30px">Declaration - All applicants</h3>
+                     <p style="margin-top: 20px">
+                         I wish to apply for authorisation to trade within an Event Zone
+                        during Event Period(s) and confirm that the information given by me
+                        on this form is correct. I realise that giving false information
+                        invalidates my application and could lead to prosecution.
+                     </p>
+                      <p style="margin-top: 60px">Print Name _________________________</p>
+                      <p style="margin-top: 60px">Signed _________________________</p>
+                      <p style="margin-top: 60px">Date _________________________</p>
+                      <h3 style="margin-top: 30px">Declaration of Consent</h3>
+                      <p style="margin-top: 30px">
+                        I ....................................................................consent to the
+                        Olympic Delivery Authority (ODA) processing my personal data in
+                        accordance with the provisions of the Data Protection Act 1998 and
+                        understand that this data shall not be further processed in any other
+                        manner.
+                        For the purpose of an application for advertising authorisation, I
+                        understand that my data will be passed to LOCOG.
+                     </p>
+                      <p style="margin-top: 60px">Print Name _________________________</p>
+                      <p style="margin-top: 60px">Signed _________________________</p>
+                      <p style="margin-top: 60px">Date _________________________</p>
+                 </div>
+                 
+                 
+            </xsl:if>    
+        <?php } else { ?>
+            <p class="intro"><content:text name="intro" schema="styled" /></p>
+        <?php } end ?>
+    </div>
+
+    <?php if (!$community->postSuccessful) { ?>        
+    
+        <community:dataform action="astrapplications?method=create"
+                            datatype="ASTRApplication"
+                            id="astrForm"  
+                            path="/kit/data"
+                            class="jsForm">
+
+            <input type="hidden" id="licence" name="licence" value="<?php echo ($licence) ? 1 : 0; ?>" />
+
+            <fieldset id="parta">
+                
+                    <?php if ($licence) { ?>
+                        <p>To apply  for an ODA authorisation under this section you must have a current</p>
+                        <ol style="list-style-type: decimal;margin-left:24px;">
+                            <li>Street Trading licence</li>
+                            <li>'Table and chairs' licence</li>
+                            <li>Royal Parks permission</li>
+                        </ol>    
+                    <?php } else { ?>
+                        <p>This section is for applicants who are in the process of applying for</p>
+                        <ol style="list-style-type: decimal;margin-left:24px; margin-bottom:10px;">
+                            <li>Street Trading licence</li>
+                            <li>'Table and chairs' licence</li>
+                            <li>Royal Parks permission</li>
+                        </ol>                    
+                        <p>Or applicants who wish to undertake any form of outdoor trading</p>
+                    <?php } ?>
+
+                    <?php if ($error) { ?>
+                        <p id="errorIntro">Please check the form below for errors: </p>
+                        <p class="errorMSGs"><?php echo $error ?></p>
+                    <?php } ?>
+                    
+                    <legend><span>Key details</span></legend>            
+
+                    <p class="sublegend">Applicant details</p>
+                    <p>Fields marked with an asterisk <span class="required">*</span> must be completed.</p>            
+
+                    <div class="row">
+                        <label for="CompanyOrSurname" class="required">Surname or company name</label>
+                        <input type="text" id="CompanyOrSurname" name="CompanyOrSurname" maxlength="50" />
+                    </div>
+        
+                    <div class="row">
+                        <label for="Forenames">Forenames (if applicable)</label>
+                        <input type="text" id="Forenames" name="Forenames" maxlength="50" />
+                    </div>
+
+                    <div class="row">
+                        <label for="ContactName">Contact name for all applicants</label>
+                        <input type="text" id="ContactName" name="ContactName" maxlength="50" />
+                    </div>
+                                 
+                    <div class="row">
+                        <label for="Address1" class="required">Address line 1</label>
+                        <input type="text" id="Address1" name="Address1" maxlength="50" />
+                    </div>
+
+                    <div class="row">
+                        <label for="Address2">Address line 2</label>
+                        <input type="text" id="Address2" name="Address2" maxlength="50" />
+                    </div>
+
+                    <div class="row">
+                        <label for="City" class="required">City/Town</label>
+                        <input type="text" id="City" name="City" maxlength="50" />
+                    </div>
+                    
+                    <div class="row">
+                        <label for="Postcode" class="required">Postcode</label>
+                        <input type="text" id="Postcode" name="Postcode" maxlength="10" />
+                    </div>
+                    
+                    <div class="row">
+                        <label for="Country" class="required">Country</label>
+                        <select id="Country" name="Country" class="wide">    
+                        <optgroup>    
+                            <option value="">Please select...</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="">--------------</option>
+                        </optgroup>    
+                        <optgroup>                                    
+                            <?php
+                                foreach($countries as $countryCode => $country) {
+                                    echo $community->seededSelectOption('Country', $countryCode, $country);
+                                }
+                            ?>
+                        </optgroup>
+                        </select>
+                    </div>  
+                    
+                    <div class="row">
+                        <label for="Email" class="required">Email</label>
+                        <input type="text" id="Email" name="Email" maxlength="50" />
+                    </div>
+
+                    <div class="row">
+                        <label for="Telephone" class="required">Telephone</label>
+                        <input type="text" id="Telephone" name="Telephone" maxlength="50" />
+                    </div>
+
+                    
+                    <!-- Part C -->
+                    <?php if (!$licence) { ?>
+                        <p class="sublegend">Address or Registered Office address as applicable</p>  
+                                     
+                        <div class="row">
+                            <label for="PBregisteredOfficeAddress1">Address line 1</label>
+                            <input type="text" id="PBregisteredOfficeAddress1" name="PBregisteredOfficeAddress1" maxlength="50" />
+                        </div>
+    
+                        <div class="row">
+                            <label for="PBregisteredOfficeAddress2">Address line 2</label>
+                            <input type="text" id="PBregisteredOfficeAddress2" name="PBregisteredOfficeAddress2" maxlength="50" />
+                        </div>
+    
+                        <div class="row">
+                            <label for="PBregisteredOfficeCity">City</label>
+                            <input type="text" id="PBregisteredOfficeCity" name="PBregisteredOfficeCity" maxlength="50" />
+                        </div>
+                        
+                        <div class="row">
+                            <label for="PBregisteredOfficePostcode">Postcode</label>
+                            <input type="text" id="PBregisteredOfficePostcode" name="PBregisteredOfficePostcode" maxlength="10" />
+                        </div>    
+                        
+                        <div class="row">
+                            <label for="PBregisteredOfficeCountry">Country</label>
+                            <select id="PBregisteredOfficeCountry" name="PBregisteredOfficeCountry" class="wide">    
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="">--------------</option>
+                            </optgroup>    
+                            <optgroup>                                    
+                                <?php
+                                    foreach($countries as $countryCode => $country) {
+                                        echo $community->seededSelectOption('PBregisteredOfficeCountry', $countryCode, $country);
+                                    }
+                                ?>
+                            </optgroup>
+                            </select>
+                        </div>  
+    
+                        <div class="row">
+                            <label for="PBregisteredNumber">Registered Number (if limited company)</label>
+                            <input type="text" id="PBregisteredNumber" name="PBregisteredNumber" maxlength="50" />
+                        </div>
+    
+                        <p class="sublegend">Further details (Sole trader)</p>            
+    
+                        <div class="row">
+                            <label for="PBdateOfBirth">Date of birth</label>
+                            <input type="text" id="PBdateOfBirth" name="PBdateOfBirth" maxlength="10" />
+                            <span class="defaultValue">dd/mm/yyyy</span>
+                        </div>
+                        
+                        <div class="row">
+                            <label for="PBplaceOfBirth">Country of birth</label>
+                            <select id="PBplaceOfBirth" name="PBplaceOfBirth" class="wide">    
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="">--------------</option>
+                            </optgroup>    
+                            <optgroup>                                    
+                                <?php
+                                    foreach($countries as $countryCode => $country) {
+                                        echo $community->seededSelectOption('PBplaceOfBirth', $countryCode, $country);
+                                    }
+                                ?>
+                            </optgroup>
+                            </select>
+                        </div>
+    
+                        <div class="row">
+                            <label for="PBnationalInsuranceNo">UK National Insurance number</label>
+                            <input type="text" id="PBnationalInsuranceNo" name="PBnationalInsuranceNo" maxlength="20" />
+                             <span class="help">You need only complete this box if you pay UK National Insurance</span>
+                        </div>
+                        
+                        <p class="sublegend">Further details (Other business)</p>            
+    
+                        <!--
+                        <div class="row">
+                            <label for="PBorganisationStatus">Organisation status</label>
+                            <input type="text" id="PBorganisationStatus" name="PBorganisationStatus" maxlength="50" />
+                        </div>
+                        -->
+                        
+                        <div class="row">
+                            <label for="PBorganisationStatus">Organisation status</label>           
+                            <select id="PBorganisationStatus" name="PBorganisationStatus" class="wide">
+                                  <option value="">Please select...</option>
+                                  <option value="Private Limited Company">Private Limited Company</option>
+                                  <option value="Public Limited Company">Public Limited Company</option>
+                                  <option value="Limited Liability Partnership">Limited Liability Partnership</option>
+                             </select>
+                        </div>                        
+                        
+                    <?php } ?>
+
+                    <legend><span>Event Zone and dates</span></legend>  
+
+                    <div class="row zoneRow">
+                        <label for="EventZoneID">Event Zone for which application is being made</label>
+                        <span class="help">Please note a new application must be completed for each Event Zone.</span>
+                        <select id="EventZoneID" name="EventZoneID">
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>    
+                            <optgroup>                                    
+                                <?php
+                                    foreach ($zones as $zoneID => $zone) {
+                                        echo $community->seededSelectOption('EventZoneID', $zoneID, $zone);
+                                    }
+                                ?>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div id="fromToWrap">
+                        <p class="sublegend">Please list the dates during the Event Period(s) when you wish to trade</p>
+                                                             
+                        <div class="row split">
+                            <div>FROM</div>
+                            <div>TO</div>                        
+                        </div>
+
+                        <div class="row">
+                            <input type="text" class="date-pick" id="FromDate1" name="FromDate1" maxlength="10" />
+                            <input type="text" class="date-pick" id="ToDate1" name="ToDate1" maxlength="10" />
+                            </div>
+                        <div class="row">
+                            <input type="text" class="date-pick" id="FromDate2" name="FromDate2" maxlength="10" />
+                            <input type="text" class="date-pick" id="ToDate2" name="ToDate2" maxlength="10" />
+                            </div>
+                        <div class="row">
+                            <input type="text" class="date-pick" id="FromDate3" name="FromDate3" maxlength="10" />
+                            <input type="text" class="date-pick" id="ToDate3" name="ToDate3" maxlength="10" />
+                            </div>
+                        <div class="row">
+                            <input type="text" class="date-pick" id="FromDate4" name="FromDate4" maxlength="10" />
+                            <input type="text" class="date-pick" id="ToDate4" name="ToDate4" maxlength="10" />
+                            </div>                    
+                        <div class="row">
+                            <input type="text" class="date-pick" id="FromDate5" name="FromDate5" maxlength="10" />
+                            <input type="text" class="date-pick" id="ToDate5" name="ToDate5" maxlength="10" />
+                            </div>                    
+                        <div class="row">
+                            <input type="text" class="date-pick" id="FromDate6" name="FromDate6" maxlength="10" />
+                            <input type="text" class="date-pick" id="ToDate6" name="ToDate6" maxlength="10" />
+                            </div>
+                        <div class="row">
+                            <input type="text" class="date-pick" id="FromDate7" name="FromDate7" maxlength="10" />
+                            <input type="text" class="date-pick" id="ToDate7" name="ToDate7" maxlength="10" />
+                            </div>
+                        <div class="row">
+                            <input type="text" class="date-pick" id="FromDate8" name="FromDate8" maxlength="10" />
+                            <input type="text" class="date-pick" id="ToDate8" name="ToDate8" maxlength="10" />
+                            </div>
+                    </div>
+                    
+                    <p class="sublegend">Advertising authorisation</p>            
+                    
+                    <p>
+                        If you wish to undertake advertising in any way other than displaying your trade name,
+                        displaying your goods for sale, or displaying on your receptacle price lists and/or information
+                        about the goods you are selling, you may need authorisation from
+                        The London Organising Committee of the Olympic Games and Paralympic Games (LOCOG) before doing so.
+                        If you indicate that you intend to undertake such advertising we will forward your details to LOCOG.  
+                        LOCOG may require you to fill in its application form for advertising,
+                        unless sufficient details are provided in this form.
+                    </p>                    
+                
+                    <div class="row widelabel">
+                        <label for="PAlocogApplied">
+                             <span class="txt">Do you wish to apply for advertising authorisation from LOCOG?</span>
+                        </label>           
+                        <select id="PAlocogApplied" name="PAlocogApplied">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                              <option value="N">No</option>
+                         </select>
+                    </div>                     
+                    
+                    <div class="row wideArea">
+                        <label for="PAlocogDetails" class="">If yes please provide brief details</label>
+                        <textarea name="PAlocogDetails" id="PAlocogDetails" rows="5" cols="40" maxlength="500" />
+                    </div>
+                    
+            </fieldset>
+    
+            <?php if (!$licence) { ?>
+            <fieldset id="partb">    
+                                        
+                    <legend><span>Locations</span></legend>   
+                    
+                    <div class="row widelabel">
+                        <label for="PBCmapDoc" class="required">
+                             <span class="txt">Do you have a map of your trading location you can submit as part of your application?</span>
+                        </label>           
+                        <select id="PBCmapDoc" name="PBCmapDoc">
+                              <option value="">-</option>
+                              <option value="Y">Yes</option>
+                              <option value="N">No</option>
+                         </select>
+                    </div>    
+                    
+                    <p>Please identify exactly where in the Zone you intend to trade (if a mobile trader, state mobile).</p>
+                    <p>If you intend to operate more than one site within a single Event Zone please list the locations on this form, as specified on your existing / pending authorisations i.e. pitch number or map reference.</p>
+
+                    <div class="row wideArea">
+                        <label for="PBClocation1">Location 1</label>
+                        <textarea name="PBClocation1" id="PBClocation1" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>
+                    <div class="row wideArea">
+                        <label for="PBClocation2">Location 2</label>
+                        <textarea name="PBClocation2" id="PBClocation2" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>
+                    <div class="row wideArea">
+                        <label for="PBClocation3">Location 3</label>
+                        <textarea name="PBClocation3" id="PBClocation3" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>                    
+                    <div class="row wideArea">
+                        <label for="PBClocation4">Location 4</label>
+                        <textarea name="PBClocation4" id="PBClocation4" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>
+                    <div class="row wideArea">
+                        <label for="PBClocation5">Location 5</label>
+                        <textarea name="PBClocation5" id="PBClocation5" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>
+                    <div class="row wideArea">
+                        <label for="PBClocation6">Location 6</label>
+                        <textarea name="PBClocation6" id="PBClocation6" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>                    
+                    
+                    <legend><span>Commodities</span></legend>  
+
+                    <p>List the commodities you wish to sell or the services you wish to supply.</p>
+
+
+                    <div class="row wideArea">
+                        <label for="PBcommodities">Commodities</label>
+                        <textarea name="PBcommodities" id="PBcommodities" rows="5" cols="40" maxlength="500" />
+                    </div>                                  
+                    
+                    <legend><span>Receptacle/trading unit</span></legend>   
+                   
+                    <p>Please describe the receptacle (e.g. barrow, metal frames, table, etc.) specifying metric measurement, as specified on your existing/ pending trading authorisation.</p>
+                    
+                    <div class="row wideArea">
+                        <label for="PBreceptacle">Receptacle/trading unit</label>
+                        <textarea name="PBreceptacle" id="PBreceptacle" class="shallow" rows="5" cols="40" maxlength="100" />
+                    </div>    
+                    
+                    <div>
+                        <div class="row">
+                            <label for="PBreceptacleLength" class="required">Length</label>
+                            <input type="text" id="PBreceptacleLength" name="PBreceptacleLength" maxlength="50" />
+                        </div>
+                        <div class="row">
+                            <label for="PBreceptacleHeight" class="required">Height</label>
+                            <input type="text" id="PBreceptacleHeight" name="PBreceptacleHeight" maxlength="50" />
+                        </div>
+                        <div class="row">
+                            <label for="PBreceptacleWidth" class="required">Width</label>
+                            <input type="text" id="PBreceptacleWidth" name="PBreceptacleWidth" maxlength="50" />
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <label for="PBvehicleRegistration">Registration number</label>
+                        <input type="text" id="PBvehicleRegistration" name="PBvehicleRegistration" maxlength="50" />
+                        <span class="help">If trading from a vehicle please enter the registration number</span>
+                    </div>
+                    
+                    <legend><span>What type of licence are you submitting?</span></legend>  
+
+                    <p>Please provide copies of licences, consents, permits etc. that are required for you to trade and  are a pre-requisite to authorisation by the ODA</p>
+
+                    <p class="sublegend">Please select which licence documents you will be including with your application.</p>
+                    
+                    <div class="row">
+                         <label for="PBtradingLicenseCode1">Licence 1</label>
+                         <select id="PBtradingLicenseCode1" name="PBtradingLicenseCode1" class="wide">
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($licences as $licenceCode => $licenceName) {
+                                        echo $community->seededSelectOption('PBtradingLicenseCode1', $licenceCode, $licenceName);
+                                    }
+                                ?>
+                            </optgroup>
+                         </select>
+                    </div>
+                    <div class="row">
+                         <label for="PBtradingLicense1Pending">Status</label>
+                         <select id="PBtradingLicense1Pending" name="PBtradingLicense1Pending">
+                              <option value="N">Please select...</option>
+                              <option value="Y">Pending</option>
+                              <option value="N">Current</option>
+                         </select>
+                    </div>
+                    <div class="row bigbottom">
+                        <label for="PBCissuingBody1">Issuing body</label>
+                        <select id="PBCissuingBody1" name="PBCissuingBody1" class="wide">   
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($authorities as $authorityCode => $authority) {
+                                        echo $community->seededSelectOption('PBCissuingBody1', $authorityCode, $authority);
+                                    }
+                                ?>
+                            </optgroup>
+                        </select>
+                    </div>    
+                    
+                    <div class="row">
+                         <label for="PBtradingLicenseCode2">Licence 2</label>
+                         <select id="PBtradingLicenseCode2" name="PBtradingLicenseCode2" class="wide">
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($licences as $licenceCode => $licenceName) {
+                                        echo $community->seededSelectOption('PBtradingLicenseCode2', $licenceCode, $licenceName);
+                                    }
+                                ?>
+                            </optgroup>
+                         </select>
+                    </div>
+                    <div class="row">
+                         <label for="PBtradingLicense2Pending">Status</label>
+                         <select id="PBtradingLicense2Pending" name="PBtradingLicense2Pending">
+                              <option value="N">Please select...</option>
+                              <option value="Y">Pending</option>
+                              <option value="N">Current</option>
+                         </select>
+                    </div>
+                    <div class="row bigbottom">
+                        <label for="PBissuingBody2">Issuing body</label>
+                        <select id="PBissuingBody2" name="PBissuingBody2" class="wide">   
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($authorities as $authorityCode => $authority) {
+                                        echo $community->seededSelectOption('PBissuingBody2', $authorityCode, $authority);
+                                    }
+                                ?>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="row">
+                         <label for="PBtradingLicenseCode3">Licence 3</label>
+                         <select id="PBtradingLicenseCode3" name="PBtradingLicenseCode3" class="wide">
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($licences as $licenceCode => $licenceName) {
+                                        echo $community->seededSelectOption('PBtradingLicenseCode3', $licenceCode, $licenceName);
+                                    }
+                                ?>
+                            </optgroup>
+                         </select>
+                    </div>
+                    <div class="row">
+                         <label for="PBtradingLicense3Pending">Status</label>
+                         <select id="PBtradingLicense3Pending" name="PBtradingLicense3Pending">
+                              <option value="N">Please select...</option>
+                              <option value="Y">Pending</option>
+                              <option value="N">Current</option>
+                         </select>
+                    </div>
+                    <div class="row bigbottom">
+                        <label for="PBissuingBody3">Issuing body</label>
+                        <select id="PBissuingBody3" name="PBissuingBody3" class="wide">   
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($authorities as $authorityCode => $authority) {
+                                        echo $community->seededSelectOption('PBissuingBody3', $authorityCode, $authority);
+                                    }
+                                ?>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="row">
+                         <label for="PBtradingLicenseCode4">Licence 4</label>
+                         <select id="PBtradingLicenseCode4" name="PBtradingLicenseCode4" class="wide">
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($licences as $licenceCode => $licenceName) {
+                                        echo $community->seededSelectOption('PBtradingLicenseCode4', $licenceCode, $licenceName);
+                                    }
+                                ?>
+                            </optgroup>
+                         </select>
+                    </div>
+                    <div class="row">
+                         <label for="PBtradingLicense4Pending">Status</label>
+                         <select id="PBtradingLicense4Pending" name="PBtradingLicense4Pending">
+                              <option value="N">Please select...</option>
+                              <option value="Y">Pending</option>
+                              <option value="N">Current</option>
+                         </select>
+                    </div>
+                    <div class="row bigbottom">
+                        <label for="PBissuingBody4">Issuing body</label>
+                        <select id="PBissuingBody4" name="PBissuingBody4" class="wide">   
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($authorities as $authorityCode => $authority) {
+                                        echo $community->seededSelectOption('PBissuingBody4', $authorityCode, $authority);
+                                    }
+                                ?>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="row wideArea">
+                        <label for="PBtradingLicenseOther">If Other, please give full details and provide a copy with your application.</label>
+                        <textarea name="PBtradingLicenseOther" id="PBtradingLicenseOther" rows="5" cols="40" maxlength="500" />
+                    </div>
+                    <div class="row">
+                         <label for="PBtradingLicenseOtherPending">Status</label>
+                         <select id="PBtradingLicenseOtherPending" name="PBtradingLicense4Pending">
+                              <option value="N">Please select...</option>
+                              <option value="Y">Pending</option>
+                              <option value="N">Current</option>
+                         </select>
+                    </div>
+                    <!--
+                    <div class="row">
+                        <label for="PBCissuingBodyOther">Issuing Body</label>
+                        <select id="PBCissuingBodyOther" name="PBCissuingBodyOther">   
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($authorities as $authorityCode => $authority) {
+                                        echo $community->seededSelectOption('PBCissuingBodyOther', $authorityCode, $authority);
+                                    }
+                                ?>
+                            </optgroup>
+                        </select>
+                    </div>
+                    -->
+                    <div class="row">
+                        <label for="PBCissuingBodyOther">Issuing body, other</label>
+                        <input type="text" id="PBCissuingBodyOther" name="PBCissuingBodyOther" maxlength="100" />
+                    </div>   
+
+                    <p>
+                        An application under this section will be considered without the required licences, consents,
+                        permits or authority but the ODA authorisation will not be issued until these have been received by 31 March 2012 at the latest.
+                    </p>
+                    
+                    <p>Following receipt of your application the ODA will seek documentation from you.</p>
+                    
+                    <legend><span>Personal indentification documents</span></legend>  
+                    <p class="sublegend">Other documents required if you are a sole trader</p>
+                    
+                    <div class="row widelabel">
+                         <label for="PBpassportPhotoDoc">Passport-size photographs</label>
+                         <select id="PBpassportPhotoDoc" name="PBpassportPhotoDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                         </select>
+                         <span class="help">Three full face, Passport – size photographs taken within the last 12 months one of which must be countersigned by a professional person who has known the applicant for a minimum of two years.<br/>*In effect what the countersignature is doing is stating that he/she knows you, that you are who you say you are and that to the best of their knowledge the information you have provided in the form is correct. He/she is acting as a referee for you and because they are professionally qualified they can be identified by the Olympic Delivery Agency or its agents.</span>
+                    </div>                    
+
+                    <div class="row widelabel">
+                         <label for="PBcurrentAddressProofDoc">Proof of current address</label>
+                          <select id="PBcurrentAddressProofDoc" name="PBcurrentAddressProofDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                         </select>
+                         <span class="help">A copy of proof of current address e.g. utility bill, bank statement, driving licence or council tax bill/book</span>
+                    </div>
+
+                    <div class="row widelabel">
+                         <label for="PBproofIDDoc">A copy of a valid passport or National Identity Card</label>
+                         <select id="PBproofIDDoc" name="PBproofIDDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                         </select>
+                         <span class="help">A copy of a valid passport or National Identity Card</span>
+                    </div>                    
+
+                    <legend><span>Company indentification documents</span></legend>  
+                    <p class="sublegend">Other documents required by companies</p>
+                    
+                    <div class="row widelabel">
+                         <label for="PBheadedPaperDoc">Company letterhead</label>
+                         <select id="PBheadedPaperDoc" name="PBheadedPaperDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                         </select>
+                         <span class="help">If another form of business, provide a copy of any headed paper</span>
+                    </div>                    
+
+                    <legend><span>Insurance documentation required by all traders</span></legend>  
+                    <p>Unless undertaking only charitable collections or solely trading in a mobile manner on foot, please provide</p>
+                    
+                    <div class="row widelabel">
+                         <label for="PBthirdPartyInsuranceDoc">Proof of Third Party Insurance (certified copy, of policy/ cover note)</label>
+                         <select id="PBthirdPartyInsuranceDoc" name="PBthirdPartyInsuranceDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                              <option value="N">No</option>
+                         </select>
+                    </div>
+
+            </fieldset>
+            <?php } ?>
+            
+            <?php if ($licence) { ?>
+            <fieldset id="partc">    
+                    <!--
+                    <legend><span>Current Licence holders</span></legend>        
+                    <p>Applicants holding a current local authority trading or "tables and chairs" licence for the area or royal parks permission</p>     
+                    -->
+                
+                    <legend><span>Locations</span></legend>  
+              
+                    <div class="row widelabel">
+                        <label for="PBCmapDoc" class="required">
+                             <span class="txt">Do you have a map of your trading location you can submit as part of your application?</span>
+                        </label>           
+                        <select id="PBCmapDoc" name="PBCmapDoc">
+                              <option value="">-</option>
+                              <option value="Y">Yes</option>
+                              <option value="N">No</option>
+                         </select>
+                    </div>    
+                    
+                    <p>Please identify exactly where in the Zone you intend to trade (if a mobile trader, state mobile).</p>
+                    <p>If you intend to operate more than one site within a single Event Zone please list the locations on this form, as specified on your existing / pending authorisations i.e. pitch number or map reference.</p>
+                    
+                    <div class="row wideArea">
+                        <label for="PBClocation1">Location 1</label>
+                        <textarea name="PBClocation1" id="PBClocation1" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>
+                    <div class="row wideArea">
+                        <label for="PBClocation2">Location 2</label>
+                        <textarea name="PBClocation2" id="PBClocation2" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>
+                    <div class="row wideArea">
+                        <label for="PBClocation3">Location 3</label>
+                        <textarea name="PBClocation3" id="PBClocation3" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>                    
+                    <div class="row wideArea">
+                        <label for="PBClocation4">Location 4</label>
+                        <textarea name="PBClocation4" id="PBClocation4" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>
+                    <div class="row wideArea">
+                        <label for="PBClocation5">Location 5</label>
+                        <textarea name="PBClocation5" id="PBClocation5" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>
+                    <div class="row wideArea">
+                        <label for="PBClocation6">Location 6</label>
+                        <textarea name="PBClocation6" id="PBClocation6" class="shallow" rows="3" cols="40" maxlength="100" />
+                    </div>                    
+                    
+                    <legend><span>What type of licence do you hold?</span></legend>
+                    <p>Current local authority trading or 'tables and chairs' licence, or Royal Parks permission</p>
+                    
+                    <p class="sublegend">The following section must be completed</p>
+
+                    <div class="row">
+                         <label for="PClegislationLicenseCode" class="required">Under which legislation is your licence granted</label>
+                         <select id="PClegislationLicenseCode" name="PClegislationLicenseCode" class="wide">
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($leglicences as $licenceCode => $licenceName) {
+                                        echo $community->seededSelectOption('PClegislationLicenseCode', $licenceCode, $licenceName);
+                                    }
+                                ?>
+                            </optgroup>
+                         </select>
+                    </div>  
+
+                    <div class="row textareaInfoFix">
+                        <label for="PClegislationLicenseOtherDetails" class="">If Other, please give full details and provide a copy with your application</label>
+                        <textarea name="PClegislationLicenseOtherDetails" id="PClegislationLicenseOtherDetails" rows="5" cols="40" maxlength="300" />
+                    </div>
+                    
+                    <div class="row">
+                        <label for="PBCissuingBody1">Issuing body</label>
+                        <select id="PBCissuingBody1" name="PBCissuingBody1" class="wide">   
+                            <optgroup>    
+                                <option value="">Please select...</option>
+                            </optgroup>
+                            <optgroup>                                    
+                                <?php
+                                    foreach($authorities as $authorityCode => $authority) {
+                                        echo $community->seededSelectOption('PBCissuingBody1', $authorityCode, $authority);
+                                    }
+                                ?>
+                            </optgroup>
+                        </select>
+                    </div>                    
+                    <div class="row">
+                        <label for="PBCissuingBodyOther">Issuing body, other</label>
+                        <input type="text" id="PBCissuingBodyOther" name="PBCissuingBodyOther" maxlength="100" />
+                    </div>                    
+
+                    <div class="row">
+                        <label for="PClegislationLicenseNumber" class="required">Licence / contract number</label>
+                        <input type="text" id="PClegislationLicenseNumber" name="PClegislationLicenseNumber" maxlength="50"/>
+                    </div>
+
+                    <div class="row">
+                        <label for="PClegislationLicenseExpiryDate" class="required">Licence / contract date of expiry</label>
+                        <input type="text" id="PClegislationLicenseExpiryDate" name="PClegislationLicenseExpiryDate"  maxlength="10" />
+                        <span class="defaultValue">dd/mm/yyyy</span>
+                    </div>
+                    
+                    <p>Following receipt of your application the ODA will seek documentation from you.</p>
+
+                    <legend><span>Documents</span></legend>  
+                    
+                    <p class="sublegend">You must submit a copy of your current licence with this application. Please select 'Yes' for one of the following</p>
+
+                    <div class="row widelabel">
+                         <label for="PClocalAuthorityLicenseDoc">Local authority licence</label>
+                         <select id="PClocalAuthorityLicenseDoc" name="PClocalAuthorityLicenseDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                         </select>
+                         <span class="help">A copy of your current local authority licence including all attached conditions and permissions</span>
+                    </div>
+                    
+                    <div class="row widelabel">
+                         <label for="PCroyalParksContractLetterDoc">Royal Parks Contract Award letter</label>
+                         <select id="PCroyalParksContractLetterDoc" name="PCroyalParksContractLetterDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                         </select>
+                    </div>         
+            
+                    <div class="row widelabel">
+                         <label for="PCtablesandChairsPermitDoc">A copy of your current permit for 'tables and chairs'</label>
+                         <select id="PCtablesandChairsPermitDoc" name="PCtablesandChairsPermitDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                         </select>
+                         <span class="help">A copy of your current local authority licence inculding all attched conditions and permissions.</span>
+                    </div>      
+
+                    <p class="sublegend">You must submit</p>
+               
+                    <div class="row widelabel">
+                         <label for="PCPassportDoc">Three full-face passport-size photographs</label>
+                         <select id="PCPassportDoc" name="PCPassportDoc">
+                              <option value="N">-</option>
+                              <option value="Y">Yes</option>
+                         </select>
+                         <!--<span class="help">Three full-face, passport-size photographs taken within the last 12 months. One of which must be counter signed by your current authorisation/licence issuer on the reverse, confirming your identifcation and stating designation and contact details. Photographs will not be accepted if the face is obscured by sunglasses. The wearing of head covering should be avoided unless on religious grounds. We require these photographs to generate an authorisation document which will be destroyed if your application is unsuccessful</span>-->
+                         <span class="help">Three full face, Passport – size photographs taken within the last 12 months one of which must be countersigned by a professional person who has known the applicant for a minimum of two years.<br/>*In effect what the countersignature is doing is stating that he/she knows you, that you are who you say you are and that to the best of their knowledge the information you have provided in the form is correct. He/she is acting as a referee for you and because they are professionally qualified they can be identified by the Olympic Delivery Agency or its agents.</span>
+                    </div>
+                    
+            </fieldset>
+            <?php } ?>
+            
+            <fieldset id="submitWrap">
+                <input type="submit" id="submit-button" value="Submit application" />
+            </fieldset>
+            
+        </community:dataform>
+
+    <?php } ?>
+    
+</div>
+
+<div id="sidebar-right-2012">
+    <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
+    <div style="display:none">
+        <?php
+           # echo "Field Errors:";
+           # var_dump($community->errors);
+        ?>
+    </div>
+</div>                 
+

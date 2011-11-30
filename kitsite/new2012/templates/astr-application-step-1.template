@@ -1,0 +1,54 @@
+<content:extends template="MasterWithImage" />
+
+<content:group id="extra-meta-fields">
+</content:group>
+ 
+<content:group id="post-init">
+</content:group>    
+    
+<content:group id="extra-head-tags">
+    <link type="text/css" rel="stylesheet" href="css/newforms.css" />
+    <style type="text/css">
+        label { clear: right; color: #666666; float: left; font-weight: bold; margin-bottom: 10px; margin-right: 10px; width: 100%; }
+        #licence { clear: both; float: left; }
+        #submit-button { float: left; clear: both; margin-top: 10px; }
+        .errorMSGs { color: red; }
+    </style>    
+</content:group>   
+
+<div id="PageContent">
+    
+    <h1 id="pageHeadline"><content:text id="headline" /></h1>
+    <content:text id="Intro" schema="styled" />
+           
+    <div>
+        
+        <h2>If you currently<sup>1</sup> hold one of the following</h2>
+
+        <ul>
+            <li>Street Trading licence issued by a local authority</li>
+            <li>‘Table and chairs’ licence issued by a local authority</li>
+            <li>Royal Parks permission</li>
+        </ul>
+        
+        <h2><a href="/making-it-happen/advertising-and-trading-regulations/applicationform.php?licence=1&amp;EventZoneID=<?php echo Utils::escape($_REQUEST['zone']); ?>">Please click here</a></h2>
+        <br/>
+        
+        <h2>If you are in the process of applying for one of the above or wish to undertake any other form of open air trading<sup>2</sup></h2>
+        
+        <h2><a href="/making-it-happen/advertising-and-trading-regulations/applicationform.php?licence=0&amp;EventZoneID=<?php echo Utils::escape($_REQUEST['zone']); ?>">Please click here</a></h2>
+        <br/>
+        
+        <ol class="footnotes" style="color:#666; font-size:0.9em; list-style-type: decimal; margin-left: 15px;">        
+            <li>Current at time of application</li>
+            <li>This includes but is not limited to pedlars, charity collectors, mobile traders, buskers, traders on private land and organisers of special open air events.</li>
+        </ol>
+    </div>
+ 
+</div>
+
+
+<div id="sidebar-right-2012">   
+    <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
+</div>
+
