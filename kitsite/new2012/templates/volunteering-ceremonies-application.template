@@ -226,7 +226,7 @@
                         <label for="accept_attendance">
                             <div class="nbr">5.</div>
                             <div class="txt <?php echo $community->getFieldErrorsClass('accept_attendance') ?>">
-                                I am available to attend auditions that will take place in the evenings during November and early December of this year <span class="required">*</span>
+                                I am available to attend auditions that will take place in the afternoon, evenings or weekend during February 2012 <span class="required">*</span>
                             </div>
                         </label>
                         <?php echo $community->seededCheckbox('accept_attendance', '1') ?>
@@ -238,7 +238,7 @@
                             <div class="txt <?php echo $community->getFieldErrorsClass('accept_compulsory_rehearsals') ?>">
                                 I understand that being a volunteer performer for Ceremonies requires: <span class="required">*</span>
                                 <ul>
-                                    <li>Participating in two to three rehearsal sessions each week of up to four hours per session from March 2012 and;</li>
+                                    <li>Participating in two to three rehearsal sessions each week of up to four hours per session from April 2012 and;</li>
                                     <li>A number of all-day rehearsals in the three weeks leading up to each Ceremony.</li>
                                 </ul>
                             </div>
