@@ -1,0 +1,295 @@
+<content:extends template="Master" />
+
+<content:group id="extra-meta-fields">
+    <content:boolean name="manual-community-init" />
+</content:group>
+
+<content:group id="pre-init">
+    <community:init>
+        $community->validatePresence('first_name', 'Please enter your first name');
+        $community->validatePresence('last_name', 'Please enter your last name');
+        
+        $community->validatePresence('post_code', 'Please enter your post code.');
+        # includes to uppercase before running through the regex
+        $community->addValidation('post_code', create_function('$value', 'if (!preg_match("/^((([BEGLMNS][1-9]\d?)|(W[2-9])|((A[BL]|B[ABDHLNRST]|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]|F[KY]|G[LUY]|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]|M[EKL]|N[EGNPRW]|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKL-PRSTWY]|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)\d\d?)|(W1[A-HJKSTUW0-9])|(((WC[1-2])|(EC[1-4])|(SW1)|E1|W1)[ABEHMNPRVWXY]))(\s*)?([0-9][ABD-HJLNP-UW-Z]{2}))$|^(GIR\s?0AA)$|^(ASCN|BBND|BIQQ|FIQQ|PCRN|SIQQ|STHL|TDCU|TKCA)\s?1ZZ$|^(BFPO\s?\d\d?\d?)$/", strtoupper($value)) ) return  "Please enter a valid post code";'));
+        
+        $community->validatePresence('gender', 'Please enter your gender.');
+        $community->addValidation('gender', create_function('$value', 'if ($value == "Please select...") return "Please select your gender";'));
+        
+        $community->validatePresence('dob', 'Please enter your date of birth');
+        $community->validateRegex('dob', '/^\d\d[\/\-]\d\d[\/\-]\d\d\d\d$/', 'Please enter a valid date of birth');  
+        
+        $e1 = Utils::escape($_REQUEST['email']);
+        $community->addValidation('confirm_email', create_function('$value', 'global $e1; if ($value != $e1) return "Email addresses must match";'));
+        $community->validateEmail('email', 'Please enter a valid email address');
+        $community->validateEmail('confirm_email', 'Please enter a valid email address confirmation');          
+        
+        $community->validatePresence('mobile', 'Please enter your mobile number');
+        $_REQUEST['mobile'] = str_replace("+", "00", Utils::escape($_REQUEST['mobile'])); # Convert + into 00
+        $_REQUEST['mobile'] = preg_replace('/\D/', '', Utils::escape($_REQUEST['mobile'])); # Remove all non-digits
+        #$community->validateRegex('mobile', '/^[\s\(\),-]*(((00|\+)?[\s\(\),-]*44)|0)[\s\(\),-]*7[\s\(\),-]*[5789]([\s\(\),-]*[\d]){8}$/');
+        $community->validateLength('mobile', 10, 16);            
+            
+        $community->validatePresence('accept_age', 'Please accept checkbox 1');
+        $community->validatePresence('accept_location', 'Please accept checkbox 2');
+        $community->validatePresence('accept_no_payment', 'Please accept checkbox 3');
+        $community->validatePresence('accept_crb_check', 'Please accept checkbox 4');
+        $community->validatePresence('accept_attendance', 'Please accept checkbox 5');
+        $community->validatePresence('accept_compulsory_rehearsals', 'Please accept checkbox 6');
+        # $community->validatePresence('accept_disclaimer', 'Please accept checkbox 7');    
+        $community->validatePresence('accept_web_terms_conds', 'Please accept checkbox 7');      
+        
+        // Clear javascript defaultValue
+        $community->addValidation('post_code', create_function('$value', 'if ($value == "E14 5AX") return "Please enter your post code";'));
+        
+    </community:init>      
+</content:group>    
+ 
+<content:group id="post-init">
+<?php  
+ 
+    # ERROR MESSAGE HANDLING
+ 
+    $error = null;
+    if ($community->getError()) {
+        $error = $community->getError();
+    } elseif ($community->errors) {
+        $allErrors = array();
+        foreach ($community->errors as $fieldName => $errors) {
+            $allErrors = array_merge($allErrors, $errors);
+        }
+        $error = implode('<br>', $allErrors);
+    }
+
+    if($_SERVER['REQUEST_METHOD'] ==  'POST') {
+        
+    }   
+?>
+    
+<?js
+    function freshCache(path) {
+        rnd = Math.floor(Math.random()*1000);
+        return path + '?' + rnd  
+    }
+?>     
+</content:group>
+
+<content:group id="extra-head-tags">
+    <link type="text/css" rel="stylesheet" href="{freshCache('css/newforms.css')}" />
+    <script type="text/javascript" src="{freshCache('js/jsform.js')}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+          $('#errorIntro').append(' <a href="#">( View error details )</a>');
+          $("#errorIntro a").live('click',function() {   
+              $('.errorMSGs').slideDown('slow');
+              return false;
+          })
+          
+          $('.errorMSGs').hide();
+        });
+    </script>    
+</content:group>   
+
+<div id="PageContent">
+    
+    <div>
+        <?php if ($community->postSuccessful) { ?>    
+            <xsl:if test="$mode='edit'">
+                <p><strong>Thank-you message:</strong></p>
+            </xsl:if>    
+            <xsl:if test="$mode = 'edit' or $mode = 'publish'">
+                <content:text name="thank-you-message" schema="styled" height="50" />
+            </xsl:if>    
+        <?php } else { ?>
+            <p class="intro"><content:text name="intro" schema="styled" /></p>
+        <?php } end ?>
+    </div>
+
+    <?php if (!$community->postSuccessful) { ?>        
+    
+        <community:dataform action="ceremonyregistrant?method=create"
+                            datatype="CeremonyRegistrant"
+                            id="ceremoniesForm"  
+                            path="/kit/data"
+                            class="jsForm">
+            
+            <fieldset id="personal">
+                
+                    <legend><span>Personal details</span></legend>            
+                    <p>Fields marked with an asterisk <span class="required">*</span> must be completed.</p>            
+            
+                    <?php if ($error) { ?>
+                        <p id="errorIntro">Please check the form below for errors: </p>
+                        <p class="errorMSGs"><?php echo $error ?></p>
+                    <?php } ?>
+                
+                    <div class="row">
+                        <label for="first_name" class="required">First name</label>
+                        <input type="text" id="first_name" name="first_name" maxlength="50" />
+                    </div>
+        
+                    <div class="row">
+                        <label for="last_name" class="required">Family name</label>
+                        <input type="text" id="last_name" name="last_name" maxlength="50" />
+                    </div>
+
+                    <?php
+                        # if ($community->errors['confirm_email'][0]) {
+                        #     echo '<div class="errorMSG">'.$community->errors['confirm_email'][0].'</div>';
+                        # }
+                    ?>
+                
+                    <div class="row">
+                        <label for="email" class="required">Email</label>
+                        <input type="text" id="email" name="email" maxlength="50" />
+                    </div>   
+                    
+                    <div class="row break">
+                        <label for="confirm_email" class="required">Confirm email</label>
+                        <input type="text" id="confirm_email" name="confirm_email" maxlength="50"  />    
+                    </div>                
+                    
+                    <div class="row">
+                        <label for="post_code" class="required">UK postcode</label>
+                        <input type="text" id="post_code" name="post_code" />
+                        <span class="defaultValue">E14 5AX</span>
+                        <div class="sub">Applicants must be resident in, and have an address in, the British Isles (not including the Republic of Ireland)</div>
+                    </div>
+                    
+                    <div class="row">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender">
+                            <option>Please select...</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="X">Prefer not to say</option>
+                        </select>
+                    </div>
+        
+                    <div class="row">
+                        <label for="dob" class="required">Date of birth (dd/mm/yyyy)</label>
+                        <input type="text" id="dob" name="dob" />
+                        <span class="defaultValue">dd/mm/yyyy</span>
+                    </div>
+        
+                    <div class="row">
+                        <label for="mobile" class="required">Mobile phone</label>
+                        <input type="text" id="mobile" name="mobile" />
+                    </div>
+                
+            </fieldset>
+    
+            <fieldset id="questions">    
+                    
+                    <legend><span>Conditions of application</span></legend>     
+                    <p>To express your interest you need to be able to accept the following conditions (all are mandatory):</p>
+                    
+                    <div class="row">
+                        <label for="accept_age">
+                            <div class="nbr">1.</div>
+                            <div class="txt <?php echo $community->getFieldErrorsClass('accept_age') ?>">I will be 18 years or older by 1 March 2012 <span class="required">*</span></div>
+                        </label>                    
+                        <?php echo $community->seededCheckbox('accept_age', '1') ?>
+                    </div>        
+                    
+                    <div class="row">
+                        <label for="accept_location">
+                            <div class="nbr">2.</div>
+                            <div class="txt <?php echo $community->getFieldErrorsClass('accept_location') ?>">
+                                I acknowledge that all auditions and rehearsals will take place in east London <span class="required">*</span>
+                            </div>
+                        </label>
+                        <?php echo $community->seededCheckbox('accept_location', '1') ?>
+                    </div>
+                    
+                    <div class="row">
+                        <label for="accept_no_payment">
+                            <div class="nbr">3.</div>
+                            <div class="txt <?php echo $community->getFieldErrorsClass('accept_no_payment') ?>">
+                                I understand that if accepted, I would be a volunteer and not be paid for or compensated in any way for my time <span class="required">*</span>
+                            </div>
+                        </label>  
+                        <?php echo $community->seededCheckbox('accept_no_payment', '1') ?>
+                    </div>
+                    
+                    <div class="row">
+                        <label for="accept_crb_check">
+                            <div class="nbr">4.</div>
+                            <div class="txt <?php echo $community->getFieldErrorsClass('accept_crb_check') ?>">
+                                I accept that I will be subject to a Criminal Records Bureau check and other background checks <span class="required">*</span>
+                            </div>
+                        </label>
+                        <?php echo $community->seededCheckbox('accept_crb_check', '1') ?>
+                    </div>
+                    
+                    <div class="row">
+                        <label for="accept_attendance">
+                            <div class="nbr">5.</div>
+                            <div class="txt <?php echo $community->getFieldErrorsClass('accept_attendance') ?>">
+                                I am available to attend auditions that will take place in the evenings during November and early December of this year <span class="required">*</span>
+                            </div>
+                        </label>
+                        <?php echo $community->seededCheckbox('accept_attendance', '1') ?>
+                    </div>
+                    
+                    <div class="row">
+                        <label for="accept_compulsory_rehearsals">
+                            <div class="nbr">6.</div>
+                            <div class="txt <?php echo $community->getFieldErrorsClass('accept_compulsory_rehearsals') ?>">
+                                I understand that being a volunteer performer for Ceremonies requires: <span class="required">*</span>
+                                <ul>
+                                    <li>Participating in two to three rehearsal sessions each week of up to four hours per session from March 2012 and;</li>
+                                    <li>A number of all-day rehearsals in the three weeks leading up to each Ceremony.</li>
+                                </ul>
+                            </div>
+                        </label>
+                        <?php echo $community->seededCheckbox('accept_compulsory_rehearsals', '1') ?>
+                    </div>    
+                
+                    <!--
+                    <div class="row">
+                        <label for="accept_disclaimer">
+                            <div class="nbr">7.</div>
+                            <div class="txt <?php echo $community->getFieldErrorsClass('accept_disclaimer') ?>">
+                                I accept ... <a href="#">TBD Disclaimer</a> <span class="required">*</span>
+                            </div>
+                        </label>
+                        <?php echo $community->seededCheckbox('accept_disclaimer', '1') ?>
+                    </div>
+                    -->
+                
+                    <div class="row">
+                        <label for="accept_web_terms_conds">
+                            <div class="nbr">7.</div>
+                            <div class="txt <?php echo $community->getFieldErrorsClass('accept_web_terms_conds') ?>">
+                                I have read and accept the <a href="games/ceremonies/get-involved/application-process.php" target="_blank">Application Process</a> and <a href="games/ceremonies/get-involved/terms-and-conditions.php" target="_blank">Terms and Conditions</a> <span class="required">*</span>
+                            </div>
+                        </label>
+                        <?php echo $community->seededCheckbox('accept_web_terms_conds', '1') ?>
+                    </div>  
+                
+                    <br/><br/>
+                
+                    <p>To submit your expression of interest please click the submit button below. You will receive a confirmation via email within 48 hours.</p>           
+                
+            </fieldset>
+            
+            <fieldset id="submitWrap">   
+                <input type="hidden" name="remote_addr" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+                <input type="hidden" name="user_agent"  value="<?php echo $_SERVER['HTTP_USER_AGENT']; ?>" />                
+                <input type="submit" id="submit-button" value="Submit registration" />
+            </fieldset>
+            
+        </community:dataform>
+
+    <?php } ?>
+    
+</div>
+
+
+<div id="sidebar-right-2012">   
+    <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
+<?php
+    # var_dump($community->errors);
+?>
+</div>                   
