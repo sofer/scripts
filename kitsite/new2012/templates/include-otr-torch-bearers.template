@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />       
+    <?js if (kit.mode == 'edit') { ?>
+        <style type="text/css">
+            #who-details{background-color:#ffffff;color:#000000;width:400px;display:block;border:#999999 2px solid;margin:10px;padding:10px;}   
+        </style>
+    <?js } ?>    
+    <content:boolean id="showThisInclude" />
+</head>
+
+
+<body>
+            
+    <!--<xsl:if test="$mode='edit' or //showThisInclude = 'true'">-->
+            
+        <div id="who-details" class="snippet grey">
+            
+            <div class="snippet-header"><h2><content:string id="module-headline" /></h2></div>
+        
+            <content:repeat max="12" id="who">
+                <div class="content non-script-content">
+                    <content:picture id="whoImage" name="whoImage"/>
+                    <p>
+                        <strong><?js=Lang.getLabel("Name")?>: </strong><content:text id="person-name"/><br />
+                        <strong><content:text name="label1" inline="true" />: </strong><content:text id="dob" name="dob" schema="hyperlink" /><br />
+                        <strong><content:text name="label2" inline="true" />: </strong><content:text id="country" name="country"/><br />
+                        <strong><content:text name="label3" inline="true" />: </strong><content:text id="story" name="story"/><br />
+        
+                        <?js if (kit.mode != 'edit') {  ?><span class="expandInfo"><?js } ?>
+                            <content:text id="datatype1" name="datatype1" class="whoDetailsData" schema="hyperlink" inline="true" style="font-weight: bold; padding-right: 10px;"/> <content:text class="whoDetailsData" id="data1" name="data1" schema="hyperlink"  inline="true"/><br/>
+                            <content:text id="datatype2" name="datatype2" class="whoDetailsData" schema="hyperlink" inline="true" style="font-weight: bold; padding-right: 10px;"/> <content:text class="whoDetailsData" id="data2" name="data2" schema="hyperlink"  inline="true"/><br/>
+                            <content:text id="datatype3" name="datatype3" class="whoDetailsData" schema="hyperlink" inline="true" style="font-weight: bold; padding-right: 10px;"/> <content:text class="whoDetailsData" id="data3" name="data3" schema="hyperlink"  inline="true"/><br/>
+                            <content:text id="datatype4" name="datatype4" class="whoDetailsData" schema="hyperlink" inline="true" style="font-weight: bold; padding-right: 10px;"/> <content:text class="whoDetailsData" id="data4" name="data4" schema="hyperlink"  inline="true"/>          
+                           
+                        <?js if (kit.mode != 'edit') {  ?></span><?js } ?>
+                        <?js if (kit.mode != 'edit') {  ?><a class="expandButton"><?js=Lang.getLabel("Expand to read more")?></a><?js } ?>
+                    </p>
+                </div>                          
+            </content:repeat>
+        
+        </div>
+    <!--</xsl:if>    -->
+        
+</body>    
+</html>    
+    
