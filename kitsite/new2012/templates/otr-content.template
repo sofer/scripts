@@ -1,0 +1,119 @@
+<content:extends template="MasterTorchrelay" />
+
+<content:group id="extra-meta-fields">
+    <content:boolean id="showTorches" />
+    <content:boolean id="showMakeaNomination" />
+    <content:boolean id="showTorchbearers" />
+    <content:string name="BSL" isMetaData="true"/>
+</content:group>
+ 
+<content:group id="extra-head-tags">  
+    <style type="text/css">
+        body.torch-site #MainContent div.landing-child h2 { margin-bottom: 0px !important; }
+    </style>
+</content:group>
+
+<div id="PageContent" class="relay-content">
+    
+    <div id="PageContentInner">
+        <p><content:text id="strapline" schema="plain" class="strap-line" /></p>
+        
+        <!-- Video -->
+        <content:string id="videoPage" title="Video page" isMetaData="true" isHidden="true" />   
+        <xsl:if test="//videoPage != '' and not($mode='edit')">
+            <div class="videoWrap videoOverflowFix">
+                <new2012:video/>  
+            </div>
+        </xsl:if>
+        
+        <!-- or Image -->
+        <content:group name="headimage">
+            <div class="widePromoImage">
+                <content:picture name="image" width="460" height="250" />
+            </div>
+        </content:group>
+        
+        <content:text id="body" schema="styled" height="200" />
+        <content:picture class="image-right-main" id="rightSideImage" width="220" height="200" />
+        <content:text id="body2" schema="styled" height="200" />
+            
+        <xsl:if test="//showTorches = 'true'">
+            <new2012:widget-scrollable-torch/>
+        </xsl:if>
+        
+        <content:text id="body3" schema="styled" height="200" />
+        
+        <content:text id="screenReaderOnly" isHidden="true" />  
+        <?js if (kit.mode != 'edit' && page.getText('screenReaderOnly')) { ?>
+        <div id="screenReaderOnly">
+            <?js=page.getText('screenReaderOnly') ?>
+        </div>
+        <?js } ?>    
+    </div>
+        
+    <content:group name="hubContent">
+        <div class="landing-2012-content-container">
+            <content:repeat max="8">
+            <div class="main-content-left landing-child">
+                <h2><content:text schema="hyperlink" name="childLink" /></h2>
+                <p><content:picture name="childImage" width="220" height="120" resize="crop" /></p>
+                <content:text schema="styled" name="childText" class="content" />
+            </div>
+            
+            <div class="main-content-right landing-child">
+                <h2><content:text schema="hyperlink" name="childLink" /></h2>
+                <p><content:picture name="childImage" width="220" height="120" resize="crop" /></p>
+                <content:text schema="styled" name="childText" class="content" />
+            </div>
+             </content:repeat>
+        </div>  
+    </content:group>     
+    
+</div>
+
+<div id="sidebar-right-2012">
+    <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
+
+    <xsl:if test="//showTorchbearers = 'false'">
+      <kit:include path="games/olympic-torch-relay/includes/promo1.php" />
+      <new2012:module-torchrelay-contentformats />    
+    </xsl:if>
+
+    <!-- Make a nomination -->
+    <xsl:if test="//showMakeaNomination = 'true'">
+        <kit:include path="games/olympic-torch-relay/includes/make-a-nomination.php" />
+    </xsl:if>
+    
+    <content:group id="previous-bearers-group">
+        <div id="previous-bearers" class="torch-box box">
+            <div class="snippet-header"><h2>Previous Torchbearers</h2></div>
+            <div class="content non-script-content">
+                <content:picture width="220" height="120" name="whoImage" />                
+                <p><content:text name="whoText" height="60" schema="styled" /></p>
+            </div>
+        </div>
+    </content:group>
+    
+    <xsl:if test="//showTorchbearers = 'true'">
+        <kit:include path="games/olympic-torch-relay/includes/torchbearers/generic.php"/>
+    </xsl:if>
+    
+    <!-- DID YOU KNOW -->
+    <?js if(kit.mode == 'edit') { ?>    
+    <div id="did-you-know" class="torch-snippet box snippet"><h2><?js=Lang.getLabel("Did you know")?></h2> <?js } ?>
+        <content:group id="didyouknow">
+            <content:repeat max="6">
+                <content:text name="dykHeadline" isHidden="true"/>
+                <content:text schema="styled" name="dykBody" height="100" isHidden="true"/>
+            </content:repeat>
+        </content:group>     
+    <?js if(kit.mode == 'edit') { ?></div><?js } ?>
+
+    <new2012:module-did-you-know/>     
+    <!-- /DID YOU KNOW? -->  
+    
+    <new2012:module-shop2 />
+    <new2012:module-related-photos />
+    <new2012:module-related-videos />
+</div>                  
+

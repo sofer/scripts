@@ -31,9 +31,8 @@
                         <strong><content:text name="label3" inline="true" />: </strong><content:text id="story" name="story"/><br />
                         <br/>
                         <?js if (kit.mode != 'edit') {  ?><span class="expandInfo"><?js } ?>
-                            <content:text class="whoDetailsData" id="data1" name="data1" schema="hyperlink"  inline="false"/><br/>
-                            
-                            <content:text id="datatype1" name="datatype1" class="whoDetailsData" schema="hyperlink" inline="false" style="font-weight: bold; padding-right: 10px;"/> 
+                            <content:text class="whoDetailsData" id="data1" name="data1" schema="hyperlink" /><br/>                            
+                            <content:text id="datatype1" name="datatype1" class="whoDetailsData" schema="hyperlink" /> 
                             <content:text id="datatype2" name="datatype2" class="whoDetailsData" schema="hyperlink" inline="true" style="font-weight: bold; padding-right: 10px;"/> <content:text class="whoDetailsData" id="data2" name="data2" schema="hyperlink"  inline="true"/><br/>
                             <content:text id="datatype3" name="datatype3" class="whoDetailsData" schema="hyperlink" inline="true" style="font-weight: bold; padding-right: 10px;"/> <content:text class="whoDetailsData" id="data3" name="data3" schema="hyperlink"  inline="true"/><br/>
                             <content:text id="datatype4" name="datatype4" class="whoDetailsData" schema="hyperlink" inline="true" style="font-weight: bold; padding-right: 10px;"/> <content:text class="whoDetailsData" id="data4" name="data4" schema="hyperlink"  inline="true"/>          
