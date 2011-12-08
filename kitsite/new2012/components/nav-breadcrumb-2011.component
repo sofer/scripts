@@ -40,22 +40,18 @@
         </ul>
     </div>
     
+    <!-- SOCIAL NETWORKING BUTTONS -->
+    <?js if (kit.mode == 'publish') { ?>
+      <?php include('includes/social-breadcrumb.php'); ?>    
+    <?js } ?>
+
     <!-- OTR WELSH PAGES -->    
     <?js
         if (page.path.indexOf("torch-relay")!= -1 || page.path.indexOf("local-leaders") != -1) {
             var welshpage = page.getValue('welshpage');
             if (welshpage) { ?>  
-                <?js if (kit.mode == 'publish') { ?>
-                    <?php include('includes/social-breadcrumb.php'); ?>    
-                <?js } ?>
                 <div id="welsh-english-language-switcher"><a href="{welshpage}" lang="CY"><!--Edrychwch ar y dudalen hon yn -->Cymraeg</a></div>
-            <?js
-            }
-        } else { ?>
-            <!-- SOCIAL NETWORKING BUTTONS -->
-            <?js if (kit.mode == 'publish') { ?>
-                <?php include('includes/social-breadcrumb.php'); ?>    
-             <?js } ?>
-   <?js } ?>
+            <?js } ?>
+    <?js } ?>
         
 </div>
