@@ -112,8 +112,13 @@
     <new2012:module-did-you-know/>     
     <!-- /DID YOU KNOW? -->  
     
-    <new2012:module-shop2 />
+    <xsl:if test="//showTorchbearers = 'false'">
+      <new2012:module-shop2 />
+    </xsl:if>
+
     <new2012:module-related-photos />
     <new2012:module-related-videos />
 </div>                  
 
+
+​
