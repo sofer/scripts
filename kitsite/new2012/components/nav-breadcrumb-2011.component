@@ -1,0 +1,61 @@
+<xsl:text disable-output-escaping="yes">
+    <![CDATA[
+        <!--[if IE]>
+            <style type="text/css">
+                div#header-2012 div#breadcrumb-2012.updated #breadcrumb-2012-social ul li#so-facebook { width: 90px; }
+            </style>
+        <![endif]-->     
+    ]]>
+</xsl:text>   
+
+<div id="breadcrumb-2012" class="updated">
+    <div id="breadcrumb-2012-container">
+        
+        <?js=Lang.getLabel("You are in")?>:
+        
+        <ul id="breadcrumb-2012-list">
+            <?js
+                if(page.path == 'indexb.php') {
+                    
+                } else {
+            
+                    var currentSection = page.section;
+                    var parentSections = currentSection.sections;
+                    //added this to avoid links to English homepage on other language pages:
+                    if(currentSection.sections[1]  && currentSection.sections[1].path  &&  currentSection.sections[1].path.length == 2) {
+                      var parentSections = currentSection.sections.slice(1);
+                    }
+                    for (var i=0; i<parentSections.length; i++) {
+                        var section = parentSections[i];
+                        if (Item.exists(section.path + "/index.php")) {
+                            var indexPage = Item.get(section.path + "/index.php");
+                            if (indexPage.displayName != page.displayName) {
+                               ?><li><a href="{Item.linkTo(indexPage.path, page)}"><?js= indexPage.displayName ?></a> &gt; </li><?js
+                           }
+                       }
+                    }
+                }
+            ?>
+            <li><?js= page.displayName ?></li>
+        </ul>
+    </div>
+    
+    <!-- OTR WELSH PAGES -->    
+    <?js
+        if (page.path.indexOf("torch-relay")!= -1 || page.path.indexOf("local-leaders") != -1) {
+            var welshpage = page.getValue('welshpage');
+            if (welshpage) { ?>  
+                <?js if (kit.mode == 'publish') { ?>
+                    <?php include('includes/social-breadcrumb.php'); ?>    
+                <?js } ?>
+                <div id="welsh-english-language-switcher"><a href="{welshpage}" lang="CY"><!--Edrychwch ar y dudalen hon yn -->Cymraeg</a></div>
+            <?js
+            }
+        } else { ?>
+            <!-- SOCIAL NETWORKING BUTTONS -->
+            <?js if (kit.mode == 'publish') { ?>
+                <?php include('includes/social-breadcrumb.php'); ?>    
+             <?js } ?>
+   <?js } ?>
+        
+</div>
