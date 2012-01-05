@@ -249,6 +249,7 @@ function embedPlayer(programmeId, playersize) {
         allowscriptaccess: "always",
         allowFullscreen: "true",
         opacity: "transparent",
+        wmode: "opaque",
         quality: "high",
         align: "middle"
     };
