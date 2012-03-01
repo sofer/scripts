@@ -3,13 +3,13 @@
 // currently trying to get ZEN.convert() working
 // 31-05-11
 
-http = require('http');
+var http = require('https'); //require('http');
 fs = require('fs');
 
 var ZEN = {
 
   host: 'postcms.zendesk.com',
-  port: 80,
+  port: 443, //80,
   cookie: false,
   base64auth: 'ZGFubnlAa2l0c2l0ZS5jb20vdG9rZW46V1pDS0FUdmZyVXhpWWt4RFFNQ0VNS2NzTVZWd3dBVndNcWh4R2VMMw==',
   timestamp: new Date().getTime(),
