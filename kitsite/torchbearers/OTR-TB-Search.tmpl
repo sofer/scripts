@@ -1,0 +1,448 @@
+<content:extends template="MasterTorchrelay" />
+
+<content:group id="extra-meta-fields">
+</content:group>
+ 
+<content:group id="extra-head-tags">  
+    <link type="text/css" href="css/torchbearer.css?qs=pleasedontcache" media="screen" rel="stylesheet" />
+    <link type="text/css" href="css/datepicker.css" media="screen" rel="stylesheet" />    
+    <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>    
+    <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
+    <!-- Javascript pagination seems :S for a list of 1000 items with an image each -->
+    <!-- script type="text/javascript" src="js/jquery.tablesorter.pager.js"></script-->
+    <script type="text/javascript" src="js/jquery.yaselect.js"></script>
+    <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>    
+    <script type="text/javascript" src="js/torchbearer.js?qs=pleasedonotcache"></script>
+    
+    <?php
+    
+        /*
+            Valid field names are:
+            PersonId    
+            ShortUID  
+            FirstName LastName PreferredFirstName    
+            Age    
+            RelayCommunity CommunityLatitude CommunityLongitude HomeCommunity    
+            TwitterUsername    
+            DayNumber DayDate      
+            Story    
+            EventId                                               
+        */
+     
+        require "games/olympic-torch-relay/carrying-the-olympic-flame/torchbearer-classes.php";
+        $ts = new TorchSearch();
+    
+        // This method looks for CGI params named "name", "community" and "fromDay", "toDay" (and "offset" and "limit")
+        $results = $ts->search();
+        $totalResults = $results->totalResults;
+
+    ?>
+    
+    <?php
+    
+        function populateInputField($defaultValue, $requestField) {
+            if ($_REQUEST[$requestField]) {
+                $value = htmlspecialchars($_REQUEST[$requestField]);
+            } else {
+                $value = $defaultValue;
+            }  
+            return $value;
+        }
+        
+        $avatarSrc = 'images/placeholders/tn4.jpg';    
+
+        /* ORDER FIELDS ---------------------------------------------- */
+         
+        $myFilters = array();
+        
+        # Add the filters to the array if set
+        $_REQUEST['name']                ? $myFilters['name']              = $_REQUEST['name'] : ''; 
+        $_REQUEST['fromDay']             ? $myFilters['fromDay']           = $_REQUEST['fromDay'] : '';
+        $_REQUEST['toDay']               ? $myFilters['toDay']             = $_REQUEST['toDay'] : '';
+        $_REQUEST['community']           ? $myFilters['community']         = $_REQUEST['community'] : '';
+        $_REQUEST['bearer-location']     ? $myFilters['bearer-location']   = $_REQUEST['bearer-location'] : '';        
+        $_REQUEST['orderby']             ? $myFilters['orderby']           = $_REQUEST['orderby'] : '';
+        $_REQUEST['dir']                 ? $myFilters['dir']               = $_REQUEST['dir'] : '';
+        $_REQUEST['start']               ? $myFilters['start']             = $_REQUEST['start'] : '';
+        $_REQUEST['limit']               ? $myFilters['limit']             = $_REQUEST['limit'] : ''; 
+        
+        # Toggle the direction for the url
+        $myFilters['dir'] == 'asc' ? $dir = 'desc' : $dir = 'asc';
+
+        # Build the urls order urls
+        $orderByDateUrl = Utils::getRequestPath().Utils::buildQueryString(array_merge($myFilters, array('orderby' => 'date', 'dir' => $dir, 'start' => 1)));
+        $orderByNameUrl = Utils::getRequestPath().Utils::buildQueryString(array_merge($myFilters, array('orderby' => 'name', 'dir' => $dir, 'start' => 1)));
+        
+        function getCssDirClass($current) {
+            global $myFilters;
+            if ($myFilters['orderby'] == $current) {
+                $myFilters['dir'] == 'asc' ? $cssDirClass = 'sort-down' : $cssDirClass = 'sort-up';
+            } else {
+                $cssDirClass = 'off';
+            }
+            return $cssDirClass;
+        }    
+    
+        if(!function_exists('json_decode')) {
+            function json_decode($json) {
+                $comment = false;
+                $out = '$x=';
+                for ($i=0; $i<strlen($json); $i++) {
+                    if (!$comment) {
+                        if (($json[$i] == '{') || ($json[$i] == '['))
+                            $out .= ' array(';
+                        else if (($json[$i] == '}') || ($json[$i] == ']'))
+                            $out .= ')';
+                        else if ($json[$i] == ':')
+                            $out .= '=>';
+                        else
+                            $out .= $json[$i];
+                    }
+                    else
+                        $out .= $json[$i];
+                    if ($json[$i] == '"' && $json[($i-1)]!="\\")
+                        $comment = !$comment;
+                }
+                eval($out . ';');
+                return $x;
+            }
+        }        
+    
+    ?>
+    
+    <style type="text/css">
+        /* Some of the delivered css was not kitsite compatible */
+        div#MainContent .otrsearch ul li{background:none;}
+        div#MainContent .otrsearch ul.search-page-select{clear:left;float:left;margin:10px 0;padding:0;}
+        div#MainContent .otrsearch ul.search-page-select li{background-image:none;color:#4C4C4C;float:left;padding:0;}
+        div#MainContent .otrsearch ul.search-page-select li a,
+        div#MainContent .otrsearch ul.search-page-select li span{font-size:1.08333em;font-weight:bold;padding:2px 5px;}
+        div#MainContent .otrsearch ul.search-page-select li.prev a,
+        div#MainContent .otrsearch ul.search-page-select li.next a,
+        div#MainContent .otrsearch ul.search-page-select li.prev.disabled,
+        div#MainContent .otrsearch ul.search-page-select li.next.disabled{display:block;height:11px;text-indent:-9999em;width:11px;}
+        div#MainContent .otrsearch ul.search-page-select li.prev{margin-right:10px;}
+        div#MainContent .otrsearch ul.search-page-select li.next{margin-left:10px;}
+        div#MainContent .otrsearch ul.search-page-select li.prev a{background:url("../images/pf/prev-btn.gif") no-repeat scroll 0 3px transparent;padding:2px 0;text-indent:-9999em;}
+        div#MainContent .otrsearch ul.search-page-select li.next a{background:url("../images/pf/next-btn.gif") no-repeat scroll 0 3px transparent;padding:2px 0;text-indent:-9999em;}
+        div#MainContent .otrsearch ul.search-page-select li.prev.disabled{background:url("../images/pf/prev-btn-off.gif") no-repeat scroll 0 3px transparent;padding:2px 0;text-indent:-9999em;}
+        div#MainContent .otrsearch ul.search-page-select li.next.disabled{background:url("../images/pf/next-btn-off.gif") no-repeat scroll 0 3px transparent;padding:2px 0;text-indent:-9999em;}
+        div#MainContent { overflow: visible; } /* Dropdown was getting cut off */
+        /* Autocomplete styles */
+        .acInput { width:200px; }
+        .acResults { padding:0px; border:1px solid WindowFrame; background-color:Window; overflow:hidden; z-index: 100; }
+        .acResults ul { width:100%; list-style-position:outside; list-style:none; padding:0; margin:0; }
+        .acResults ul li { margin:0px; padding:2px 6px; cursor:pointer; display:block; width:100%; font:menu; font-size:12px; overflow:hidden; text-align: left;}
+        .acLoading { background: url('images/indicator.gif') right center no-repeat; }
+        .acSelect { background-color: Highlight; color: HighlightText; } 
+        .communitySubmit.disabled { background:url("../images/pf/submit-btn-disabled.jpg") no-repeat scroll 0 0 transparent; cursor: default; } 
+    </style>
+    
+    <script type="text/javascript">
+        $(function() {
+            $("#bearer-name").autocomplete({
+                url: 'games/olympic-torch-relay/carrying-the-olympic-flame/torchbearer-autocomplete.php',
+                mustMatch: true,
+                maxItemsToShow: 5,
+                selectFirst: false,
+                autoFill: false,
+                selectOnly: true,
+                remoteDataType: 'json'
+            });
+        });            
+    </script>
+    
+    <!-- If we have less then 20 results lets use the nicer js-table sorting -->
+    <!-- if its more lets use the php style navigation and non-js sorting -->
+    
+    <?php if ($totalResults > 0 && $totalResults <= 20) { ?>  
+        <script type="text/javascript">        
+            $(document).ready(function()  { 
+
+                $(".tb-table").tablesorter();
+                
+                $("#sort-names").click(function() { 
+                    var currentState = $(this).attr('class');
+                    var newstate = ''; 
+                    if (currentState.indexOf("sort-down") != -1) { newstate = 1; } else { newstate = 0; }
+                    var sorting = [[1,newstate]]; 
+                    $("table").trigger("sorton",[sorting]); 
+                    return false; 
+                }); 
+                
+                $("#sort-dates").click(function() { 
+                    var currentState = $(this).attr('class');
+                    var newstate = '';
+                    if (currentState.indexOf("sort-down") != -1) { newstate = 1; } else { newstate = 0; }
+                    var sorting = [[2,newstate]]; 
+                    $("table").trigger("sorton",[sorting]); 
+                    return false; 
+                });         
+            }); 
+        </script>      
+    <?php } ?>
+</content:group>
+
+<div id="PageContent" class="relay-content otrsearch">
+
+    <div id="PageContentInner">
+        <p><content:text id="intro" scehma="styled" /></p>
+    </div>
+    
+    <div class="torchbearer-form">
+        <form action="{page.seoPath}" method="GET">
+            <label for="name">Find name:</label>
+            <input type="text" id="bearer-name" name="name" value="<?php echo populateInputField('Name','name'); ?>" />
+            <noscript>
+              <label for="name_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
+              <input id="name_only_torchbearers_with_a_story" value="1" type="checkbox" name="only_with_story" />
+            </noscript>
+            <input type="submit" value="Go" class="searchSubmit" name="search-submit" />
+        </form>
+    </div>
+    
+    <div class="torchbearer-form with-overlay">
+        <form action="{page.seoPath}" method="GET">
+            <label for="bearer-location">Find location:</label>
+            <select id="bearer-location" name="bearer-location" class="drop-down <?php echo $community->getFieldErrorsClass('bearer-location'); ?>">
+                <option value="">Select a region</option>
+                <?php
+                    echo $community->seededSelectOption('bearer-location', 'southwest', 'South West');
+                    echo $community->seededSelectOption('bearer-location', 'westmidlands', 'West Midlands');
+                    echo $community->seededSelectOption('bearer-location', 'wales', 'Wales');
+                    echo $community->seededSelectOption('bearer-location', 'northwest', 'North West');
+                    echo $community->seededSelectOption('bearer-location', 'northernireland', 'Northern Ireland');
+                    echo $community->seededSelectOption('bearer-location', 'republicireland', 'Republic of Ireland');
+                    echo $community->seededSelectOption('bearer-location', 'scotland', 'Scotland');
+                    echo $community->seededSelectOption('bearer-location', 'northeast', 'North East');
+                    echo $community->seededSelectOption('bearer-location', 'yorkshirehumber', 'Yorkshire and Humber');
+                    echo $community->seededSelectOption('bearer-location', 'eastmidlands', 'East Midlands');
+                    echo $community->seededSelectOption('bearer-location', 'eastofengland', 'East of England');
+                    echo $community->seededSelectOption('bearer-location', 'southeast', 'South East');
+                    echo $community->seededSelectOption('bearer-location', 'london', 'London');              
+  
+                ?>
+            </select>
+            
+            <!-- If we're in js mode, we ignore all the pre-selected stuff and just display 'select a region' -->
+            <script type="text/javascript">
+                <?php if (!$myFilters['bearer-location']) {  ?>
+                  $('#bearer-location').html('<option value="">Select a region</option><option value="southwest">South West</option><option value="westmidlands">West Midlands</option><option value="wales">Wales</option><option value="northwest">North West</option><option value="northernireland">Northern Ireland</option><option value="republicireland">Republic of Ireland</option><option value="scotland">Scotland</option><option value="northeast">North East</option><option value="yorkshirehumber">Yorkshire and Humber</option><option value="eastmidlands">East Midlands</option><option value="eastofengland">East of England</option><option value="southeast">South East</option><option value="london">London</option>');
+                <?php } ?>
+            </script>             
+            
+            <?js
+      var x = "$communities = array(\n";
+                        var js = Asset.get("/data/otr/communities.js");
+      var obj = eval("(" + js.text + ")");
+      var first = true;
+      for (var region in obj) {
+         if (first) {first = false;} else { x += ",\n";}
+         var arr = obj[region];
+         x += '"' + region + '" => array(';
+         for (var i in arr) {
+           if (i!=0) x += ",";
+           x += '"' + arr[i] + '"';
+         }
+         x += ")";
+      }
+                        x += "\n);\n";
+      out.php(x);
+            /*
+                $string = file_get_contents("data/otr/communities.js");
+                $json = json_decode($string,true);
+                
+                $communityJson = $json[$myFilters['bearer-location']];
+                
+                if ($communityJson) { 
+                    $communityArray = split(',',$communityJson);
+                }
+            */
+            ?>
+            <script type="text/javascript">
+            <?php
+    // bit of a hack
+    if ($myFilters["community"] && !$myFilters["bearer-location"]) {
+      foreach ($communities as $region => $arr) {
+        foreach ($arr as $i => $comm) {
+          if ($myFilters["community"] == $comm) {
+            $myFilters["bearer-location"] = $region;
+            break 2;
+          }
+        }
+      }
+      if ($myFilters["bearer-location"]) {
+        echo '$("#bearer-location option[value=' . $myFilters["bearer-location"] . ']").attr("selected",true);';
+      }
+    }
+            ?>
+            </script>
+            
+            <NOSCRIPT>
+                <?php if ($myFilters['bearer-location']) {
+                    $communityArray = $communities[$myFilters['bearer-location']];
+                   if (!$myFilters['community']) { 
+                ?>                                    
+                    <select id="bearer-location2" name="community">
+                        <option>Select a community</option>
+                        <?php
+                            foreach($communityArray as $key => $val) {
+                                echo $community->seededSelectOption('community', $val, $val);                                                    
+                            }                                            
+                        ?>
+                    </select>        
+                <?php } } ?>        
+            </NOSCRIPT>
+            
+            <div id="jsCommunityDropdown" >
+                <?php if ($myFilters['community'] && $myFilters['bearer-location']) { ?>
+                    <select class="drop-down" id="bearer-location2" name="community">
+                        <option value="0">Select a community</option>
+                        <?php
+                            foreach($communityArray as $key => $val) {
+                                echo $community->seededSelectOption('community', $val, $val);                                                    
+                            }                                            
+                        ?>
+                    </select>        
+                 <?php } ?>
+            </div>    
+            
+            <!-- If we're in js mode, we ignore all the pre-selected stuff and just display 'select a community' 
+                 Not quite true.  Should be: 
+                 UNLESS user has selected a community.
+            -->     
+            <script type="text/javascript"><xsl:text disable-output-escaping="yes"><![CDATA[
+                <?php if (!$myFilters['community']) { ?>
+                   $('#jsCommunityDropdown').html('<' + 'select class="drop-down" id="bearer-location2" name="community"><' + 'option value="0">Select a community<' + '/option><' + '/select>');
+                 <?php } ?>
+]]></xsl:text>
+            </script>
+            
+            <noscript>
+              <label for="region_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
+              <input id="region_only_torchbearers_with_a_story" value="1" type="checkbox" name="only_with_story" />
+            </noscript>
+
+            <input type="submit" value="Go" class="searchSubmit communitySubmit" name="search-submit" />
+            
+            <script type="text/javascript">
+                <?php if (!$myFilters['community']) { ?>
+                  $('.communitySubmit').addClass('disabled');
+                  $('.communitySubmit').attr('disabled','disabled');
+                 <?php } ?>
+            </script>
+            
+        </form>
+        <div class="community-overlay"></div>
+    </div>
+    
+    <div class="torchbearer-form">
+        <form action="{page.seoPath}" method="GET">
+            <h2>Find date:</h2>
+            <label class="from-to" for="from-date">From:</label>
+            <input type="text" value="From Date" id="from-date" class="date-input" name="fromDay" />
+            <label class="from-to" for="to-date">To:</label>
+            <input type="text" value="To Date" id="to-date" class="date-input" name="toDay" />
+  <xsl:text disable-output-escaping="yes"><![CDATA[
+            <script type="text/javascript">
+               <?php
+                   if ($_REQUEST['fromDay'] && preg_match('/^[0-9]{2} [0-9]{2} [0-9]{4}$/', $_REQUEST['fromDay'])) {
+                       # echo '$("#from-date").datepicker("option", "defaultDate", "' . $_REQUEST['fromDay'] . '");';
+                       echo '$("#from-date").val("' . $_REQUEST['fromDay'] . '");';
+                   }
+                   if ($_REQUEST['toDay'] && preg_match('/^[0-9]{2} [0-9]{2} [0-9]{4}$/', $_REQUEST['toDay'])) {
+                       # echo '$("#to-date").datepicker("option", "defaultDate", "' . $_REQUEST['toDay'] . '");';
+                       echo '$("#to-date").val("' . $_REQUEST['toDay'] . '");';
+                   }
+               ?>
+
+            </script>
+  ]]></xsl:text>
+            <noscript>
+              <label for="date_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
+              <input id="date_only_torchbearers_with_a_story" value="1" type="checkbox" name="only_with_story" />
+            </noscript>
+            <input type="submit" value="Go" class="searchSubmit" name="search-submit" />
+        </form>
+    </div>
+
+    <div class="torchbearer-form">
+  <form name="dummy">
+          <label for="dummy_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
+  <?php
+    echo '<input id="dummy_only_torchbearers_with_a_story" type="checkbox" name="only_with_story"';
+    if ($_REQUEST["only_with_story"]==1) echo ' checked="checked"';
+    echo '/>';
+  ?>
+        </form>
+    </div>
+    
+    <script type="text/javascript"><xsl:text disable-output-escaping="yes"><![CDATA[
+  var checked = $("form[name=dummy] input").is(":checked") ? " checked='checked'" : "";
+  $(".torchbearer-form form").not($("form[name=dummy]")).each(function () {
+    $(this).append('<input style="display: none;"' + checked + ' type="checkbox" value="1" name="only_with_story" />');
+  });
+  $("form[name=dummy] input").change(function () {
+    var checked = $(this).is(":checked");
+    $("input[name=only_with_story]").not($(this)).attr("checked", checked);
+  });
+    ]]></xsl:text></script>
+
+
+    <div class="torchbearer-results">
+              
+        <?php if ($totalResults > 0) {} ?>
+    
+        <h2>Results</h2>
+    
+        <table class="tb-table">
+            <thead>
+                <tr><th>Image</th><th>Name</th><th>Date</th></tr>
+            </thead>         
+            <?php
+                foreach ($results->hits as $i => $hit) { 
+                    $tb = new TorchBearer($hit); 
+                    $imgThumb = $tb->imgSmallSrc();
+                    ?>
+                    <tr>
+                         <td class="tb-image"><img src="<?php echo $imgThumb; ?>" width="77" height="77" alt="<?php echo htmlspecialchars($tb->getText('FullName')); ?>" /></td>
+                         <td class="tb-detail">
+                             <h3><?php if ($tb->isFeatured()) { ?>
+           <a href="<?php echo $tb->href();?>"><?php echo htmlspecialchars($tb->getText("FullName")); ?></a>
+          <?php } else {
+          echo htmlspecialchars($tb->getText("FullName"));
+         } ?></h3>
+                             <h4>Carrying the Flame through: <a href="<?php echo Utils::getRequestPath() . '?community=' . urlencode($tb->getText('DistinctRelayCommunity')); ?>"><?php echo htmlspecialchars($tb->getText("DistinctRelayCommunity")); ?></a></h4>
+                             <h4>Carrying the Flame on: <a href="<?php echo Utils::getRequestPath() . '?fromDay=' . $tb->date() . '&toDay=' . $tb->date(); ?>"><?php echo $tb->date("%d %b %Y"); ?></a></h4>
+                             <h4>Age: <?php echo htmlspecialchars($tb->age()); ?></h4>
+                             <h4>Hometown: <?php echo htmlspecialchars($tb->getText("HomeCommunity")); ?></h4>
+                        </td>
+                         <td class="tb-date"><?php if ($tb->isFeatured()) { ?><div class="featured">Featured Torchbearer</div><div class="readfullstory"><a href="<?php echo $tb->href();?>">Read full story</a></div><?php } ?></td>
+                    </tr>  
+                    <?php
+                }   
+            ?>             
+        </table>
+        
+        <div class="table-sort">
+            <p>Sort events by: </p>
+            <ul class="sort-list">
+                <li class="sort-name"><a id="sort-names" href="<?php echo $orderByNameUrl; ?>" class="<?php echo getCssDirClass('name'); ?>">Name</a></li>
+                <li class="sort-date"><a id="sort-dates" href="<?php echo $orderByDateUrl; ?>" class="<?php echo getCssDirClass('date'); ?>">Date</a></li>
+            </ul>
+        </div>
+        
+        <?php if ($totalResults == 0 && $_SERVER['REQUEST_METHOD'] == "GET") { ?><div>No Results found</div> <?php } ?>
+        <?php $results->writeNavigationLinks(7); ?>
+                        
+    </div>
+    
+</div>
+
+<div id="sidebar-right-2012">     
+    <div id="mpu_ad"><?js Doubleclick.displayAdvert('220x120') ?></div>
+    <new2012:module-related-photos />
+    <new2012:module-related-videos />    
+</div>
+
+​
