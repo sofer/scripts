@@ -1,0 +1,351 @@
+div.torchbearer-form {
+clear: left;
+float: left;
+background: #eaeaea;
+width: 440px;
+padding: 5px 10px 10px;
+margin-bottom: 10px;
+}
+
+/* Added to fix z-index of drop downs and positioning of overlay on disabled dropdown */
+div.torchbearer-form.with-overlay {
+  position: relative;
+  z-index:100;
+}
+
+div.torchbearer-form form {
+margin: 0;
+}
+
+div.torchbearer-form label, div.torchbearer-form h2 {
+clear: left;
+float: left;
+width: 100%;
+color: #4c4c4c;
+font-weight: normal;
+font-size: 1em;
+margin-bottom: 5px;
+}
+
+input.searchSubmit {
+width: 65px;
+color: #fff;
+font-weight: bold;
+font-size: 1.083333333333333em;
+background: #817240 url('../images/pf/submit-btn.jpg') no-repeat;
+border: 0;
+padding: 2px 0;
+cursor: pointer;
+}
+
+div.torchbearer-form #bearer-name {
+border: 1px solid #ccc;
+padding: 3px 5px;
+width: 350px;
+margin-right: 10px;
+}
+
+div.torchbearer-form #bearer-location, div.torchbearer-form #bearer-location2 {
+float: left;
+width: 340px;
+margin-right: 10px;
+}
+
+.JS-enabled div.torchbearer-form #bearer-location, .JS-enabled div.torchbearer-form #bearer-location2 {
+clear: none;
+width: 175px;
+}
+
+div.torchbearer-form #bearer-location2.drop-down {
+display: none;
+}
+
+.JS-enabled div.torchbearer-form #bearer-location2 {
+display: block;
+}
+
+div.torchbearer-form label.from-to {
+clear: none;
+width: auto;
+padding: 5px 20px 0 0;
+}
+
+div.torchbearer-form input.date-input {
+border: 1px solid #ccc;
+padding: 3px 5px;
+width: 100px;
+margin-right: 10px;
+}
+
+div.torchbearer-results table {
+border-collapse: collapse;
+margin: 0;
+border-bottom: 1px dotted #707070;
+width: 100%;
+padding: 0;
+}
+
+div.torchbearer-results table tr {
+border-top: 1px dotted #707070;
+}
+
+div.torchbearer-results table tr td {
+padding: 10px 0;
+vertical-align: top;
+}
+
+div.torchbearer-results table tr td.tb-image {
+width: 90px;
+}
+
+div.torchbearer-results table tr td h3 {
+margin-bottom: 10px;
+}
+
+div.torchbearer-results table tr td h4 {
+font-weight: normal;
+}
+
+div.torchbearer-results table tr td.tb-date {
+font-weight: bold;
+text-align: right;
+}
+
+div.torchbearer-results {
+clear: left;
+float: left;
+width: 100%;
+margin: 20px 0;
+position: relative;
+}
+
+body div.torchbearer-results h2 {
+color: #4c4c4c;
+margin: 7px 0 7px 0;
+font-size: 1.083333333333333em;
+}
+
+#homepage-2012-sponsor-container div.torchbearer-results h3 a, div.torchbearer-results a {
+color: #817240 !important;
+}
+
+#homepage-2012-sponsor-container div.torchbearer-results h3 a:hover, div.torchbearer-results a:hover, #homepage-2012-sponsor-container div.torchbearer-results h3 a:focus, div.torchbearer-results a:focus {
+text-decoration: underline !important;
+}
+
+div#MainContent ul.pagination {
+clear: left;
+float: left;
+margin: 10px 0;
+padding: 0;
+}
+
+div#MainContent ul.pagination li {
+float: left;
+background-image: none;
+padding: 0;
+color: #4c4c4c;
+}
+
+div#MainContent ul.pagination li a, div#MainContent ul.pagination li span {
+padding: 2px 5px;
+font-weight: bold;
+font-size: 1.083333333333333em;
+}
+
+div#MainContent ul.pagination li.prev a, div#MainContent ul.pagination li.next a, div#MainContent ul.pagination li.prev span, div#MainContent ul.pagination li.next span {
+text-indent: -9999em;
+width: 11px;
+height: 11px;
+display: block;
+}
+
+div#MainContent ul.pagination li.prev {
+margin-right: 10px;
+}
+
+div#MainContent ul.pagination li.next {
+margin-left: 10px;
+}
+
+div#MainContent ul.pagination li.prev a {
+background: url('../images/pf/prev-btn.gif') no-repeat 0 3px;
+text-indent: -9999em;
+padding: 2px 0;
+}
+
+div#MainContent ul.pagination li.next a {
+background: url('../images/pf/next-btn.gif') no-repeat 0 3px;
+text-indent: -9999em;
+padding: 2px 0;
+}
+
+div#MainContent ul.pagination li.prev span {
+background: url('../images/pf/prev-btn-off.gif') no-repeat 0 3px;
+text-indent: -9999em;
+padding: 2px 0;
+}
+
+div#MainContent ul.pagination li.next span {
+background: url('../images/pf/next-btn-off.gif') no-repeat 0 3px;
+text-indent: -9999em;
+padding: 2px 0;
+}
+
+div.bearer-bio, div.bearer-story {
+clear: left;
+float: left;
+width: 100%;
+margin: 10px 0 0;
+}
+
+div.bearer-story {
+margin: 10px 0;
+}
+
+div.bearer-story h2 {
+font-size: 1.083333333333333em;
+margin: 0 0 10px;
+}
+
+div.bearer-bio img {
+float: left;
+margin: 0 20px 20px 0;
+}
+
+div#MainContent div.bearer-bio ul {
+float: left;
+width: 250px;
+margin: 0 0 10px 0;
+padding: 0;
+}
+
+div#MainContent div.bearer-bio ul li {
+width: 100%;
+padding: 0 0 10px 0;
+background-image: none;
+}
+
+div#MainContent div.bearer-bio ul li span {
+font-weight: bold;
+}
+
+#PageContent.relay-content #PageContentInner a.stand-out-link {
+float: left;
+width: auto;
+padding: 5px 20px 5px 10px;
+color: #fff !important;
+font-weight: bold;
+background: #817240 url('../images/pf/link-bg.jpg') no-repeat top right;
+margin: 0 0 10px 0;
+}
+
+#PageContent.relay-content #PageContentInner a.stand-out-link:hover, #PageContent.relay-content #PageContentInner a.stand-out-link:focus {
+text-decoration: underline;
+}
+
+.JS-enabled div.torchbearer-form input.date-input {
+background: #fff url('../images/pf/calendar.gif') no-repeat 90px 1px;
+}
+
+div.table-sort {
+position: absolute;
+top: 0;
+right: 0;
+width: 260px;
+display: none;
+}
+
+.JS-enabled div.table-sort {
+display: block;
+}
+
+div.table-sort p {
+float: left;
+width: 100px;
+margin: 7px 0 0;
+}
+
+div#MainContent ul.sort-list {
+float: right;
+width: 150px;
+margin: 0;
+}
+
+div#MainContent ul.sort-list li {
+float: left;
+width: 75px;
+height: 29px;
+padding: 0;
+margin: 0;
+}
+
+div#MainContent ul.sort-list li a {
+float: left;
+display: block;
+font-weight: bold;
+width: 65px;
+height: 22px;
+padding: 7px 0 0 10px;
+background: url('../images/pf/sort-off.gif') no-repeat;
+}
+
+div#MainContent ul.sort-list li a.sort-down, div#MainContent ul.sort-list li a.sort-down:hover, div#MainContent ul.sort-list li a.sort-down:focus {
+background: url('../images/pf/sort-up.gif') no-repeat;
+}
+
+div#MainContent ul.sort-list li a.sort-up, div#MainContent ul.sort-list li a.sort-up:hover, div#MainContent ul.sort-list li a.sort-up:focus {
+background: url('../images/pf/sort-down.gif') no-repeat;
+}
+
+div#MainContent ul.sort-list li a:hover, div#MainContent ul.sort-list li a:focus {
+background: url('../images/pf/sort-hover.gif') no-repeat;
+text-decoration: none;
+}
+
+table.tb-table thead {
+display: none;
+}
+
+.JS-enabled div.community-overlay {
+position: absolute;
+top: 26px;
+left: 195px;
+width: 175px;
+height: 23px;
+background: transparent url('../images/pf/hider.png') repeat;
+z-index: 9999;
+}
+
+div.hide-content {
+display: none;
+}
+
+/* $YaSelect styling ------------------------------------------------------- */
+
+.yaselect-anchor {
+float:left;
+width:175px;
+color:#555655;
+padding:0;
+margin:0 10px 0 0;
+z-index: 50;
+background: #fff url('../images/pf/select-closed.gif') no-repeat 12.916666666666667em 50%;
+}
+
+.yaselect-wrap {padding: 2px 5px; margin: 0; }
+.yaselect-wrap:focus {border: 1px solid #807240;}
+.yaselect-wrap, .yaselect-current { cursor: pointer; display: block; }
+.yaselect-wrap, .yaselect-current, .yaselect-select { width: 14em;}
+.yaselect-select { margin-top: 0; padding-top: 0; }
+.yaselect-open { background: #fff url('../images/pf/select-open.gif') no-repeat 12.916666666666667em 50%; }
+
+.yaselect-anchor option {
+padding: 5px 5px;
+}
+
+
+/* jQuery datepicker */
+
+.ui-datepicker .ui-datepicker-prev { left:0 !important; left:-8.5em; } /* positional fix for ie6 arrows */
+.ui-datepicker .ui-datepicker-next { right:0 !important; right:0.9em; }​​
