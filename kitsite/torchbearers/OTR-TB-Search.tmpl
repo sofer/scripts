@@ -193,10 +193,12 @@
         <form action="{page.seoPath}" method="GET">
             <label for="name">Find name:</label>
             <input type="text" id="bearer-name" name="name" value="<?php echo populateInputField('Name','name'); ?>" />
+            <!--
             <noscript>
               <label for="name_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
               <input id="name_only_torchbearers_with_a_story" value="1" type="checkbox" name="only_with_story" />
             </noscript>
+            -->
             <input type="submit" value="Go" class="searchSubmit" name="search-submit" />
         </form>
     </div>
@@ -318,11 +320,13 @@
 ]]></xsl:text>
             </script>
             
+            <!--
             <noscript>
               <label for="region_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
               <input id="region_only_torchbearers_with_a_story" value="1" type="checkbox" name="only_with_story" />
             </noscript>
-
+            -->
+            
             <input type="submit" value="Go" class="searchSubmit communitySubmit" name="search-submit" />
             
             <script type="text/javascript">
@@ -358,14 +362,17 @@
 
             </script>
   ]]></xsl:text>
+            <!--
             <noscript>
               <label for="date_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
               <input id="date_only_torchbearers_with_a_story" value="1" type="checkbox" name="only_with_story" />
             </noscript>
+            -->
             <input type="submit" value="Go" class="searchSubmit" name="search-submit" />
         </form>
     </div>
 
+    <!--
     <div class="torchbearer-form">
   <form name="dummy">
           <label for="dummy_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
@@ -376,6 +383,7 @@
   ?>
         </form>
     </div>
+    -->
     
     <script type="text/javascript"><xsl:text disable-output-escaping="yes"><![CDATA[
   var checked = $("form[name=dummy] input").is(":checked") ? " checked='checked'" : "";
