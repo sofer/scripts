@@ -1,3 +1,10 @@
+div.readfullstory {
+  background: url('../images/pf/goldbutton.png') no-repeat;
+  padding: 8px 24px 4px 0;
+  font-weight: normal;
+  margin: 36px 0 0 20px;
+}
+
 div.torchbearer-form {
 clear: left;
 float: left;
@@ -128,6 +135,8 @@ font-size: 1.083333333333333em;
 #homepage-2012-sponsor-container div.torchbearer-results h3 a, div.torchbearer-results a {
 color: #817240 !important;
 }
+
+div.readfullstory a { color: #fff !important; }
 
 #homepage-2012-sponsor-container div.torchbearer-results h3 a:hover, div.torchbearer-results a:hover, #homepage-2012-sponsor-container div.torchbearer-results h3 a:focus, div.torchbearer-results a:focus {
 text-decoration: underline !important;
