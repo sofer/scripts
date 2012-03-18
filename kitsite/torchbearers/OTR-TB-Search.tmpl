@@ -29,7 +29,7 @@
             EventId                                               
         */
      
-        require "games/olympic-torch-relay/carrying-the-olympic-flame/torchbearer-classes.php";
+        require "games/olympic-torch-relay/torchbearers/torchbearer-classes.php";
         $ts = new TorchSearch();
     
         // This method looks for CGI params named "name", "community" and "fromDay", "toDay" (and "offset" and "limit")
@@ -59,7 +59,7 @@
         $_REQUEST['name']                ? $myFilters['name']              = $_REQUEST['name'] : ''; 
         $_REQUEST['fromDay']             ? $myFilters['fromDay']           = $_REQUEST['fromDay'] : '';
         $_REQUEST['toDay']               ? $myFilters['toDay']             = $_REQUEST['toDay'] : '';
-        $_REQUEST['community']           ? $myFilters['community']         = $_REQUEST['community'] : '';
+        $_REQUEST['community']           ? $myFilters['community']         = TorchBearer::_shortCommunity($_REQUEST['community']) : '';
         $_REQUEST['bearer-location']     ? $myFilters['bearer-location']   = $_REQUEST['bearer-location'] : '';        
         $_REQUEST['orderby']             ? $myFilters['orderby']           = $_REQUEST['orderby'] : '';
         $_REQUEST['dir']                 ? $myFilters['dir']               = $_REQUEST['dir'] : '';
@@ -141,7 +141,7 @@
     <script type="text/javascript">
         $(function() {
             $("#bearer-name").autocomplete({
-                url: 'games/olympic-torch-relay/carrying-the-olympic-flame/torchbearer-autocomplete.php',
+                url: 'games/olympic-torch-relay/torchbearers/torchbearer-autocomplete.php',
                 mustMatch: true,
                 maxItemsToShow: 5,
                 selectFirst: false,
@@ -209,29 +209,24 @@
             <select id="bearer-location" name="bearer-location" class="drop-down <?php echo $community->getFieldErrorsClass('bearer-location'); ?>">
                 <option value="">Select a region</option>
                 <?php
-                    echo $community->seededSelectOption('bearer-location', 'southwest', 'South West');
-                    echo $community->seededSelectOption('bearer-location', 'westmidlands', 'West Midlands');
-                    echo $community->seededSelectOption('bearer-location', 'wales', 'Wales');
-                    echo $community->seededSelectOption('bearer-location', 'northwest', 'North West');
-                    echo $community->seededSelectOption('bearer-location', 'northernireland', 'Northern Ireland');
-                    echo $community->seededSelectOption('bearer-location', 'republicireland', 'Republic of Ireland');
-                    echo $community->seededSelectOption('bearer-location', 'scotland', 'Scotland');
-                    echo $community->seededSelectOption('bearer-location', 'northeast', 'North East');
-                    echo $community->seededSelectOption('bearer-location', 'yorkshirehumber', 'Yorkshire and Humber');
                     echo $community->seededSelectOption('bearer-location', 'eastmidlands', 'East Midlands');
                     echo $community->seededSelectOption('bearer-location', 'eastofengland', 'East of England');
-                    echo $community->seededSelectOption('bearer-location', 'southeast', 'South East');
+                    echo $community->seededSelectOption('bearer-location', 'guernsey', 'Guernsey');
+                    echo $community->seededSelectOption('bearer-location', 'jersey', 'Jersey');
                     echo $community->seededSelectOption('bearer-location', 'london', 'London');              
-  
+                    echo $community->seededSelectOption('bearer-location', 'northeast', 'North East');
+                    echo $community->seededSelectOption('bearer-location', 'northernireland', 'Northern Ireland');
+                    echo $community->seededSelectOption('bearer-location', 'northwest', 'North West');
+                    echo $community->seededSelectOption('bearer-location', 'republicireland', 'Republic of Ireland');
+                    echo $community->seededSelectOption('bearer-location', 'scotland', 'Scotland');
+                    echo $community->seededSelectOption('bearer-location', 'southeast', 'South East');
+                    echo $community->seededSelectOption('bearer-location', 'southwest', 'South West');
+                    echo $community->seededSelectOption('bearer-location', 'wales', 'Wales');
+                    echo $community->seededSelectOption('bearer-location', 'westmidlands', 'West Midlands');
+                    echo $community->seededSelectOption('bearer-location', 'yorkshirehumber', 'Yorkshire and Humber');
                 ?>
             </select>
             
-            <!-- If we're in js mode, we ignore all the pre-selected stuff and just display 'select a region' -->
-            <script type="text/javascript">
-                <?php if (!$myFilters['bearer-location']) {  ?>
-                  $('#bearer-location').html('<option value="">Select a region</option><option value="southwest">South West</option><option value="westmidlands">West Midlands</option><option value="wales">Wales</option><option value="northwest">North West</option><option value="northernireland">Northern Ireland</option><option value="republicireland">Republic of Ireland</option><option value="scotland">Scotland</option><option value="northeast">North East</option><option value="yorkshirehumber">Yorkshire and Humber</option><option value="eastmidlands">East Midlands</option><option value="eastofengland">East of England</option><option value="southeast">South East</option><option value="london">London</option>');
-                <?php } ?>
-            </script>             
             
             <?js
       var x = "$communities = array(\n";
@@ -261,7 +256,6 @@
                 }
             */
             ?>
-            <script type="text/javascript">
             <?php
     // bit of a hack
     if ($myFilters["community"] && !$myFilters["bearer-location"]) {
@@ -273,12 +267,8 @@
           }
         }
       }
-      if ($myFilters["bearer-location"]) {
-        echo '$("#bearer-location option[value=' . $myFilters["bearer-location"] . ']").attr("selected",true);';
-      }
     }
             ?>
-            </script>
             
             <NOSCRIPT>
                 <?php if ($myFilters['bearer-location']) {
@@ -301,24 +291,18 @@
                     <select class="drop-down" id="bearer-location2" name="community">
                         <option value="0">Select a community</option>
                         <?php
+                            // $_REQUEST["community"] = $myFilters['community']; // aargh! it's geting uglier!
                             foreach($communityArray as $key => $val) {
-                                echo $community->seededSelectOption('community', $val, $val);                                                    
+        echo "<option value='" . htmlspecialchars($val) . "'";
+        if ($val==$myFilters['community']) echo " selected='selected'";
+        echo ">" . htmlspecialchars($val) . "</option>\n";
+                                // echo $community->seededSelectOption('community', $val, $val);                                                    
                             }                                            
                         ?>
                     </select>        
                  <?php } ?>
             </div>    
             
-            <!-- If we're in js mode, we ignore all the pre-selected stuff and just display 'select a community' 
-                 Not quite true.  Should be: 
-                 UNLESS user has selected a community.
-            -->     
-            <script type="text/javascript"><xsl:text disable-output-escaping="yes"><![CDATA[
-                <?php if (!$myFilters['community']) { ?>
-                   $('#jsCommunityDropdown').html('<' + 'select class="drop-down" id="bearer-location2" name="community"><' + 'option value="0">Select a community<' + '/option><' + '/select>');
-                 <?php } ?>
-]]></xsl:text>
-            </script>
             
             <!--
             <noscript>
@@ -329,15 +313,10 @@
             
             <input type="submit" value="Go" class="searchSubmit communitySubmit" name="search-submit" />
             
-            <script type="text/javascript">
-                <?php if (!$myFilters['community']) { ?>
-                  $('.communitySubmit').addClass('disabled');
-                  $('.communitySubmit').attr('disabled','disabled');
-                 <?php } ?>
-            </script>
-            
         </form>
-        <div class="community-overlay"></div>
+  <div class="community-overlay"></div>
+  <script type="text/javascript"><xsl:text disable-output-escaping="yes"><![CDATA[
+  ]]></xsl:text></script>
     </div>
     
     <div class="torchbearer-form">
@@ -347,21 +326,39 @@
             <input type="text" value="From Date" id="from-date" class="date-input" name="fromDay" />
             <label class="from-to" for="to-date">To:</label>
             <input type="text" value="To Date" id="to-date" class="date-input" name="toDay" />
-  <xsl:text disable-output-escaping="yes"><![CDATA[
-            <script type="text/javascript">
-               <?php
-                   if ($_REQUEST['fromDay'] && preg_match('/^[0-9]{2} [0-9]{2} [0-9]{4}$/', $_REQUEST['fromDay'])) {
-                       # echo '$("#from-date").datepicker("option", "defaultDate", "' . $_REQUEST['fromDay'] . '");';
-                       echo '$("#from-date").val("' . $_REQUEST['fromDay'] . '");';
-                   }
-                   if ($_REQUEST['toDay'] && preg_match('/^[0-9]{2} [0-9]{2} [0-9]{4}$/', $_REQUEST['toDay'])) {
-                       # echo '$("#to-date").datepicker("option", "defaultDate", "' . $_REQUEST['toDay'] . '");';
-                       echo '$("#to-date").val("' . $_REQUEST['toDay'] . '");';
-                   }
-               ?>
-
-            </script>
-  ]]></xsl:text>
+  <!-- If we're in js mode, we ignore all the pre-selected stuff and just display 'select a community' 
+       Not quite true.  Should be: 
+       UNLESS user has selected a community.
+  -->  
+  <!-- I would like to wrap the following in $(function () {}); BUT there are some timing issues (with
+       the select boxes. Kieran
+  -->
+  <script type="text/javascript"><xsl:text disable-output-escaping="yes"><![CDATA[
+    
+      <?php if (!$myFilters['bearer-location']) {  ?>
+        $('#bearer-location').html('<option value="">Select a region</option><option value="southwest">South West</option><option value="westmidlands">West Midlands</option><option value="wales">Wales</option><option value="northwest">North West</option><option value="northernireland">Northern Ireland</option><option value="republicireland">Republic of Ireland</option><option value="scotland">Scotland</option><option value="northeast">North East</option><option value="yorkshirehumber">Yorkshire and Humber</option><option value="eastmidlands">East Midlands</option><option value="eastofengland">East of England</option><option value="southeast">South East</option><option value="jersey">Jersey</option><option value="guernsey">Guernsey</option><option value="london">London</option>');
+            <?php } ?>
+      <?php if ($myFilters["bearer-location"]) { ?>
+        $("#bearer-location option[value=<?php echo $myFilters["bearer-location"] ?>]").attr("selected",true);
+      <?php } ?>
+      <?php if (!$myFilters['community'] || ($myFilters['community'] && !$myFilters['bearer-location']) /*Aintree!*/) { ?>
+        $('#jsCommunityDropdown').html('<select class="drop-down" id="bearer-location2" name="community"><option value="0">Select a community</option></select>');
+        $('.communitySubmit').addClass('disabled');
+        $('.communitySubmit').attr('disabled','disabled');
+      <?php } else { ?>
+        $("div.community-overlay").addClass('hide-content');
+      <?php } ?>
+      <?php
+        if ($_REQUEST['fromDay'] && preg_match('/^[0-9]{2} [0-9]{2} [0-9]{4}$/', $_REQUEST['fromDay'])) {
+          # echo '$("#from-date").datepicker("option", "defaultDate", "' . $_REQUEST['fromDay'] . '");';
+          echo '$("#from-date").val("' . $_REQUEST['fromDay'] . '");';
+        }
+        if ($_REQUEST['toDay'] && preg_match('/^[0-9]{2} [0-9]{2} [0-9]{4}$/', $_REQUEST['toDay'])) {
+          # echo '$("#to-date").datepicker("option", "defaultDate", "' . $_REQUEST['toDay'] . '");';
+          echo '$("#to-date").val("' . $_REQUEST['toDay'] . '");';
+        }
+      ?>
+  ]]></xsl:text></script>
             <!--
             <noscript>
               <label for="date_only_torchbearers_with_a_story">Show only torchbearers with a story:</label>
@@ -384,7 +381,7 @@
         </form>
     </div>
     -->
-    
+    <!--
     <script type="text/javascript"><xsl:text disable-output-escaping="yes"><![CDATA[
   var checked = $("form[name=dummy] input").is(":checked") ? " checked='checked'" : "";
   $(".torchbearer-form form").not($("form[name=dummy]")).each(function () {
@@ -395,7 +392,7 @@
     $("input[name=only_with_story]").not($(this)).attr("checked", checked);
   });
     ]]></xsl:text></script>
-
+    -->
 
     <div class="torchbearer-results">
               
@@ -413,17 +410,17 @@
                     $imgThumb = $tb->imgSmallSrc();
                     ?>
                     <tr>
-                         <td class="tb-image"><img src="<?php echo $imgThumb; ?>" width="77" height="77" alt="<?php echo htmlspecialchars($tb->getText('FullName')); ?>" /></td>
+                         <td class="tb-image"><img src="<?php echo $imgThumb; ?>" width="77" height="77" alt="<?php echo $tb->getText('FullName'); ?>" /></td>
                          <td class="tb-detail">
                              <h3><?php if ($tb->isFeatured()) { ?>
-           <a href="<?php echo $tb->href();?>"><?php echo htmlspecialchars($tb->getText("FullName")); ?></a>
+           <a href="<?php echo $tb->href();?>"><?php echo $tb->getText("FullName"); ?></a>
           <?php } else {
-          echo htmlspecialchars($tb->getText("FullName"));
+          echo $tb->getText("FullName");
          } ?></h3>
-                             <h4>Carrying the Flame through: <a href="<?php echo Utils::getRequestPath() . '?community=' . urlencode($tb->getText('DistinctRelayCommunity')); ?>"><?php echo htmlspecialchars($tb->getText("DistinctRelayCommunity")); ?></a></h4>
+                             <h4>Carrying the Flame through: <a href="<?php echo Utils::getRequestPath() . '?community=' . urlencode($tb->getText('DistinctRelayCommunity')); ?>"><?php echo $tb->shortCommunity(); ?></a></h4>
                              <h4>Carrying the Flame on: <a href="<?php echo Utils::getRequestPath() . '?fromDay=' . $tb->date() . '&toDay=' . $tb->date(); ?>"><?php echo $tb->date("%d %b %Y"); ?></a></h4>
-                             <h4>Age: <?php echo htmlspecialchars($tb->age()); ?></h4>
-                             <h4>Hometown: <?php echo htmlspecialchars($tb->getText("HomeCommunity")); ?></h4>
+                             <h4>Age: <?php echo $tb->age(); ?></h4>
+                             <h4>Hometown: <?php echo $tb->getText("HomeCommunity"); ?></h4>
                         </td>
                          <td class="tb-date"><?php if ($tb->isFeatured()) { ?><div class="featured">Featured Torchbearer</div><div class="readfullstory"><a href="<?php echo $tb->href();?>">Read full story</a></div><?php } ?></td>
                     </tr>  
@@ -433,7 +430,7 @@
         </table>
         
         <div class="table-sort">
-            <p>Sort events by: </p>
+            <p>Sort Torchbearers by: </p>
             <ul class="sort-list">
                 <li class="sort-name"><a id="sort-names" href="<?php echo $orderByNameUrl; ?>" class="<?php echo getCssDirClass('name'); ?>">Name</a></li>
                 <li class="sort-date"><a id="sort-dates" href="<?php echo $orderByDateUrl; ?>" class="<?php echo getCssDirClass('date'); ?>">Date</a></li>
