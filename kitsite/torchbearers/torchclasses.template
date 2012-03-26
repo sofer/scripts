@@ -1,0 +1,439 @@
+<?php
+
+# We have to add a proxy function here, because we can't send "TorchBearer::reallyGet" to CommunityCache.
+# (I think CommunityCache would need to be modified to use call_user_func)
+function torchBearerReallyGet($data) {
+  return TorchBearer::reallyGet($data);
+}
+
+class TorchBearer {
+
+  static function reallyGet($data) {
+    $ts = new TorchSearch();
+    $hit = $ts->findFirstById($data["gid"]);
+    return serialize($hit);
+  }
+
+  function TorchBearer($hit) {
+    $this->hit = $hit;
+  }
+  /* Instructions for uploading images:
+   *  1. Copy to stage03:tmp
+   *  2. unzip tb-sample-images.zip
+   *  3. mv TB\ Sample\ Images images
+   *  4. mv images /apps/apache/html/new.london2012.com/games/olympic-torch-relay/torchbearers/
+   */
+  function imgSrc($largeOrSmall) {
+     $path = "games/olympic-torch-relay/torchbearers/images/$largeOrSmall/" . $this->getText("id") . ".jpg";
+     # Check if it's there!
+     if (!file_exists($path)) {
+       return "images/placeholders/tn4.jpg";
+     }
+     return $path;
+  }
+  function imgLargeSrc() {
+    return $this->imgSrc("Large");
+  }
+  function imgSmallSrc() {
+    return $this->imgSrc("Small");
+  }
+  // change this when we put the url-rewriting in place.
+  function href() {
+      return "/games/olympic-torch-relay/torchbearers/detail/" . $this->getText("id");
+  }
+  function getText($fieldName, $escape=true) {
+    return $this->hit->getText($fieldName, $escape);
+  }
+  /* Note that this will return a cached copy, with the cache refreshing
+   * once every 10 mins.
+   * It reads the cache file, and then deserializes what it finds.
+   */
+  static function get($gid) {
+    $cc = new CommunityCache("torchbearers");
+    $t = $cc->get(
+      "$gid" /* "key" */,
+      "2h", //"YmdH"
+      "torchBearerReallyGet",
+      array("gid" => "$gid"),
+      false /*debug=false*/
+    );
+    $hit = unserialize($t);
+    if ($hit) return new TorchBearer($hit);
+    return null;
+  }
+
+  static $communityMap = array(
+  "The City of London" => "London",
+  "The City of Westminster" => "Westminster",
+  "The London Borough of Barnet" => "Barnet",
+  "The London Borough of Bexley" => "Bexley",
+  "The London Borough of Brent" => "Brent",
+  "The London Borough of Bromley" => "Bromley",
+  "The London Borough of Camden" => "Camden",
+  "The London Borough of Croydon" => "Croydon",
+  "The London Borough of Ealing" => "Ealing",
+  "The London Borough of Enfield" => "Enfield",
+  "The London Borough of Hackney" => "Hackney",
+  "The London Borough of Hammersmith & Fulham" => "Hammersmith & Fulham",
+  "The London Borough of Haringey" => "Haringey",
+  "The London Borough of Harrow" => "Harrow",
+  "The London Borough of Havering" => "Havering",
+  "The London Borough of Hillingdon" => "Hillingdon",
+  "The London Borough of Hounslow" => "Hounslow",
+  "The London Borough of Islington" => "Islington",
+  "The London Borough of Lambeth" => "Lambeth",
+  "The London Borough of Lewisham" => "Lewisham",
+  "The London Borough of Merton" => "Merton Borough",
+  "The London Borough of Newham" => "Newham",
+  "The London Borough of Redbridge" => "Redbridge",
+  "The London Borough of Richmond upon Thames" => "Richmond upon Thames",
+  "The London Borough of Southwark" => "Southwark",
+  "The London Borough of Sutton" => "Sutton",
+  "The London Borough of Tower Hamlets" => "Tower Hamlets",
+  "The London Borough of Waltham Forest" => "Waltham Forest",
+  "The London Borough of Wandsworth" => "Wandsworth",
+  "The Royal Borough of Greenwich" => "Greenwich",
+  "The Royal Borough of Kensington and Chelsea" => "Kensington & Chelsea",
+  "The Royal Borough of Kingston Upon Thames" => "Kingston Upon Thames"
+);
+
+  static function _shortCommunity($in) {
+  $map = self::$communityMap;
+  if ($map[$in]) return $map[$in];
+  return $in;
+  }
+  static function _longCommunity($in) {
+  $map = self::$communityMap;
+  foreach ($map as $long => $short) {
+    if ($short == $in) {return $long;}
+  }
+  return $in;
+  }
+  function longCommunity() {
+  return self::_longCommunity($this->getText("DistinctRelayCommunity"));
+  }
+  function shortCommunity() {
+  return self::_shortCommunity($this->getText("DistinctRelayCommunity"));
+  }
+
+  function date($fmt="%d %m %Y") {
+      $d  = strptime($this->getText("DayDate"), "%d-%b-%y");
+      $d  = mktime(0, 0, 0, $d['tm_mon']+1, $d['tm_mday'], $d['tm_year']+1900);
+      return strftime($fmt, $d);
+  }
+  function age() {
+    // because some of the ages are -ve!
+    $a = $this->getText("Age");
+    if ($a < 0) {$a = 0 - $a;}
+    return $a;
+  }
+  function isFeatured() {
+     return $this->getText("FeaturedTorchbearer")=="1";
+  }
+}
+
+class TorchSearch {
+  
+  function TorchSearch() {
+    global $community;
+    $this->luckit = new Luckit($community, "torchbearers");
+  }
+  // tokenize (make lowercase, coalesce spaces)
+  // could also maybe turn accented->non-accented
+  function tok($q) {
+    $q = strtolower($q);
+    $q = preg_replace("/[\\s]+/", " ", $q);
+    return $q;
+  }
+
+  function findFirstById($id) {
+    $id = $this->utf8_xmlsafe($id);
+    $xml = <<<END
+      <query>
+        <term-query field="id" value="$id"/>
+      </query>
+END;
+    $results = $this->luckit->search(
+      $xml,
+      array('offset' => 1, 'limit' => 1)
+    );
+    $ret = array();
+    foreach ($results->hits as $i => $hit) {
+      return $hit;
+    }
+    return null;
+  }
+
+  function matches($q, $fieldNameOrNames) {
+    if (is_string($fieldNameOrNames)) {
+      $fieldNameOrNames = array($fieldNameOrNames);
+    }
+    $q = $this->tok($q);
+    $q = $this->utf8_xmlsafe($q);
+    $xml = <<<END
+      <query>
+                          <boolean-query required="true">
+END;
+    foreach ($fieldNameOrNames as $f) {
+      $xml .= <<<END
+                                  <prefix-query field="$f" value="$q" required="false"/>
+END;
+    }
+    $xml .= <<<END
+                          </boolean-query>
+                          <total>
+END;
+    foreach ($fieldNameOrNames as $f) {
+      $xml .= <<<END
+                                  <group field="$f"/>
+END;
+    }
+    $xml .= <<<END
+                          </total>
+      </query>
+END;
+
+
+    $results = $this->luckit->search(
+      $xml,
+      array(
+        'offset' => 1,
+        'limit' => 20
+      )
+    );
+    $ret = array();
+    foreach ($results->hits as $i => $hit) {
+      foreach ($fieldNameOrNames as $f) {
+        $v = $hit->fields[$f][0];
+        if ($v!=null) {
+          if (array_search($v, $ret)===FALSE) {
+            $ret[] = $v;
+          }
+        }
+      }
+    }
+    return $ret;
+  }
+
+  function allCommunities() {
+      $xml .= <<<END
+        <query>
+                <exists-query field="DistinctRelayCommunity" required="true"/>
+                <total>
+                        <group field="DistinctRelayCommunity"/>
+                </total>
+        </query>
+END;
+    $results = $this->luckit->search(
+      $xml,
+      array(
+        'offset' => 1,
+        'limit' => 8000
+      )
+    );
+    $ret = array();
+    foreach ($results->hits as $i => $total) {
+      $ret[] = $total->fields["DistinctRelayCommunity"][0];
+    }
+    return $ret;
+  }
+
+  function firstNameMatches($q) {
+    return $this->matches($q, "PreferredFirstName");
+  }
+  function lastNameMatches($q) {
+    return $this->matches($q, "LastName");
+  }
+
+  function fullNameMatches($q) {
+    return $this->matches($q, "FullName");
+  }
+  function relayCommunityMatches($q) {
+    return $this->matches($q, "RelayCommunity");
+   }
+
+   /* copied! */
+  function utf8_xmlsafe ($str) {
+    $str = utf8_decode($str);
+    $str = str_replace(
+      array (
+        '&', '"', "'", '<', '>'
+      ),
+      array (
+        '&amp;', '"', '&apos;' , '&lt;' , '&gt;'
+      ),
+      $str
+    );
+    $str = utf8_encode($str);
+    return $str;
+  }
+
+  /* Looks for CGI parameters named "name", "fromDay", "toDay" (a number) and "community" */
+  function search() {
+    $xml = <<<END
+      <query>
+END;
+
+    if ($_REQUEST["only_with_story"] == 1) {
+      $xml .= <<<END
+        <term-query field="FeaturedTorchbearer" value="1" required="true"/>
+END;
+    }
+
+    if ($_REQUEST["name"] || $_SERVER['REQUEST_METHOD'] != 'POST') {
+      $name = $this->tok($_REQUEST["name"]);
+      $name = $this->utf8_xmlsafe($name);
+      $xml .= <<<END
+        <boolean-query required="true">
+          <prefix-query field="FullName" value="$name" required="false"/>
+          <prefix-query field="LastName"  value="$name" required="false"/>
+        </boolean-query>
+END;
+    }
+    if ($_REQUEST["fromDay"]) {
+      // It's "dd mm yyyy"
+      // find the "day number", by subtracting from 05 May.
+      $d  = strptime($_REQUEST["fromDay"], "%d %m %Y");
+      $d1 = strptime("19 05 2012", "%d %m %Y");
+      $d  = mktime(0, 0, 0, $d['tm_mon']+1, $d['tm_mday'], $d['tm_year']+1900);
+      $d1 = mktime(0, 0, 0, $d1['tm_mon']+1, $d1['tm_mday'], $d1['tm_year']+1900);
+      $day = 1 + ((int) date("z", $d)) - ((int) date("z", $d1));
+      $day = sprintf("%03d", $day);
+      $xml .= <<<END
+        <boolean-query required="true">
+          <range-query field="DayNumber" lower="$day" required="true"/>
+        </boolean-query>
+END;
+    }
+    if ($_REQUEST["toDay"]) {
+      // It's "dd mm yyyy"
+      // find the "day number", by subtracting from 05 May.
+      $d  = strptime($_REQUEST["toDay"], "%d %m %Y");
+      $d1 = strptime("19 05 2012", "%d %m %Y");
+      $d  = mktime(0, 0, 0, $d['tm_mon']+1, $d['tm_mday'], $d['tm_year']+1900);
+      $d1 = mktime(0, 0, 0, $d1['tm_mon']+1, $d1['tm_mday'], $d1['tm_year']+1900);
+      $day = 1 + ((int) date("z", $d)) - ((int) date("z", $d1));
+      $day = sprintf("%03d", $day);
+      $xml .= <<<END
+        <boolean-query required="true">
+          <range-query field="DayNumber" upper="$day" required="true"/>
+        </boolean-query>
+END;
+    }
+    if ($_REQUEST["community"]) {
+      $long = TorchBearer::_longCommunity($_REQUEST["community"]);
+      $uc = $this->utf8_xmlsafe($long);
+      $community = $this->tok($long);
+      $community = $this->utf8_xmlsafe($community);
+      $xml .= <<<END
+        <boolean-query required="true">
+          <term-query field="RelayCommunity"         value="$community" required="false"/>
+          <term-query field="DistinctRelayCommunity" value="$uc"        required="false"/>
+        </boolean-query>
+END;
+    }
+    $order   = "unspecified"; // default
+    $reverse = "false";      
+    if ($_REQUEST["orderby"]) { 
+      $order = $this->tok($_REQUEST["orderby"]);
+      $order =  $this->utf8_xmlsafe($order);
+      
+      if ($_REQUEST["dir"]) { 
+            $direction = $this->tok($_REQUEST["dir"]);
+            $direction = $this->utf8_xmlsafe($direction);
+            if ($direction == 'desc') { $reverse = "true"; }
+      } 
+    }
+    
+  // Yes we really want to do it like this! See email!
+  if ($_REQUEST["name"]) {
+    // 1.       By name
+    // 2.       Featured torchbearers
+    // 3.       By date
+    if ($order == 'unspecified') {
+      $xml .= '<sort field="FullName"/>';
+      $xml .= '<sort field="FeaturedTorchbearer" reverse="true"/>';
+      $xml .= '<sort field="DayNumber"/>';
+    } else if ($order == 'date') {
+      $xml .= '<sort field="DayNumber" reverse="'.$reverse.'" />';
+    } else if ($order == 'name') {
+      $xml .= '<sort field="FullName" reverse="'.$reverse.'" />';
+    }
+  } else if ($_REQUEST["fromDay"]) {
+    // 1.       Featured torchbearers
+    // 2.       By date
+    // 3.       By name
+    if ($order == 'unspecified') {
+      $xml .= '<sort field="FeaturedTorchbearer" reverse="true"/>';
+      $xml .= '<sort field="FullName"/>';
+      $xml .= '<sort field="DayNumber"/>';
+    } else if ($order == 'date') {
+      $xml .= '<sort field="DayNumber" reverse="'.$reverse.'" />';
+    } else if ($order == 'name') {
+      $xml .= '<sort field="FullName" reverse="'.$reverse.'" />';
+    }
+  } else if ($_REQUEST["community"]) {
+    // 1.       Featured torchbearer
+    // 2.       By date
+    // 3.       By name
+    if ($order == 'unspecified') {
+      $xml .= '<sort field="FeaturedTorchbearer" reverse="true"/>';
+      $xml .= '<sort field="DayNumber"/>';
+      $xml .= '<sort field="FullName"/>';
+    } else if ($order == 'date') {
+      $xml .= '<sort field="DayNumber" reverse="'.$reverse.'" />';
+    } else if ($order == 'name') {
+      $xml .= '<sort field="FullName" reverse="'.$reverse.'" />';
+    }
+  } else {
+    // 1.       Featured torchbearers
+    // 2.       By date
+    // 3.       By name
+    if ($order == 'unspecified') {
+      $xml .= '<sort field="FeaturedTorchbearer" reverse="true"/>';
+      $xml .= '<sort field="DayNumber"/>';
+      $xml .= '<sort field="FullName"/>';
+    } else if ($order == 'date') {
+      $xml .= '<sort field="DayNumber" reverse="'.$reverse.'" />';
+    } else if ($order == 'name') {
+      $xml .= '<sort field="FullName" reverse="'.$reverse.'" />';
+    }
+  }
+
+
+    $offset = 1;
+    if ($_REQUEST["start"]) {
+      $offset = $_REQUEST["start"];
+    }
+    $limit = 10;
+    if ($_REQUEST["limit"]) {
+      $limit = $_REQUEST["limit"];
+    }
+
+
+    $xml .= <<<END
+      </query>
+END;
+
+    /* Found a much better way using the request method in the name $_REQUEST["name"], still gonna keep that in 
+    $defaultXml = '<query><boolean-query required="true"> <prefix-query field="FullName" value="" required="false"/> <prefix-query field="LastName" value="" required="false"/> </boolean-query> <sort field="FullName" reverse="false" /></query>';
+    
+    if($_SERVER['REQUEST_METHOD'] != 'POST') {
+        $xml = $defaultXml;
+    }
+    */
+
+    return $this->luckit->search(
+      $xml,
+      array(
+        'offset' => $offset,
+        'limit' => $limit
+      )
+    );
+
+  }
+  
+}
+
+?>
+​
