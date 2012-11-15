@@ -39,7 +39,7 @@ var ZEN = {
     return opt
   },
   
-  fetch: function() { 
+  fetch: function() {
     var that = this;
     var opt = this.baseOptions();
     opt.headers = { 'Authorization' : this.base64auth };
